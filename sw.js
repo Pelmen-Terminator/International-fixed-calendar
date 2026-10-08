@@ -1,4 +1,4 @@
-const CACHE = 'ifc-v1.6';
+const CACHE = 'ifc-v1.7';
 const ASSETS = ['./', './index.html', './manifest.json', './favicon.svg'];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)));
