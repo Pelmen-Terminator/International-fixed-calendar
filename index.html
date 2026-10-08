@@ -4,14 +4,14 @@
 <meta charset="utf-8">
 <title>Международный фиксированный календарь</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Конвертер дат: 8 календарей, 17 языков. Доступный интерфейс, экспорт ICS, разница дат.">
+<meta name="description" content="Конвертер дат: 8 календарей, 18 языков. Доступный интерфейс, тесты, экспорт ICS.">
 <meta name="theme-color" content="#2f6f5e">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="manifest" href="manifest.json">
 <style>
-:root{--bg:#f6f4ef;--card:#fff;--tx:#1d2330;--mu:#6b7280;--ac:#2f6f5e;--ac2:#e8f2ee;--bd:#e2ded4;--hol:#c2410c;--sel:#2f6f5e;--selt:#fff;--fo:#2f6f5e}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12161c;--card:#1a2029;--tx:#e8eaee;--mu:#98a1b0;--ac:#5fb59c;--ac2:#1f2e2a;--bd:#2b3442;--hol:#fb923c;--sel:#5fb59c;--selt:#0f1713;--fo:#5fb59c}}
-:root[data-theme="dark"]{--bg:#12161c;--card:#1a2029;--tx:#e8eaee;--mu:#98a1b0;--ac:#5fb59c;--ac2:#1f2e2a;--bd:#2b3442;--hol:#fb923c;--sel:#5fb59c;--selt:#0f1713;--fo:#5fb59c}
+:root{--bg:#f6f4ef;--card:#fff;--tx:#1d2330;--mu:#6b7280;--ac:#2f6f5e;--ac2:#e8f2ee;--bd:#e2ded4;--hol:#c2410c;--sel:#2f6f5e;--selt:#fff;--fo:#2f6f5e;--ok:#15803d;--bad:#b91c1c}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12161c;--card:#1a2029;--tx:#e8eaee;--mu:#98a1b0;--ac:#5fb59c;--ac2:#1f2e2a;--bd:#2b3442;--hol:#fb923c;--sel:#5fb59c;--selt:#0f1713;--fo:#5fb59c;--ok:#4ade80;--bad:#f87171}}
+:root[data-theme="dark"]{--bg:#12161c;--card:#1a2029;--tx:#e8eaee;--mu:#98a1b0;--ac:#5fb59c;--ac2:#1f2e2a;--bd:#2b3442;--hol:#fb923c;--sel:#5fb59c;--selt:#0f1713;--fo:#5fb59c;--ok:#4ade80;--bad:#f87171}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue","PingFang SC","Microsoft YaHei","Noto Sans Hebrew","Noto Naskh Arabic","Noto Sans Devanagari","Noto Sans JP","Noto Sans KR",sans-serif;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -26,7 +26,7 @@ button,select,input{font:inherit;color:var(--tx)}
 .b:hover{border-color:var(--ac)}
 :focus-visible{outline:2px solid var(--fo);outline-offset:2px;border-radius:6px}
 .lang{position:relative}
-.lang-menu{position:absolute;top:calc(100% + 6px);inset-inline-end:0;background:var(--card);border:1px solid var(--bd);border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.18);padding:6px;min-width:280px;max-height:75vh;overflow-y:auto;z-index:50;display:none;flex-direction:column;gap:2px}
+.lang-menu{position:absolute;top:calc(100% + 6px);inset-inline-end:0;background:var(--card);border:1px solid var(--bd);border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.18);padding:6px;min-width:300px;max-height:75vh;overflow-y:auto;z-index:50;display:none;flex-direction:column;gap:2px}
 .lang-menu.open{display:flex}
 .lang-region{padding:8px 12px 4px;font-size:.78rem;text-transform:uppercase;letter-spacing:.04em;color:var(--mu);font-weight:600;display:flex;justify-content:space-between;align-items:center;margin-top:6px;border-top:1px solid var(--bd)}
 .lang-region:first-child{border-top:none;margin-top:0}
@@ -36,7 +36,6 @@ button,select,input{font:inherit;color:var(--tx)}
 .lang-item{display:flex;align-items:center;gap:10px;padding:8px 12px;border:0;background:none;border-radius:8px;cursor:pointer;text-align:start;font-size:.95rem;width:100%}
 .lang-item:hover{background:var(--ac2)}
 .lang-item.on{background:var(--ac);color:var(--selt)}
-.lang-item:disabled{opacity:.4;cursor:not-allowed}
 .lang-item .fl{font-size:1.2rem;line-height:1}
 .lang-item .nm{flex:1}
 .lang-item .cd{color:var(--mu);font-size:.8rem;text-transform:uppercase}
@@ -71,6 +70,7 @@ h2{font-size:1rem;margin:0 0 10px;color:var(--mu);font-weight:600}
 .hl{list-style:none;margin:0;padding:0}
 .hl li{display:flex;gap:10px;justify-content:space-between;padding:8px 6px;border-bottom:1px solid var(--bd);cursor:pointer;border-radius:6px}
 .hl li:hover{background:var(--ac2)}
+.hl li:focus-visible{outline:2px solid var(--fo);outline-offset:-2px;background:var(--ac2)}
 .hl small{color:var(--mu);display:block}
 .hl b{white-space:nowrap;color:var(--ac)}
 .yv{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:12px}
@@ -83,6 +83,17 @@ footer a{color:var(--ac)}
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--ac);color:var(--selt);padding:10px 18px;border-radius:10px;box-shadow:0 4px 12px rgba(0,0,0,.2);opacity:0;pointer-events:none;transition:opacity .25s;z-index:100}
 .toast.show{opacity:1}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.test-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:300;padding:16px}
+.test-overlay.open{display:flex}
+.test-box{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:18px;max-width:640px;width:100%;max-height:85vh;overflow-y:auto}
+.test-box h3{margin:0 0 10px}
+.test-row{display:flex;gap:8px;padding:6px 0;border-bottom:1px solid var(--bd);font-size:.9rem;align-items:flex-start}
+.test-row .ok{color:var(--ok);font-weight:700;min-width:1.2em}
+.test-row .bad{color:var(--bad);font-weight:700;min-width:1.2em}
+.test-summary{padding:10px 0;font-weight:600}
+.test-summary.all-ok{color:var(--ok)}
+.test-summary.has-bad{color:var(--bad)}
+.test-actions{display:flex;gap:8px;margin-top:12px;justify-content:flex-end}
 </style>
 </head>
 <body>
@@ -179,13 +190,26 @@ footer a{color:var(--ac)}
 <p class="mu" id="nt"></p>
 <footer>
 <a href="https://github.com/" id="gh" target="_blank" rel="noopener">GitHub</a>
+<span aria-hidden="true"> · </span>
+<a href="#test" id="testLink">Запустить тесты</a>
 </footer>
+</div>
+
+<div class="test-overlay" id="testOverlay" role="dialog" aria-modal="true" aria-labelledby="testTitle">
+<div class="test-box">
+<h3 id="testTitle">Тесты конвертации</h3>
+<div id="testResults"></div>
+<div class="test-actions">
+<button class="b" id="testRerun" type="button">Перезапустить</button>
+<button class="b" id="testClose" type="button">Закрыть</button>
+</div>
+</div>
 </div>
 
 <script>
 "use strict";
 /* ============================================================
-   МЕЖДУНАРОДНЫЙ ФИКСИРОВАННЫЙ КАЛЕНДАРЬ — v1.7
+   МЕЖДУНАРОДНЫЙ ФИКСИРОВАННЫЙ КАЛЕНДАРЬ — v1.8
    ============================================================ */
 
 const fl = Math.floor;
@@ -338,7 +362,6 @@ function jdnToIslamic(J) {
 }
 function islamicMonthDays(y, m) { return islamicToJDN(y, m + 1, 1) - islamicToJDN(y, m, 1); }
 
-/* Единый конвертор */
 function toJDN(c, y, m, d) {
   switch (c) {
     case 'g': return gregorianToJDN(y, m, d);
@@ -468,7 +491,10 @@ L.ru = {
   kml:['тота','фаофи','атира','хояка','тоби','мешира','паремхата','пармути','пахонса','паони','эпипа','мессори','эпагомена'],
   jq:['Личунь','Юйшуй','Цзинчжэ','Чуньфэнь','Цинмин','Гуюй','Лися','Сяомань','Манчжун','Сячжи','Сяошу','Дашу','Лицю','Чушу','Байлу','Цюфэнь','Ханьлу','Шуанцзян','Лидун','Сяосюэ','Дасюэ','Дунчжи','Сяохань','Дахань'],
   H: { ny:'Новый год', orx:'Рождество (православное)', lang:'День родного языка', w:'День женщин', water:'Всемирный день воды', earth:'День Земли', lab:'День труда', env:'День окружающей среды', ch:'День защиты детей', youth:'День молодёжи', peace:'День мира', teach:'День учителя', un:'День ООН', hr:'День прав человека', xm:'Рождество (католическое)', ev:'Канун Нового года', ew:'Пасха (западная)', eo:'Пасха (православная)', val:'День святого Валентина', father:'День отца', mother:'День матери', men:'Мужской день', book:'День книги', health:'День здоровья', space:'День космонавтики', music:'День музыки', disab:'День инвалидов', vol:'День волонтёра', vdayE:'День Победы (Восток)', vdayW:'День Победы (Запад)', holocaust:'День памяти Холокоста', oceans:'День океанов', elderly:'День пожилых людей', post:'День почты', tv:'День телевидения', mountains:'День гор', migrants:'День мигрантов', peace2:'День мира и примирения', diwali:'Дивали', holi:'Холи', eidF:'Ураза-байрам', eidA:'Курбан-байрам' },
-  tl:'Тёмная тема', tn:'Светлая тема', lb:'Язык', regions: {
+  tl:'Тёмная тема', tn:'Светлая тема', lb:'Язык',
+  test:'Тесты', testTitle:'Тесты конвертации', testRun:'Запустить тесты', testRerun:'Перезапустить', testClose:'Закрыть',
+  testSummary:'Результат', testAllOk:'Все тесты пройдены', testHasBad:'Есть ошибки', testPass:'OK', testFail:'FAIL', testNo:'Тест', testExp:'Ожидалось', testGot:'Получено',
+  regions: {
     we:'Западная Европа', ee:'Восточная Европа', af:'Африка', me:'Ближний Восток',
     ca:'Средняя Азия', sa:'Южная Азия', sea:'Юго-Восточная Азия', ea:'Восточная Азия',
     am:'Америка', oc:'Океания'
@@ -476,11 +502,9 @@ L.ru = {
 };
 /* ---------- en ---------- */
 L.en = {
-  ttl:'International Fixed Calendar',
-  t_in:'Date to convert', t_yr:'Full year',
+  ttl:'International Fixed Calendar', t_in:'Date to convert', t_yr:'Full year',
   s1:'Sol: Jun–Jul', s2:'Sol: Jul–Aug',
-  t_pk:'Calendar', t_res:'Result', t_hl:'International holidays of the year',
-  t_diff:'Difference between dates',
+  t_pk:'Calendar', t_res:'Result', t_hl:'International holidays of the year', t_diff:'Difference between dates',
   cg:'Gregorian', cj:'Julian', cc:'Chinese', ch:'Hebrew', ci:'Hindu', cm:'Islamic', cp:'Persian', ck:'Coptic',
   go:'Convert', bad:'This date does not exist in the chosen calendar',
   badyear:'Year must be between 1 and 9999', badseason:'Season 1–24, day 1–15',
@@ -495,8 +519,7 @@ L.en = {
   ws:['Su','Mo','Tu','We','Th','Fr','Sa'], pw:['Mo','Tu','We','Th','Fr','Sa','Su'],
   leap:'Leap Day', year:'Year Day', noweek:'outside the week',
   gr:'Gregorian', ju:'Julian', cn:'Chinese', hb:'Hebrew', in:'Hindu', is:'Islamic', pe:'Persian', co:'Coptic',
-  legend:'● — holiday. Every month starts on Sunday; hover a day.',
-  note:'All dates via JDN. Hindu — simplified model. Islamic, Persian, Coptic — tabular algorithms.',
+  legend:'● — holiday.', note:'All dates via JDN.',
   hm:['Tishrei','Cheshvan','Kislev','Tevet','Shevat','Adar','Nisan','Iyar','Sivan','Tammuz','Av','Elul','Adar II'],
   hml:['Tishrei','Cheshvan','Kislev','Tevet','Shevat','Adar','Nisan','Iyar','Sivan','Tammuz','Av','Elul','Adar II'],
   im2:['Chaitra','Vaisakha','Jyeshtha','Ashadha','Shravana','Bhadrapada','Ashvin','Kartika','Margashirsha','Pausha','Magha','Phalguna'],
@@ -510,6 +533,8 @@ L.en = {
   jq:['Lichun','Yushui','Jingzhe','Chunfen','Qingming','Guyu','Lixia','Xiaoman','Mangzhong','Xiazhi','Xiaoshu','Dashu','Liqiu','Chushu','Bailu','Qiufen','Hanlu','Shuangjiang','Lidong','Xiaoxue','Daxue','Dongzhi','Xiaohan','Dahan'],
   H: { ny:"New Year's Day", orx:'Christmas (Orthodox)', lang:'Mother Language Day', w:"Women's Day", water:'World Water Day', earth:'Earth Day', lab:'Labour Day', env:'Environment Day', ch:"Children's Day", youth:'Youth Day', peace:'Day of Peace', teach:"Teachers' Day", un:'United Nations Day', hr:'Human Rights Day', xm:'Christmas (Western)', ev:"New Year's Eve", ew:'Easter (Western)', eo:'Easter (Orthodox)', val:"Valentine's Day", father:"Father's Day", mother:"Mother's Day", men:"International Men's Day", book:'World Book Day', health:'World Health Day', space:'Human Space Flight Day', music:'International Music Day', disab:'Day of Persons with Disabilities', vol:'Volunteer Day', vdayE:'Victory Day (East)', vdayW:'Victory Day (West)', holocaust:'Holocaust Remembrance Day', oceans:'World Oceans Day', elderly:'Day of Older Persons', post:'World Post Day', tv:'World Television Day', mountains:'International Mountain Day', migrants:'International Migrants Day', peace2:'Day of Peace and Reconciliation', diwali:'Diwali', holi:'Holi', eidF:'Eid al-Fitr', eidA:'Eid al-Adha' },
   tl:'Dark theme', tn:'Light theme', lb:'Language',
+  test:'Tests', testTitle:'Conversion tests', testRun:'Run tests', testRerun:'Rerun', testClose:'Close',
+  testSummary:'Result', testAllOk:'All tests passed', testHasBad:'Failures present', testPass:'OK', testFail:'FAIL', testNo:'Test', testExp:'Expected', testGot:'Got',
   regions: { we:'Western Europe', ee:'Eastern Europe', af:'Africa', me:'Middle East', ca:'Central Asia', sa:'South Asia', sea:'Southeast Asia', ea:'East Asia', am:'Americas', oc:'Oceania' }
 };
 /* ---------- de ---------- */
@@ -531,7 +556,7 @@ L.de = {
   ws:['So','Mo','Di','Mi','Do','Fr','Sa'], pw:['Mo','Di','Mi','Do','Fr','Sa','So'],
   leap:'Schalttag', year:'Jahrestag', noweek:'außerhalb der Woche',
   gr:'Gregorianisch', ju:'Julianisch', cn:'Chinesisch', hb:'Hebräisch', in:'Hinduistisch', is:'Islamisch', pe:'Persisch', co:'Koptisch',
-  legend:'● — Feiertag. Jeder Monat beginnt am Sonntag.', note:'Alle Daten über JDN.',
+  legend:'● — Feiertag.', note:'Alle Daten über JDN.',
   hm:['Tischri','Cheschwan','Kislew','Tewet','Schewat','Adar','Nisan','Ijar','Siwan','Tammus','Aw','Elul','Adar II'],
   hml:['Tischri','Cheschwan','Kislew','Tewet','Schewat','Adar','Nisan','Ijar','Siwan','Tammus','Aw','Elul','Adar II'],
   im2:['Tschaitra','Waischacha','Dschjeschttha','Aschadha','Schrawana','Bhadrapada','Aschwina','Kartika','Margaschirscha','Pauscha','Magha','Phalguna'],
@@ -545,6 +570,8 @@ L.de = {
   jq:['Lichun','Yushui','Jingzhe','Chunfen','Qingming','Guyu','Lixia','Xiaoman','Mangzhong','Xiazhi','Xiaoshu','Dashu','Liqiu','Chushu','Bailu','Qiufen','Hanlu','Shuangjiang','Lidong','Xiaoxue','Daxue','Dongzhi','Xiaohan','Dahan'],
   H: { ny:'Neujahr', orx:'Weihnachten (orthodox)', lang:'Tag der Muttersprache', w:'Frauentag', water:'Weltwassertag', earth:'Tag der Erde', lab:'Tag der Arbeit', env:'Weltumwelttag', ch:'Kindertag', youth:'Jugendtag', peace:'Weltfriedenstag', teach:'Lehrertag', un:'Tag der Vereinten Nationen', hr:'Tag der Menschenrechte', xm:'Weihnachten (westlich)', ev:'Silvester', ew:'Ostern (westlich)', eo:'Ostern (orthodox)', val:'Valentinstag', father:'Vatertag', mother:'Muttertag', men:'Internationaler Männertag', book:'Welttag des Buches', health:'Weltgesundheitstag', space:'Tag der bemannten Raumfahrt', music:'Internationaler Musiktag', disab:'Tag der Menschen mit Behinderung', vol:'Tag des Ehrenamts', vdayE:'Tag des Sieges (Ost)', vdayW:'Tag des Sieges (West)', holocaust:'Holocaust-Gedenktag', oceans:'Welttag der Ozeane', elderly:'Tag der älteren Menschen', post:'Weltposttag', tv:'Welttag des Fernsehens', mountains:'Internationaler Tag der Berge', migrants:'Internationaler Tag der Migranten', peace2:'Tag des Friedens und der Versöhnung', diwali:'Diwali', holi:'Holi', eidF:'Eid al-Fitr', eidA:'Eid al-Adha' },
   tl:'Dunkles Thema', tn:'Helles Thema', lb:'Sprache',
+  test:'Tests', testTitle:'Konvertierungstests', testRun:'Tests starten', testRerun:'Neu starten', testClose:'Schließen',
+  testSummary:'Ergebnis', testAllOk:'Alle Tests bestanden', testHasBad:'Fehler vorhanden', testPass:'OK', testFail:'FAIL', testNo:'Test', testExp:'Erwartet', testGot:'Erhalten',
   regions: { we:'Westeuropa', ee:'Osteuropa', af:'Afrika', me:'Naher Osten', ca:'Zentralasien', sa:'Südasien', sea:'Südostasien', ea:'Ostasien', am:'Amerika', oc:'Ozeanien' }
 };
 /* ---------- fr ---------- */
@@ -580,6 +607,8 @@ L.fr = {
   jq:['Lichun','Yushui','Jingzhe','Chunfen','Qingming','Guyu','Lixia','Xiaoman','Mangzhong','Xiazhi','Xiaoshu','Dashu','Liqiu','Chushu','Bailu','Qiufen','Hanlu','Shuangjiang','Lidong','Xiaoxue','Daxue','Dongzhi','Xiaohan','Dahan'],
   H: { ny:'Jour de l\'An', orx:'Noël (Orthodoxe)', lang:'Journée de la Langue Maternelle', w:'Journée de la Femme', water:'Journée Mondiale de l\'Eau', earth:'Jour de la Terre', lab:'Fête du Travail', env:'Journée de l\'Environnement', ch:'Journée de l\'Enfance', youth:'Journée de la Jeunesse', peace:'Journée de la Paix', teach:'Journée des Enseignants', un:'Journée de l\'ONU', hr:'Journée des Droits de l\'Homme', xm:'Noël (Occidental)', ev:'Saint-Sylvestre', ew:'Pâques (Occidentale)', eo:'Pâques (Orthodoxe)', val:'Saint-Valentin', father:'Fête des Pères', mother:'Fête des Mères', men:'Journée Internationale de l\'Homme', book:'Journée Mondiale du Livre', health:'Journée Mondiale de la Santé', space:'Journée du Vol Spatial Habité', music:'Journée Internationale de la Musique', disab:'Journée des Personnes Handicapées', vol:'Journée du Bénévolat', vdayE:'Jour de la Victoire (Est)', vdayW:'Jour de la Victoire (Ouest)', holocaust:'Journée de la Shoah', oceans:'Journée Mondiale des Océans', elderly:'Journée des Personnes Âgées', post:'Journée Mondiale de la Poste', tv:'Journée Mondiale de la Télévision', mountains:'Journée Internationale de la Montagne', migrants:'Journée Internationale des Migrants', peace2:'Journée de la Paix et de la Réconciliation', diwali:'Diwali', holi:'Holi', eidF:'Aïd al-Fitr', eidA:'Aïd al-Adha' },
   tl:'Thème sombre', tn:'Thème clair', lb:'Langue',
+  test:'Tests', testTitle:'Tests de conversion', testRun:'Lancer les tests', testRerun:'Relancer', testClose:'Fermer',
+  testSummary:'Résultat', testAllOk:'Tous les tests réussis', testHasBad:'Échecs présents', testPass:'OK', testFail:'ÉCHEC', testNo:'Test', testExp:'Attendu', testGot:'Obtenu',
   regions: { we:'Europe de l\'Ouest', ee:'Europe de l\'Est', af:'Afrique', me:'Moyen-Orient', ca:'Asie centrale', sa:'Asie du Sud', sea:'Asie du Sud-Est', ea:'Asie de l\'Est', am:'Amérique', oc:'Océanie' }
 };
 /* ---------- it ---------- */
@@ -615,6 +644,8 @@ L.it = {
   jq:['Lichun','Yushui','Jingzhe','Chunfen','Qingming','Guyu','Lixia','Xiaoman','Mangzhong','Xiazhi','Xiaoshu','Dashu','Liqiu','Chushu','Bailu','Qiufen','Hanlu','Shuangjiang','Lidong','Xiaoxue','Daxue','Dongzhi','Xiaohan','Dahan'],
   H: { ny:'Capodanno', orx:'Natale (Ortodosso)', lang:'Giornata della Lingua Madre', w:'Festa della Donna', water:'Giornata Mondiale dell\'Acqua', earth:'Giornata della Terra', lab:'Festa del Lavoro', env:'Giornata dell\'Ambiente', ch:'Giornata dei Bambini', youth:'Giornata della Gioventù', peace:'Giornata della Pace', teach:'Giornata degli Insegnanti', un:'Giornata delle Nazioni Unite', hr:'Giornata dei Diritti Umani', xm:'Natale (Occidentale)', ev:'Vigilia di Capodanno', ew:'Pasqua (Occidentale)', eo:'Pasqua (Ortodossa)', val:'San Valentino', father:'Festa del Papà', mother:'Festa della Mamma', men:'Giornata Internazionale dell\'Uomo', book:'Giornata Mondiale del Libro', health:'Giornata Mondiale della Salute', space:'Giornata del Volo Spaziale Umano', music:'Giornata Internazionale della Musica', disab:'Giornata delle Persone con Disabilità', vol:'Giornata del Volontariato', vdayE:'Giorno della Vittoria (Est)', vdayW:'Giorno della Vittoria (Ovest)', holocaust:'Giorno della Memoria', oceans:'Giornata Mondiale degli Oceani', elderly:'Giornata Internazionale degli Anziani', post:'Giornata Mondiale della Posta', tv:'Giornata Mondiale della Televisione', mountains:'Giornata Internazionale della Montagna', migrants:'Giornata Internazionale dei Migranti', peace2:'Giornata della Pace e della Riconciliazione', diwali:'Diwali', holi:'Holi', eidF:'Eid al-Fitr', eidA:'Eid al-Adha' },
   tl:'Tema scuro', tn:'Tema chiaro', lb:'Lingua',
+  test:'Test', testTitle:'Test di conversione', testRun:'Esegui test', testRerun:'Riesegui', testClose:'Chiudi',
+  testSummary:'Risultato', testAllOk:'Tutti i test superati', testHasBad:'Presenti errori', testPass:'OK', testFail:'FAIL', testNo:'Test', testExp:'Atteso', testGot:'Ottenuto',
   regions: { we:'Europa occidentale', ee:'Europa orientale', af:'Africa', me:'Medio Oriente', ca:'Asia centrale', sa:'Asia meridionale', sea:'Sud-est asiatico', ea:'Asia orientale', am:'Americhe', oc:'Oceania' }
 };
 /* ---------- es ---------- */
@@ -650,10 +681,49 @@ L.es = {
   jq:['Lichun','Yushui','Jingzhe','Chunfen','Qingming','Guyu','Lixia','Xiaoman','Mangzhong','Xiazhi','Xiaoshu','Dashu','Liqiu','Chushu','Bailu','Qiufen','Hanlu','Shuangjiang','Lidong','Xiaoxue','Daxue','Dongzhi','Xiaohan','Dahan'],
   H: { ny:'Año Nuevo', orx:'Navidad (Ortodoxa)', lang:'Día de la Lengua Materna', w:'Día de la Mujer', water:'Día Mundial del Agua', earth:'Día de la Tierra', lab:'Día del Trabajo', env:'Día del Medio Ambiente', ch:'Día del Niño', youth:'Día de la Juventud', peace:'Día de la Paz', teach:'Día del Maestro', un:'Día de las Naciones Unidas', hr:'Día de los Derechos Humanos', xm:'Navidad (Occidental)', ev:'Nochevieja', ew:'Pascua (Occidental)', eo:'Pascua (Ortodoxa)', val:'Día de San Valentín', father:'Día del Padre', mother:'Día de la Madre', men:'Día Internacional del Hombre', book:'Día Mundial del Libro', health:'Día Mundial de la Salud', space:'Día del Vuelo Espacial Humano', music:'Día Internacional de la Música', disab:'Día de las Personas con Discapacidad', vol:'Día del Voluntario', vdayE:'Día de la Victoria (Este)', vdayW:'Día de la Victoria (Oeste)', holocaust:'Día de la Memoria del Holocausto', oceans:'Día Mundial de los Océanos', elderly:'Día Internacional de las Personas Mayores', post:'Día Mundial del Correo', tv:'Día Mundial de la Televisión', mountains:'Día Internacional de las Montañas', migrants:'Día Internacional del Migrante', peace2:'Día de la Paz y Reconciliación', diwali:'Diwali', holi:'Holi', eidF:'Eid al-Fitr', eidA:'Eid al-Adha' },
   tl:'Tema oscuro', tn:'Tema claro', lb:'Idioma',
+  test:'Pruebas', testTitle:'Pruebas de conversión', testRun:'Ejecutar pruebas', testRerun:'Reejecutar', testClose:'Cerrar',
+  testSummary:'Resultado', testAllOk:'Todas las pruebas superadas', testHasBad:'Hay errores', testPass:'OK', testFail:'FALLO', testNo:'Prueba', testExp:'Esperado', testGot:'Obtenido',
   regions: { we:'Europa Occidental', ee:'Europa Oriental', af:'África', me:'Oriente Medio', ca:'Asia Central', sa:'Asia del Sur', sea:'Sudeste Asiático', ea:'Asia Oriental', am:'América', oc:'Oceanía' }
 };
-/* ---------- pt ---------- */
+/* ---------- pt-PT (европейский) ---------- */
 L.pt = {
+  ttl:'Calendário Fixo Internacional', t_in:'Data para converter', t_yr:'Ano completo',
+  s1:'Sol: jun–jul', s2:'Sol: jul–ago',
+  t_pk:'Calendário', t_res:'Resultado', t_hl:'Feriados internacionais', t_diff:'Diferença entre datas',
+  cg:'Gregoriano', cj:'Juliano', cc:'Chinês', ch:'Hebraico', ci:'Hindu', cm:'Islâmico', cp:'Persa', ck:'Copta',
+  go:'Converter', bad:'Esta data não existe no calendário escolhido',
+  badyear:'O ano deve estar entre 1 e 9999', badseason:'Estação 1–24, dia 1–15',
+  copy:'Copiar', share:'Partilhar', ics:'ICS',
+  copied:'Copiado', copyFail:'Falha ao copiar', linkCopied:'Ligação copiada', icsDone:'Ficheiro ICS transferido',
+  dDiff:'Total', dDays:'dias', dWeeks:'sem.', dYMD:'Calendário', dYears:'a.', dMonths:'m.', dIFC:'Por CFI',
+  m:['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
+  mg:['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'],
+  im:['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Sol','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
+  img:['janeiro','fevereiro','março','abril','maio','junho','Sol','julho','agosto','setembro','outubro','novembro','dezembro'],
+  wd:['domingo','segunda-feira','terça-feira','quarta-feira','quinta-feira','sexta-feira','sábado'],
+  ws:['Do','Sg','Te','Qa','Qi','Sx','Sá'], pw:['Sg','Te','Qa','Qi','Sx','Sá','Do'],
+  leap:'Dia Bissexto', year:'Dia do Ano', noweek:'fora da semana',
+  gr:'Gregoriano', ju:'Juliano', cn:'Chinês', hb:'Hebraico', in:'Hindu', is:'Islâmico', pe:'Persa', co:'Copta',
+  legend:'● — feriado.', note:'Todas as datas via JDN.',
+  hm:['Tishrei','Cheshvan','Kislev','Tevet','Shevat','Adar','Nisan','Iyar','Sivan','Tammuz','Av','Elul','Adar II'],
+  hml:['Tishrei','Cheshvan','Kislev','Tevet','Shevat','Adar','Nisan','Iyar','Sivan','Tammuz','Av','Elul','Adar II'],
+  im2:['Chaitra','Vaisakha','Jyeshtha','Ashadha','Shravana','Bhadrapada','Ashvin','Kartika','Margashirsha','Pausha','Magha','Phalguna'],
+  iml:['Chaitra','Vaisakha','Jyeshtha','Ashadha','Shravana','Bhadrapada','Ashvin','Kartika','Margashirsha','Pausha','Magha','Phalguna'],
+  ism:['Muharram','Safar','Rabi al-awwal','Rabi al-thani','Jumada al-ula','Jumada al-akhira','Rajab','Shaaban','Ramadão','Shawwal','Dhu al-Qadah','Dhu al-Hijjah'],
+  isml:['Muharram','Safar','Rabi al-awwal','Rabi al-thani','Jumada al-ula','Jumada al-akhira','Rajab','Shaaban','Ramadão','Shawwal','Dhu al-Qadah','Dhu al-Hijjah'],
+  pm:['Farwardin','Ordibehesht','Khordad','Tir','Mordad','Shahrivar','Mehr','Aban','Azar','Dey','Bahman','Esfand'],
+  pml:['Farwardin','Ordibehesht','Khordad','Tir','Mordad','Shahrivar','Mehr','Aban','Azar','Dey','Bahman','Esfand'],
+  km:['Thout','Paopi','Hathor','Koiak','Tobi','Meshir','Paremhat','Parmouti','Pashons','Paoni','Epip','Mesori','Epagomenal'],
+  kml:['Thout','Paopi','Hathor','Koiak','Tobi','Meshir','Paremhat','Parmouti','Pashons','Paoni','Epip','Mesori','Epagomenal'],
+  jq:['Lichun','Yushui','Jingzhe','Chunfen','Qingming','Guyu','Lixia','Xiaoman','Mangzhong','Xiazhi','Xiaoshu','Dashu','Liqiu','Chushu','Bailu','Qiufen','Hanlu','Shuangjiang','Lidong','Xiaoxue','Daxue','Dongzhi','Xiaohan','Dahan'],
+  H: { ny:'Ano Novo', orx:'Natal (Ortodoxo)', lang:'Dia da Língua Materna', w:'Dia da Mulher', water:'Dia Mundial da Água', earth:'Dia da Terra', lab:'Dia do Trabalho', env:'Dia do Ambiente', ch:'Dia da Criança', youth:'Dia da Juventude', peace:'Dia da Paz', teach:'Dia do Professor', un:'Dia da ONU', hr:'Dia dos Direitos Humanos', xm:'Natal (Ocidental)', ev:'Véspera de Ano Novo', ew:'Páscoa (Ocidental)', eo:'Páscoa (Ortodoxa)', val:'Dia dos Namorados', father:'Dia do Pai', mother:'Dia da Mãe', men:'Dia Internacional do Homem', book:'Dia Mundial do Livro', health:'Dia Mundial da Saúde', space:'Dia do Voo Espacial Humano', music:'Dia Internacional da Música', disab:'Dia das Pessoas com Deficiência', vol:'Dia do Voluntário', vdayE:'Dia da Vitória (Leste)', vdayW:'Dia da Vitória (Oeste)', holocaust:'Dia da Memória do Holocausto', oceans:'Dia Mundial dos Oceanos', elderly:'Dia Internacional do Idoso', post:'Dia Mundial dos Correios', tv:'Dia Mundial da Televisão', mountains:'Dia Internacional das Montanhas', migrants:'Dia Internacional dos Migrantes', peace2:'Dia da Paz e Reconciliação', diwali:'Diwali', holi:'Holi', eidF:'Eid al-Fitr', eidA:'Eid al-Adha' },
+  tl:'Tema escuro', tn:'Tema claro', lb:'Idioma',
+  test:'Testes', testTitle:'Testes de conversão', testRun:'Executar testes', testRerun:'Reexecutar', testClose:'Fechar',
+  testSummary:'Resultado', testAllOk:'Todos os testes passaram', testHasBad:'Existem erros', testPass:'OK', testFail:'FALHA', testNo:'Teste', testExp:'Esperado', testGot:'Obtido',
+  regions: { we:'Europa Ocidental', ee:'Europa Oriental', af:'África', me:'Médio Oriente', ca:'Ásia Central', sa:'Ásia do Sul', sea:'Sudeste Asiático', ea:'Ásia Oriental', am:'América', oc:'Oceânia' }
+};
+/* ---------- pt-BR (бразильский) ---------- */
+L.ptbr = {
   ttl:'Calendário Fixo Internacional', t_in:'Data para converter', t_yr:'Ano completo',
   s1:'Sol: jun–jul', s2:'Sol: jul–ago',
   t_pk:'Calendário', t_res:'Resultado', t_hl:'Feriados internacionais', t_diff:'Diferença entre datas',
@@ -685,6 +755,8 @@ L.pt = {
   jq:['Lichun','Yushui','Jingzhe','Chunfen','Qingming','Guyu','Lixia','Xiaoman','Mangzhong','Xiazhi','Xiaoshu','Dashu','Liqiu','Chushu','Bailu','Qiufen','Hanlu','Shuangjiang','Lidong','Xiaoxue','Daxue','Dongzhi','Xiaohan','Dahan'],
   H: { ny:'Ano Novo', orx:'Natal (Ortodoxo)', lang:'Dia da Língua Materna', w:'Dia da Mulher', water:'Dia Mundial da Água', earth:'Dia da Terra', lab:'Dia do Trabalho', env:'Dia do Meio Ambiente', ch:'Dia das Crianças', youth:'Dia da Juventude', peace:'Dia da Paz', teach:'Dia do Professor', un:'Dia da ONU', hr:'Dia dos Direitos Humanos', xm:'Natal (Ocidental)', ev:'Véspera de Ano Novo', ew:'Páscoa (Ocidental)', eo:'Páscoa (Ortodoxa)', val:'Dia dos Namorados', father:'Dia dos Pais', mother:'Dia das Mães', men:'Dia Internacional do Homem', book:'Dia Mundial do Livro', health:'Dia Mundial da Saúde', space:'Dia do Voo Espacial Humano', music:'Dia Internacional da Música', disab:'Dia das Pessoas com Deficiência', vol:'Dia do Voluntário', vdayE:'Dia da Vitória (Leste)', vdayW:'Dia da Vitória (Oeste)', holocaust:'Dia da Memória do Holocausto', oceans:'Dia Mundial dos Oceanos', elderly:'Dia Internacional do Idoso', post:'Dia Mundial dos Correios', tv:'Dia Mundial da Televisão', mountains:'Dia Internacional das Montanhas', migrants:'Dia Internacional dos Migrantes', peace2:'Dia da Paz e Reconciliação', diwali:'Diwali', holi:'Holi', eidF:'Eid al-Fitr', eidA:'Eid al-Adha' },
   tl:'Tema escuro', tn:'Tema claro', lb:'Idioma',
+  test:'Testes', testTitle:'Testes de conversão', testRun:'Executar testes', testRerun:'Reexecutar', testClose:'Fechar',
+  testSummary:'Resultado', testAllOk:'Todos os testes passaram', testHasBad:'Existem falhas', testPass:'OK', testFail:'FALHA', testNo:'Teste', testExp:'Esperado', testGot:'Obtido',
   regions: { we:'Europa Ocidental', ee:'Europa Oriental', af:'África', me:'Oriente Médio', ca:'Ásia Central', sa:'Ásia do Sul', sea:'Sudeste Asiático', ea:'Ásia Oriental', am:'América', oc:'Oceania' }
 };
 /* ---------- tr ---------- */
@@ -720,6 +792,8 @@ L.tr = {
   jq:['Liçun','Yuşui','Jingje','Çunfen','Çingming','Guyu','Lisiya','Syaoman','Mangzhong','Syaçi','Syaoşu','Daşu','Liçiu','Çuşu','Bailu','Çiufen','Hanlu','Şuangjiang','Lidong','Syaoşue','Daşue','Dongçi','Syaohan','Dahan'],
   H: { ny:'Yılbaşı', orx:'Noel (Ortodoks)', lang:'Ana Dil Günü', w:'Kadınlar Günü', water:'Dünya Su Günü', earth:'Dünya Günü', lab:'Emek Günü', env:'Çevre Günü', ch:'Çocuk Günü', youth:'Gençlik Günü', peace:'Barış Günü', teach:'Öğretmenler Günü', un:'BM Günü', hr:'İnsan Hakları Günü', xm:'Noel (Batı)', ev:'Yılbaşı Gecesi', ew:'Paskalya (Batı)', eo:'Paskalya (Ortodoks)', val:'Sevgililer Günü', father:'Babalar Günü', mother:'Anneler Günü', men:'Uluslararası Erkekler Günü', book:'Dünya Kitap Günü', health:'Dünya Sağlık Günü', space:'Uzay Uçuşu Günü', music:'Müzik Günü', disab:'Engelliler Günü', vol:'Gönüllüler Günü', vdayE:'Zafer Günü (Doğu)', vdayW:'Zafer Günü (Batı)', holocaust:'Holokost Anma Günü', oceans:'Dünya Okyanuslar Günü', elderly:'Yaşlılar Günü', post:'Dünya Posta Günü', tv:'Dünya Televizyon Günü', mountains:'Dağlar Günü', migrants:'Göçmenler Günü', peace2:'Barış ve Uzlaşma Günü', diwali:'Divali', holi:'Holi', eidF:'Ramazan Bayramı', eidA:'Kurban Bayramı' },
   tl:'Koyu tema', tn:'Açık tema', lb:'Dil',
+  test:'Testler', testTitle:'Dönüştürme testleri', testRun:'Testleri çalıştır', testRerun:'Yeniden çalıştır', testClose:'Kapat',
+  testSummary:'Sonuç', testAllOk:'Tüm testler geçti', testHasBad:'Hatalar var', testPass:'OK', testFail:'HATA', testNo:'Test', testExp:'Beklenen', testGot:'Alınan',
   regions: { we:'Batı Avrupa', ee:'Doğu Avrupa', af:'Afrika', me:'Orta Doğu', ca:'Orta Asya', sa:'Güney Asya', sea:'Güneydoğu Asya', ea:'Doğu Asya', am:'Amerika', oc:'Okyanusya' }
 };
 /* ---------- pl ---------- */
@@ -755,6 +829,8 @@ L.pl = {
   jq:['Liczun','Juszui','Jingdże','Czunfen','Cingming','Guju','Lisja','Sjaoman','Mangdżong','Sjadży','Sjaoszu','Daszu','Liciu','Czuszu','Bajlu','Czufen','Hanlu','Szuangdżiang','Lidong','Sjaoszie','Daszie','Dongdży','Sjaohan','Dahan'],
   H: { ny:'Nowy Rok', orx:'Boże Narodzenie (prawosławne)', lang:'Dzień Języka Ojczystego', w:'Dzień Kobiet', water:'Światowy Dzień Wody', earth:'Dzień Ziemi', lab:'Święto Pracy', env:'Dzień Środowiska', ch:'Dzień Dziecka', youth:'Dzień Młodzieży', peace:'Dzień Pokoju', teach:'Dzień Nauczyciela', un:'Dzień ONZ', hr:'Dzień Praw Człowieka', xm:'Boże Narodzenie (katolickie)', ev:'Sylwester', ew:'Wielkanoc (zachodnia)', eo:'Wielkanoc (prawosławna)', val:'Walentynki', father:'Dzień Ojca', mother:'Dzień Matki', men:'Międzynarodowy Dzień Mężczyzn', book:'Światowy Dzień Książki', health:'Światowy Dzień Zdrowia', space:'Dzień Lotów Kosmicznych', music:'Dzień Muzyki', disab:'Dzień Osób Niepełnosprawnych', vol:'Dzień Wolontariusza', vdayE:'Dzień Zwycięstwa (Wschód)', vdayW:'Dzień Zwycięstwa (Zachód)', holocaust:'Dzień Pamięci o Holokauście', oceans:'Dzień Oceanów', elderly:'Dzień Osób Starszych', post:'Światowy Dzień Poczty', tv:'Światowy Dzień Telewizji', mountains:'Dzień Gór', migrants:'Dzień Migrantów', peace2:'Dzień Pokoju i Pojednania', diwali:'Diwali', holi:'Holi', eidF:'Id al-Fitr', eidA:'Id al-Adha' },
   tl:'Ciemny motyw', tn:'Jasny motyw', lb:'Język',
+  test:'Testy', testTitle:'Testy konwersji', testRun:'Uruchom testy', testRerun:'Uruchom ponownie', testClose:'Zamknij',
+  testSummary:'Wynik', testAllOk:'Wszystkie testy zaliczone', testHasBad:'Są błędy', testPass:'OK', testFail:'BŁĄD', testNo:'Test', testExp:'Oczekiwano', testGot:'Otrzymano',
   regions: { we:'Europa Zachodnia', ee:'Europa Wschodnia', af:'Afryka', me:'Bliski Wschód', ca:'Azja Centralna', sa:'Azja Południowa', sea:'Azja Południowo-Wschodnia', ea:'Azja Wschodnia', am:'Ameryka', oc:'Oceania' }
 };
 /* ---------- uk ---------- */
@@ -790,6 +866,8 @@ L.uk = {
   jq:['Лічунь','Юйшуй','Цзінчже','Чуньфень','Цінмін','Гуюй','Ліся','Сяомань','Манчжун','Сячжи','Сяошу','Дашу','Ліцю','Чушу','Байлу','Цюфень','Ханьлу','Шуанцзян','Лідун','Сяосюе','Дасюе','Дунчжи','Сяохань','Дахань'],
   H: { ny:'Новий рік', orx:'Різдво (православне)', lang:'День рідної мови', w:'День жінок', water:'Всесвітній день води', earth:'День Землі', lab:'День праці', env:'День довкілля', ch:'День захисту дітей', youth:'День молоді', peace:'День миру', teach:'День учителя', un:'День ООН', hr:'День прав людини', xm:'Різдво (католицьке)', ev:'Переддень Нового року', ew:'Великдень (західний)', eo:'Великдень (православний)', val:'День святого Валентина', father:'День батька', mother:'День матері', men:'Міжнародний чоловічий день', book:'День книги', health:'День здоровʼя', space:'День космонавтики', music:'День музики', disab:'День інвалідів', vol:'День волонтера', vdayE:'День Перемоги (Схід)', vdayW:'День Перемоги (Захід)', holocaust:'День памʼяті Голокосту', oceans:'День океанів', elderly:'День людей похилого віку', post:'День пошти', tv:'День телебачення', mountains:'День гір', migrants:'День мігрантів', peace2:'День миру та примирення', diwali:'Дівалі', holi:'Холі', eidF:'Ураза-байрам', eidA:'Курбан-байрам' },
   tl:'Темна тема', tn:'Світла тема', lb:'Мова',
+  test:'Тести', testTitle:'Тести конвертації', testRun:'Запустити тести', testRerun:'Перезапустити', testClose:'Закрити',
+  testSummary:'Результат', testAllOk:'Усі тести пройдено', testHasBad:'Є помилки', testPass:'OK', testFail:'FAIL', testNo:'Тест', testExp:'Очікувалось', testGot:'Отримано',
   regions: { we:'Західна Європа', ee:'Східна Європа', af:'Африка', me:'Близький Схід', ca:'Центральна Азія', sa:'Південна Азія', sea:'Південно-Східна Азія', ea:'Східна Азія', am:'Америка', oc:'Океанія' }
 };
 /* ---------- id ---------- */
@@ -825,6 +903,8 @@ L.id = {
   jq:['Lichun','Yushui','Jingzhe','Chunfen','Qingming','Guyu','Lixia','Xiaoman','Mangzhong','Xiazhi','Xiaoshu','Dashu','Liqiu','Chushu','Bailu','Qiufen','Hanlu','Shuangjiang','Lidong','Xiaoxue','Daxue','Dongzhi','Xiaohan','Dahan'],
   H: { ny:'Tahun Baru', orx:'Natal (Ortodoks)', lang:'Hari Bahasa Ibu', w:'Hari Perempuan', water:'Hari Air Sedunia', earth:'Hari Bumi', lab:'Hari Buruh', env:'Hari Lingkungan Hidup', ch:'Hari Anak', youth:'Hari Pemuda', peace:'Hari Perdamaian', teach:'Hari Guru', un:'Hari PBB', hr:'Hari Hak Asasi Manusia', xm:'Natal (Barat)', ev:'Malam Tahun Baru', ew:'Paskah (Barat)', eo:'Paskah (Ortodoks)', val:'Hari Valentine', father:'Hari Ayah', mother:'Hari Ibu', men:'Hari Pria Internasional', book:'Hari Buku Sedunia', health:'Hari Kesehatan Sedunia', space:'Hari Penerbangan Antariksa', music:'Hari Musik Internasional', disab:'Hari Penyandang Disabilitas', vol:'Hari Relawan', vdayE:'Hari Kemenangan (Timur)', vdayW:'Hari Kemenangan (Barat)', holocaust:'Hari Peringatan Holocaust', oceans:'Hari Laut Sedunia', elderly:'Hari Lansia Internasional', post:'Hari Pos Sedunia', tv:'Hari Televisi Sedunia', mountains:'Hari Gunung Internasional', migrants:'Hari Migran Internasional', peace2:'Hari Perdamaian dan Rekonsiliasi', diwali:'Diwali', holi:'Holi', eidF:'Idul Fitri', eidA:'Idul Adha' },
   tl:'Tema gelap', tn:'Tema terang', lb:'Bahasa',
+  test:'Tes', testTitle:'Tes konversi', testRun:'Jalankan tes', testRerun:'Jalankan ulang', testClose:'Tutup',
+  testSummary:'Hasil', testAllOk:'Semua tes lulus', testHasBad:'Ada kesalahan', testPass:'OK', testFail:'GAGAL', testNo:'Tes', testExp:'Diharapkan', testGot:'Diperoleh',
   regions: { we:'Eropa Barat', ee:'Eropa Timur', af:'Afrika', me:'Timur Tengah', ca:'Asia Tengah', sa:'Asia Selatan', sea:'Asia Tenggara', ea:'Asia Timur', am:'Amerika', oc:'Oseania' }
 };
 /* ---------- zh ---------- */
@@ -860,6 +940,8 @@ L.zh = {
   jq:['立春','雨水','惊蛰','春分','清明','谷雨','立夏','小满','芒种','夏至','小暑','大暑','立秋','处暑','白露','秋分','寒露','霜降','立冬','小雪','大雪','冬至','小寒','大寒'],
   H: { ny:'元旦', orx:'圣诞节（东正教）', lang:'母语日', w:'妇女节', water:'世界水日', earth:'地球日', lab:'劳动节', env:'世界环境日', ch:'儿童节', youth:'青年节', peace:'和平日', teach:'教师节', un:'联合国日', hr:'人权日', xm:'圣诞节（西方）', ev:'新年前夜', ew:'复活节（西方）', eo:'复活节（东正教）', val:'情人节', father:'父亲节', mother:'母亲节', men:'国际男人节', book:'世界读书日', health:'世界卫生日', space:'载人航天日', music:'国际音乐日', disab:'国际残疾人日', vol:'国际志愿者日', vdayE:'胜利日（东方）', vdayW:'胜利日（西方）', holocaust:'大屠杀纪念日', oceans:'世界海洋日', elderly:'国际老年人日', post:'世界邮政日', tv:'世界电视日', mountains:'国际山岳日', migrants:'国际移民日', peace2:'和平与和解日', diwali:'排灯节', holi:'洒红节', eidF:'开斋节', eidA:'古尔邦节' },
   tl:'深色主题', tn:'浅色主题', lb:'语言',
+  test:'测试', testTitle:'转换测试', testRun:'运行测试', testRerun:'重新运行', testClose:'关闭',
+  testSummary:'结果', testAllOk:'所有测试通过', testHasBad:'存在错误', testPass:'通过', testFail:'失败', testNo:'测试', testExp:'预期', testGot:'实际',
   regions: { we:'西欧', ee:'东欧', af:'非洲', me:'中东', ca:'中亚', sa:'南亚', sea:'东南亚', ea:'东亚', am:'美洲', oc:'大洋洲' }
 };
 /* ---------- ja ---------- */
@@ -895,6 +977,8 @@ L.ja = {
   jq:['立春','雨水','啓蟄','春分','清明','穀雨','立夏','小満','芒種','夏至','小暑','大暑','立秋','処暑','白露','秋分','寒露','霜降','立冬','小雪','大雪','冬至','小寒','大寒'],
   H: { ny:'元日', orx:'クリスマス（正教）', lang:'母国語の日', w:'国際女性デー', water:'世界水の日', earth:'アースデイ', lab:'メーデー', env:'世界環境デー', ch:'こどもの日', youth:'青年の日', peace:'国際平和デー', teach:'世界教師デー', un:'国連の日', hr:'人権デー', xm:'クリスマス（西方）', ev:'大晦日', ew:'イースター（西方）', eo:'イースター（正教）', val:'バレンタインデー', father:'父の日', mother:'母の日', men:'国際男性デー', book:'世界本の日', health:'世界保健デー', space:'有人宇宙飛行の日', music:'国際音楽デー', disab:'障害者の日', vol:'ボランティアの日', vdayE:'戦勝記念日（東）', vdayW:'戦勝記念日（西）', holocaust:'ホロコースト犠牲者を想起する日', oceans:'世界海洋デー', elderly:'高齢者の日', post:'世界郵便デー', tv:'世界テレビデー', mountains:'国際山岳デー', migrants:'国際移住者デー', peace2:'平和と和解の日', diwali:'ディワリ', holi:'ホーリー', eidF:'イード・アル＝フィトル', eidA:'イード・アル＝アドハー' },
   tl:'ダークテーマ', tn:'ライトテーマ', lb:'言語',
+  test:'テスト', testTitle:'変換テスト', testRun:'テストを実行', testRerun:'再実行', testClose:'閉じる',
+  testSummary:'結果', testAllOk:'すべてのテストに合格', testHasBad:'エラーあり', testPass:'OK', testFail:'失敗', testNo:'テスト', testExp:'期待値', testGot:'実際',
   regions: { we:'西ヨーロッパ', ee:'東ヨーロッパ', af:'アフリカ', me:'中東', ca:'中央アジア', sa:'南アジア', sea:'東南アジア', ea:'東アジア', am:'アメリカ', oc:'オセアニア' }
 };
 /* ---------- ko ---------- */
@@ -930,6 +1014,8 @@ L.ko = {
   jq:['입춘','우수','경칩','춘분','청명','곡우','입하','소만','망종','하지','소서','대서','입추','처서','백로','추분','한로','상강','입동','소설','대설','동지','소한','대한'],
   H: { ny:'신정', orx:'크리스마스 (정교회)', lang:'모국어의 날', w:'세계 여성의 날', water:'세계 물의 날', earth:'지구의 날', lab:'노동절', env:'세계 환경의 날', ch:'어린이날', youth:'청년의 날', peace:'세계 평화의 날', teach:'스승의 날', un:'유엔의 날', hr:'세계 인권의 날', xm:'크리스마스 (서방)', ev:'섣달그믐', ew:'부활절 (서방)', eo:'부활절 (정교회)', val:'밸런타인데이', father:'아버지의 날', mother:'어머니의 날', men:'국제 남성의 날', book:'세계 책의 날', health:'세계 보건의 날', space:'유인 우주 비행의 날', music:'국제 음악의 날', disab:'세계 장애인의 날', vol:'자원봉사자의 날', vdayE:'전승기념일 (동방)', vdayW:'전승기념일 (서방)', holocaust:'홀로코스트 추모일', oceans:'세계 해양의 날', elderly:'노인의 날', post:'세계 우편의 날', tv:'세계 텔레비전의 날', mountains:'세계 산의 날', migrants:'국제 이주자의 날', peace2:'평화와 화해의 날', diwali:'디왈리', holi:'홀리', eidF:'이드 알피트르', eidA:'이드 알아드하' },
   tl:'어두운 테마', tn:'밝은 테마', lb:'언어',
+  test:'테스트', testTitle:'변환 테스트', testRun:'테스트 실행', testRerun:'다시 실행', testClose:'닫기',
+  testSummary:'결과', testAllOk:'모든 테스트 통과', testHasBad:'오류 있음', testPass:'OK', testFail:'실패', testNo:'테스트', testExp:'예상', testGot:'실제',
   regions: { we:'서유럽', ee:'동유럽', af:'아프리카', me:'중동', ca:'중앙아시아', sa:'남아시아', sea:'동남아시아', ea:'동아시아', am:'아메리카', oc:'오세아니아' }
 };
 /* ---------- hi ---------- */
@@ -965,6 +1051,8 @@ L.hi = {
   jq:['लिचुन','युशुई','जिंगझे','चुन्फेन','किंगमिंग','गुयु','लिक्सिया','शियाओमान','मांगझोंग','शियाझी','शियाओशु','दाशु','लिकिउ','चुशु','बाईलू','किउफेन','हानलू','शुआंगजियांग','लिडोंग','शियाओशुई','दाशुई','डोंगझी','शियाओहान','दाहान'],
   H: { ny:'नया साल', orx:'क्रिसमस (ऑर्थोडॉक्स)', lang:'मातृभाषा दिवस', w:'महिला दिवस', water:'विश्व जल दिवस', earth:'पृथ्वी दिवस', lab:'मजदूर दिवस', env:'पर्यावरण दिवस', ch:'बाल दिवस', youth:'युवा दिवस', peace:'शांति दिवस', teach:'शिक्षक दिवस', un:'संयुक्त राष्ट्र दिवस', hr:'मानवाधिकार दिवस', xm:'क्रिसमस (पश्चिमी)', ev:'नए साल की पूर्वसंध्या', ew:'ईस्टर (पश्चिमी)', eo:'ईस्टर (ऑर्थोडॉक्स)', val:'वैलेंटाइन दिवस', father:'पितृ दिवस', mother:'मातृ दिवस', men:'अंतर्राष्ट्रीय पुरुष दिवस', book:'विश्व पुस्तक दिवस', health:'विश्व स्वास्थ्य दिवस', space:'मानव अंतरिक्ष उड़ान दिवस', music:'अंतर्राष्ट्रीय संगीत दिवस', disab:'विकलांग दिवस', vol:'स्वयंसेवक दिवस', vdayE:'विजय दिवस (पूर्व)', vdayW:'विजय दिवस (पश्चिम)', holocaust:'प्रलय स्मृति दिवस', oceans:'विश्व महासागर दिवस', elderly:'वृद्धजन दिवस', post:'विश्व डाक दिवस', tv:'विश्व टेलीविजन दिवस', mountains:'अंतर्राष्ट्रीय पर्वत दिवस', migrants:'अंतर्राष्ट्रीय प्रवासी दिवस', peace2:'शांति और सुलह दिवस', diwali:'दिवाली', holi:'होली', eidF:'ईद उल-फ़ितर', eidA:'ईद उल-अज़हा' },
   tl:'गहरा थीम', tn:'हल्का थीम', lb:'भाषा',
+  test:'परीक्षण', testTitle:'रूपांतरण परीक्षण', testRun:'परीक्षण चलाएँ', testRerun:'पुनः चलाएँ', testClose:'बंद करें',
+  testSummary:'परिणाम', testAllOk:'सभी परीक्षण उत्तीर्ण', testHasBad:'त्रुटियाँ हैं', testPass:'ठीक', testFail:'विफल', testNo:'परीक्षण', testExp:'अपेक्षित', testGot:'प्राप्त',
   regions: { we:'पश्चिमी यूरोप', ee:'पूर्वी यूरोप', af:'अफ़्रीका', me:'मध्य पूर्व', ca:'मध्य एशिया', sa:'दक्षिण एशिया', sea:'दक्षिण-पूर्व एशिया', ea:'पूर्वी एशिया', am:'अमेरिका', oc:'ओशिनिया' }
 };
 /* ---------- he ---------- */
@@ -1000,6 +1088,8 @@ L.he = {
   jq:['ליצ\'ון','יושוי','ג\'ינגג\'ה','צ\'ונפן','צ\'ינגמינג','גויו','ליסיה','שיאומן','מנג\'ונג','שיאג\'י','שיאושו','דאשו','ליצ\'יו','צ\'ושו','באילו','צ\'יופן','חנלו','שואנג\'יאנג','לידונג','שיאושואה','דאשואה','דונג\'י','שיאוחן','דאחן'],
   H: { ny:'ראש השנה', orx:'חג המולד (אורתודוקסי)', lang:'יום שפת האם', w:'יום האישה', water:'יום המים העולמי', earth:'יום כדור הארץ', lab:'יום העבודה', env:'יום איכות הסביבה', ch:'יום הילד', youth:'יום הנוער', peace:'יום השלום', teach:'יום המורה', un:'יום האו"ם', hr:'יום זכויות האדם', xm:'חג המולד (מערבי)', ev:'ערב ראש השנה', ew:'פסחא (מערבי)', eo:'פסחא (אורתודוקסי)', val:'יום ולנטיין', father:'יום האב', mother:'יום האם', men:'יום הגבר הבינלאומי', book:'יום הספר העולמי', health:'יום הבריאות העולמי', space:'יום הטיסה בחלל', music:'יום המוזיקה הבינלאומי', disab:'יום הנכים', vol:'יום המתנדב', vdayE:'יום הניצחון (מזרח)', vdayW:'יום הניצחון (מערב)', holocaust:'יום השואה', oceans:'יום האוקיינוסים', elderly:'יום הקשישים', post:'יום הדואר העולמי', tv:'יום הטלוויזיה העולמי', mountains:'יום ההרים הבינלאומי', migrants:'יום המהגרים הבינלאומי', peace2:'יום השלום והפיוס', diwali:'דיוואלי', holi:'הולי', eidF:'עיד אל-פיטר', eidA:'עיד אל-אדחא' },
   tl:'ערכת נושא כהה', tn:'ערכת נושא בהירה', lb:'שפה',
+  test:'בדיקות', testTitle:'בדיקות המרה', testRun:'הפעל בדיקות', testRerun:'הפעל שוב', testClose:'סגור',
+  testSummary:'תוצאה', testAllOk:'כל הבדיקות עברו', testHasBad:'יש שגיאות', testPass:'תקין', testFail:'נכשל', testNo:'בדיקה', testExp:'צפוי', testGot:'התקבל',
   regions: { we:'מערב אירופה', ee:'מזרח אירופה', af:'אפריקה', me:'המזרח התיכון', ca:'מרכז אסיה', sa:'דרום אסיה', sea:'דרום-מזרח אסיה', ea:'מזרח אסיה', am:'אמריקה', oc:'אוקיאניה' }
 };
 /* ---------- ar ---------- */
@@ -1035,10 +1125,12 @@ L.ar = {
   jq:['لي تشون','يو شوي','جينغ تشه','تشون فن','تشينغ مينغ','قو يو','لي شيا','شياو مان','مانغ تشونغ','شيا تشي','شياو شو','دا شو','لي تشيو','تشو شو','باي لو','تشيو فن','هان لو','شوانغ جيانغ','لي دونغ','شياو شيويه','دا شيويه','دونغ تشي','شياو هان','دا هان'],
   H: { ny:'رأس السنة', orx:'عيد الميلاد (الأرثوذكسي)', lang:'يوم اللغة الأم', w:'يوم المرأة', water:'اليوم العالمي للمياه', earth:'يوم الأرض', lab:'عيد العمال', env:'يوم البيئة', ch:'يوم الطفل', youth:'يوم الشباب', peace:'يوم السلام', teach:'يوم المعلم', un:'يوم الأمم المتحدة', hr:'يوم حقوق الإنسان', xm:'عيد الميلاد (الغربي)', ev:'ليلة رأس السنة', ew:'عيد الفصح (الغربي)', eo:'عيد الفصح (الأرثوذكسي)', val:'عيد الحب', father:'عيد الأب', mother:'عيد الأم', men:'اليوم العالمي للرجل', book:'اليوم العالمي للكتاب', health:'يوم الصحة العالمي', space:'يوم رحلات الفضاء', music:'اليوم العالمي للموسيقى', disab:'اليوم العالمي للمعاقين', vol:'يوم المتطوعين', vdayE:'يوم النصر (الشرق)', vdayW:'يوم النصر (الغرب)', holocaust:'يوم ذكرى المحرقة', oceans:'اليوم العالمي للمحيطات', elderly:'يوم المسنين', post:'اليوم العالمي للبريد', tv:'اليوم العالمي للتلفزيون', mountains:'اليوم الدولي للجبال', migrants:'اليوم الدولي للمهاجرين', peace2:'يوم السلام والمصالحة', diwali:'ديوالي', holi:'هولي', eidF:'عيد الفطر', eidA:'عيد الأضحى' },
   tl:'المظهر الداكن', tn:'المظهر الفاتح', lb:'اللغة',
+  test:'الاختبارات', testTitle:'اختبارات التحويل', testRun:'تشغيل الاختبارات', testRerun:'إعادة التشغيل', testClose:'إغلاق',
+  testSummary:'النتيجة', testAllOk:'نجحت جميع الاختبارات', testHasBad:'توجد أخطاء', testPass:'نجح', testFail:'فشل', testNo:'اختبار', testExp:'المتوقع', testGot:'الناتج',
   regions: { we:'أوروبا الغربية', ee:'أوروبا الشرقية', af:'أفريقيا', me:'الشرق الأوسط', ca:'آسيا الوسطى', sa:'جنوب آسيا', sea:'جنوب شرق آسيا', ea:'شرق آسيا', am:'الأمريكتان', oc:'أوقيانوسيا' }
 };
 
-/* ============ РЕГИОНЫ И ЯЗЫКИ ============ */
+/* ============ РЕГИОНЫ ============ */
 const REGIONS = [
   { key:'we',  langs:['en','de','es','it','fr','pt'] },
   { key:'ee',  langs:['ru','pl','uk'] },
@@ -1048,39 +1140,41 @@ const REGIONS = [
   { key:'sa',  langs:['hi'] },
   { key:'sea', langs:['id'] },
   { key:'ea',  langs:['zh','ko','ja'] },
-  { key:'am',  langs:['pt'] },
+  { key:'am',  langs:['ptbr'] },
   { key:'oc',  langs:[] }
 ];
 
 const LANG_META = {
-  ru: { flag:'🇷🇺', name:'Русский',        dir:'ltr' },
-  en: { flag:'🇬🇧', name:'English',        dir:'ltr' },
-  de: { flag:'🇩🇪', name:'Deutsch',        dir:'ltr' },
-  fr: { flag:'🇫🇷', name:'Français',       dir:'ltr' },
-  it: { flag:'🇮🇹', name:'Italiano',       dir:'ltr' },
-  es: { flag:'🇪🇸', name:'Español',        dir:'ltr' },
-  pt: { flag:'🇧🇷', name:'Português (BR)', dir:'ltr' },
-  tr: { flag:'🇹🇷', name:'Türkçe',         dir:'ltr' },
-  pl: { flag:'🇵🇱', name:'Polski',         dir:'ltr' },
-  uk: { flag:'🇺🇦', name:'Українська',     dir:'ltr' },
-  id: { flag:'🇮🇩', name:'Bahasa Indonesia', dir:'ltr' },
-  zh: { flag:'🇨🇳', name:'中文',            dir:'ltr' },
-  ja: { flag:'🇯🇵', name:'日本語',          dir:'ltr' },
-  ko: { flag:'🇰🇷', name:'한국어',           dir:'ltr' },
-  hi: { flag:'🇮🇳', name:'हिन्दी',           dir:'ltr' },
-  he: { flag:'🇮🇱', name:'עברית',          dir:'rtl' },
-  ar: { flag:'🇸🇦', name:'العربية',        dir:'rtl' }
+  ru:   { flag:'🇷🇺', name:'Русский',          dir:'ltr' },
+  en:   { flag:'🇬🇧', name:'English',          dir:'ltr' },
+  de:   { flag:'🇩🇪', name:'Deutsch',          dir:'ltr' },
+  fr:   { flag:'🇫🇷', name:'Français',         dir:'ltr' },
+  it:   { flag:'🇮🇹', name:'Italiano',         dir:'ltr' },
+  es:   { flag:'🇪🇸', name:'Español',          dir:'ltr' },
+  pt:   { flag:'🇵🇹', name:'Português (PT)',   dir:'ltr' },
+  ptbr: { flag:'🇧🇷', name:'Português (BR)',   dir:'ltr' },
+  tr:   { flag:'🇹🇷', name:'Türkçe',           dir:'ltr' },
+  pl:   { flag:'🇵🇱', name:'Polski',           dir:'ltr' },
+  uk:   { flag:'🇺🇦', name:'Українська',       dir:'ltr' },
+  id:   { flag:'🇮🇩', name:'Bahasa Indonesia', dir:'ltr' },
+  zh:   { flag:'🇨🇳', name:'中文',              dir:'ltr' },
+  ja:   { flag:'🇯🇵', name:'日本語',            dir:'ltr' },
+  ko:   { flag:'🇰🇷', name:'한국어',             dir:'ltr' },
+  hi:   { flag:'🇮🇳', name:'हिन्दी',             dir:'ltr' },
+  he:   { flag:'🇮🇱', name:'עברית',            dir:'rtl' },
+  ar:   { flag:'🇸🇦', name:'العربية',          dir:'rtl' }
 };
 
 /* ============ СОСТОЯНИЕ ============ */
 function detectLang() {
   const n = (navigator.language || '').toLowerCase();
+  if (n.startsWith('pt-br')) return 'ptbr';
+  if (n.startsWith('pt')) return 'pt';
   if (n.startsWith('ru')) return 'ru';
   if (n.startsWith('uk')) return 'uk';
   if (n.startsWith('de')) return 'de';
   if (n.startsWith('it')) return 'it';
   if (n.startsWith('id') || n.startsWith('in')) return 'id';
-  if (n.startsWith('pt')) return 'pt';
   if (n.startsWith('es')) return 'es';
   if (n.startsWith('zh')) return 'zh';
   if (n.startsWith('ja')) return 'ja';
@@ -1146,7 +1240,7 @@ function fmtCal(c, j) {
   return '';
 }
 
-/* ============ ЯЗЫКОВОЕ МЕНЮ С РЕГИОНАМИ ============ */
+/* ============ UI ============ */
 function buildLangMenu() {
   const t = T();
   const menu = $('#lm');
@@ -1156,16 +1250,10 @@ function buildLangMenu() {
     const uniqueLangs = [...new Set(r.langs)];
     const cnt = uniqueLangs.length;
     if (cnt === 0) {
-      html += `<div class="lang-region empty" aria-disabled="true">
-        <span>${regionName}</span>
-        <span class="cnt">0</span>
-      </div>`;
+      html += `<div class="lang-region empty" aria-disabled="true"><span>${regionName}</span><span class="cnt">0</span></div>`;
       return;
     }
-    html += `<div class="lang-region">
-      <span>${regionName}</span>
-      <span class="cnt">${cnt}</span>
-    </div>`;
+    html += `<div class="lang-region"><span>${regionName}</span><span class="cnt">${cnt}</span></div>`;
     uniqueLangs.forEach(code => {
       const meta = LANG_META[code];
       if (!meta) return;
@@ -1181,7 +1269,6 @@ function buildLangMenu() {
   $('#bl').innerHTML = `<span style="font-size:1.1rem" aria-hidden="true">${meta.flag}</span> ${t.lb} ▾`;
 }
 
-/* ============ UI ============ */
 function head() {
   const t = T();
   const meta = LANG_META[lang];
@@ -1208,6 +1295,10 @@ function head() {
   $('#bcopy').textContent = t.copy;
   $('#bshare').textContent = t.share;
   $('#bics').textContent = t.ics;
+  $('#testLink').textContent = t.testRun || 'Запустить тесты';
+  $('#testTitle').textContent = t.testTitle || 'Тесты';
+  $('#testRerun').textContent = t.testRerun || 'Перезапустить';
+  $('#testClose').textContent = t.testClose || 'Закрыть';
   CAL_KEYS.forEach(k => {
     const el = $('#c' + k);
     if (el) {
@@ -1222,7 +1313,6 @@ function head() {
   $('#fd').value = S.d;
   $('#fm').value = S.m;
   $('#fy').value = S.y;
-  // skip link label per language
   $('#skipLink').textContent = t.t_res || 'Перейти к результату';
 }
 
@@ -1231,114 +1321,19 @@ function buildMonthOptions() {
   const sel = $('#fm');
   const cur = S.m;
   let names;
-  if (S.c === 'h') {
-    const leap = hebrewLeap(S.y);
-    names = t.hm.slice(0, leap ? 13 : 12);
-  } else if (S.c === 'c') {
-    names = t.jq.map((n, i) => `${i + 1}. ${n}`);
-  } else if (S.c === 'i') {
-    names = t.im2;
-  } else if (S.c === 'm') {
-    names = t.ism;
-  } else if (S.c === 'p') {
-    names = t.pm;
-  } else if (S.c === 'k') {
-    names = t.km;
-  } else {
-    names = t.m;
-  }
+  if (S.c === 'h') { const leap = hebrewLeap(S.y); names = t.hm.slice(0, leap ? 13 : 12); }
+  else if (S.c === 'c') names = t.jq.map((n, i) => `${i + 1}. ${n}`);
+  else if (S.c === 'i') names = t.im2;
+  else if (S.c === 'm') names = t.ism;
+  else if (S.c === 'p') names = t.pm;
+  else if (S.c === 'k') names = t.km;
+  else names = t.m;
   sel.innerHTML = names.map((n, i) => `<option value="${i + 1}">${n}</option>`).join('');
   if (+sel.value !== cur) sel.value = cur;
 }
 
-function weekHeader(t) {
-  return t.pw.map(w => `<div class="h" role="columnheader">${w}</div>`).join('');
-}
+function weekHeader(t) { return t.pw.map(w => `<div class="h" role="columnheader">${w}</div>`).join(''); }
 
-function picker() {
-  const t = T();
-  const c = S.c;
-  const cal = $('#pc');
-  const meta = LANG_META[lang];
-  cal.setAttribute('dir', meta.dir);
-  if (c === 'c') {
-    const { y, m } = PV;
-    $('#pt').textContent = `${m}. ${t.jq[m - 1]} · ${y}`;
-    let h = weekHeader(t);
-    for (let d = 1; d <= 15; d++) {
-      const j = chineseToJDN(y, m, d);
-      h += dayCellHTML(j, d, 'c');
-    }
-    cal.innerHTML = h;
-    return;
-  }
-  if (c === 'h') {
-    const { y, m } = PV;
-    $('#pt').textContent = `${t.hm[m - 1]} ${y}`;
-    const days = hebrewMonthDays(y, m);
-    const firstJ = hebrewToJDN(y, m, 1);
-    const off = ((firstJ + 1) % 7 + 6) % 7;
-    let h = weekHeader(t) + '<span></span>'.repeat(off);
-    for (let d = 1; d <= days; d++) h += dayCellHTML(firstJ + d - 1, d, 'h');
-    cal.innerHTML = h;
-    return;
-  }
-  if (c === 'i') {
-    const { y, m } = PV;
-    $('#pt').textContent = `${t.im2[m - 1]} ${y}`;
-    const days = HINDU_MONTHS_DAYS[m - 1];
-    const firstJ = hinduToJDN(y, m, 1);
-    const off = ((firstJ + 1) % 7 + 6) % 7;
-    let h = weekHeader(t) + '<span></span>'.repeat(off);
-    for (let d = 1; d <= days; d++) h += dayCellHTML(firstJ + d - 1, d, 'i');
-    cal.innerHTML = h;
-    return;
-  }
-  if (c === 'm') {
-    const { y, m } = PV;
-    $('#pt').textContent = `${t.ism[m - 1]} ${y}`;
-    const days = islamicMonthDays(y, m);
-    const firstJ = islamicToJDN(y, m, 1);
-    const off = ((firstJ + 1) % 7 + 6) % 7;
-    let h = weekHeader(t) + '<span></span>'.repeat(off);
-    for (let d = 1; d <= days; d++) h += dayCellHTML(firstJ + d - 1, d, 'm');
-    cal.innerHTML = h;
-    return;
-  }
-  if (c === 'p') {
-    const { y, m } = PV;
-    $('#pt').textContent = `${t.pm[m - 1]} ${y}`;
-    const days = persianMonthDays(y, m);
-    const firstJ = persianToJDN(y, m, 1);
-    const off = ((firstJ + 1) % 7 + 6) % 7;
-    let h = weekHeader(t) + '<span></span>'.repeat(off);
-    for (let d = 1; d <= days; d++) h += dayCellHTML(firstJ + d - 1, d, 'p');
-    cal.innerHTML = h;
-    return;
-  }
-  if (c === 'k') {
-    const { y, m } = PV;
-    $('#pt').textContent = `${t.km[m - 1]} ${y}`;
-    const days = copticMonthDays(y, m);
-    const firstJ = copticToJDN(y, m, 1);
-    const off = ((firstJ + 1) % 7 + 6) % 7;
-    let h = weekHeader(t) + '<span></span>'.repeat(off);
-    for (let d = 1; d <= days; d++) h += dayCellHTML(firstJ + d - 1, d, 'k');
-    cal.innerHTML = h;
-    return;
-  }
-  const { y, m } = PV;
-  const s = toJDN(c, y, m, 1);
-  const nx = m === 12 ? toJDN(c, y + 1, 1, 1) : toJDN(c, y, m + 1, 1);
-  const n = nx - s;
-  const off = ((s + 1) % 7 + 6) % 7;
-  $('#pt').textContent = `${t.m[m - 1]} ${y} · ${c === 'g' ? t.gr : t.ju}`;
-  let h = weekHeader(t) + '<span></span>'.repeat(off);
-  for (let d = 1; d <= n; d++) h += dayCellHTML(s + d - 1, d, c);
-  cal.innerHTML = h;
-}
-
-/* — Доступная ячейка дня — */
 function dayCellHTML(j, txt, calType) {
   const t = T();
   const hs = holAt(j);
@@ -1360,6 +1355,80 @@ function cellHTML(j, txt, extra) {
   const label = `${txt} · ${gregStr} · ${ifcStr}${holStr}`;
   const isSel = j === R;
   return `<button type="button" role="gridcell" tabindex="${isSel ? 0 : -1}" data-j="${j}" aria-selected="${isSel ? 'true' : 'false'}" aria-label="${label.replace(/"/g, '&quot;')}" class="${isSel ? 'sel' : ''} ${j === today() ? 'td' : ''} ${hs.length ? 'hol' : ''} ${extra || ''}">${txt}</button>`;
+}
+
+function picker() {
+  const t = T();
+  const c = S.c;
+  const cal = $('#pc');
+  const meta = LANG_META[lang];
+  cal.setAttribute('dir', meta.dir);
+  if (c === 'c') {
+    const { y, m } = PV;
+    $('#pt').textContent = `${m}. ${t.jq[m - 1]} · ${y}`;
+    let h = weekHeader(t);
+    for (let d = 1; d <= 15; d++) h += dayCellHTML(chineseToJDN(y, m, d), d, 'c');
+    cal.innerHTML = h; return;
+  }
+  if (c === 'h') {
+    const { y, m } = PV;
+    $('#pt').textContent = `${t.hm[m - 1]} ${y}`;
+    const days = hebrewMonthDays(y, m);
+    const firstJ = hebrewToJDN(y, m, 1);
+    const off = ((firstJ + 1) % 7 + 6) % 7;
+    let h = weekHeader(t) + '<span></span>'.repeat(off);
+    for (let d = 1; d <= days; d++) h += dayCellHTML(firstJ + d - 1, d, 'h');
+    cal.innerHTML = h; return;
+  }
+  if (c === 'i') {
+    const { y, m } = PV;
+    $('#pt').textContent = `${t.im2[m - 1]} ${y}`;
+    const days = HINDU_MONTHS_DAYS[m - 1];
+    const firstJ = hinduToJDN(y, m, 1);
+    const off = ((firstJ + 1) % 7 + 6) % 7;
+    let h = weekHeader(t) + '<span></span>'.repeat(off);
+    for (let d = 1; d <= days; d++) h += dayCellHTML(firstJ + d - 1, d, 'i');
+    cal.innerHTML = h; return;
+  }
+  if (c === 'm') {
+    const { y, m } = PV;
+    $('#pt').textContent = `${t.ism[m - 1]} ${y}`;
+    const days = islamicMonthDays(y, m);
+    const firstJ = islamicToJDN(y, m, 1);
+    const off = ((firstJ + 1) % 7 + 6) % 7;
+    let h = weekHeader(t) + '<span></span>'.repeat(off);
+    for (let d = 1; d <= days; d++) h += dayCellHTML(firstJ + d - 1, d, 'm');
+    cal.innerHTML = h; return;
+  }
+  if (c === 'p') {
+    const { y, m } = PV;
+    $('#pt').textContent = `${t.pm[m - 1]} ${y}`;
+    const days = persianMonthDays(y, m);
+    const firstJ = persianToJDN(y, m, 1);
+    const off = ((firstJ + 1) % 7 + 6) % 7;
+    let h = weekHeader(t) + '<span></span>'.repeat(off);
+    for (let d = 1; d <= days; d++) h += dayCellHTML(firstJ + d - 1, d, 'p');
+    cal.innerHTML = h; return;
+  }
+  if (c === 'k') {
+    const { y, m } = PV;
+    $('#pt').textContent = `${t.km[m - 1]} ${y}`;
+    const days = copticMonthDays(y, m);
+    const firstJ = copticToJDN(y, m, 1);
+    const off = ((firstJ + 1) % 7 + 6) % 7;
+    let h = weekHeader(t) + '<span></span>'.repeat(off);
+    for (let d = 1; d <= days; d++) h += dayCellHTML(firstJ + d - 1, d, 'k');
+    cal.innerHTML = h; return;
+  }
+  const { y, m } = PV;
+  const s = toJDN(c, y, m, 1);
+  const nx = m === 12 ? toJDN(c, y + 1, 1, 1) : toJDN(c, y, m + 1, 1);
+  const n = nx - s;
+  const off = ((s + 1) % 7 + 6) % 7;
+  $('#pt').textContent = `${t.m[m - 1]} ${y} · ${c === 'g' ? t.gr : t.ju}`;
+  let h = weekHeader(t) + '<span></span>'.repeat(off);
+  for (let d = 1; d <= n; d++) h += dayCellHTML(s + d - 1, d, c);
+  cal.innerHTML = h;
 }
 
 function grid() {
@@ -1469,19 +1538,10 @@ function downloadICS(year) {
   const pad = n => String(n).padStart(2, '0');
   const jdnToICS = j => { const [y, m, d] = jdnToGregorian(j); return `${y}${pad(m)}${pad(d)}`; };
   const esc = s => s.replace(/[\\,;]/g, '\\$&').replace(/\n/g, '\\n');
-  const lines = ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//IFC Calendar//v1.7//EN','CALSCALE:GREGORIAN','METHOD:PUBLISH'];
+  const lines = ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//IFC Calendar//v1.8//EN','CALSCALE:GREGORIAN','METHOD:PUBLISH'];
   const stamp = new Date().toISOString().replace(/[-:.]/g, '').slice(0, 15) + 'Z';
   for (const h of holidays) {
-    lines.push(
-      'BEGIN:VEVENT',
-      `UID:ifc-${h.j}-${h.k}@ifc-calendar`,
-      `DTSTAMP:${stamp}`,
-      `DTSTART;VALUE=DATE:${jdnToICS(h.j)}`,
-      `DTEND;VALUE=DATE:${jdnToICS(h.j + 1)}`,
-      `SUMMARY:${esc(t.H[h.k])}`,
-      'TRANSP:TRANSPARENT',
-      'END:VEVENT'
-    );
+    lines.push('BEGIN:VEVENT', `UID:ifc-${h.j}-${h.k}@ifc-calendar`, `DTSTAMP:${stamp}`, `DTSTART;VALUE=DATE:${jdnToICS(h.j)}`, `DTEND;VALUE=DATE:${jdnToICS(h.j + 1)}`, `SUMMARY:${esc(t.H[h.k])}`, 'TRANSP:TRANSPARENT', 'END:VEVENT');
   }
   lines.push('END:VCALENDAR');
   const blob = new Blob([lines.join('\r\n')], { type:'text/calendar;charset=utf-8' });
@@ -1513,7 +1573,6 @@ function all() {
   writeState(S.c, S.y, S.m, S.d);
   focusSelected();
 }
-
 function show(j) {
   R = j;
   const o = ifcFromJDN(j);
@@ -1525,15 +1584,12 @@ function show(j) {
   writeState(S.c, S.y, S.m, S.d);
   focusSelected();
 }
-
 function focusSelected() {
-  // устанавливаем tabindex=0 на выделенную ячейку и убираем с других
   document.querySelectorAll('.cal button[role="gridcell"]').forEach(b => {
     const sel = b.getAttribute('aria-selected') === 'true';
     b.setAttribute('tabindex', sel ? '0' : '-1');
   });
 }
-
 function convert() {
   const c = S.c;
   const y = +$('#fy').value;
@@ -1563,7 +1619,6 @@ function convert() {
 
 /* ============ ОБРАБОТЧИКИ ============ */
 $('#go').onclick = convert;
-$('#er').id = 'er';
 
 CAL_KEYS.forEach(k => {
   const el = $('#c' + k);
@@ -1577,13 +1632,12 @@ CAL_KEYS.forEach(k => {
   };
 });
 
-/* --- Языковое меню (доступное) --- */
+/* --- Языковое меню --- */
 let lastFocusedBeforeMenu = null;
 function openLangMenu() {
   lastFocusedBeforeMenu = document.activeElement;
   $('#lm').classList.add('open');
   $('#bl').setAttribute('aria-expanded', 'true');
-  // фокус на текущий выбранный язык или первый элемент
   const current = $('#lm').querySelector('.lang-item.on') || $('#lm').querySelector('.lang-item');
   if (current) setTimeout(() => current.focus(), 10);
 }
@@ -1606,14 +1660,9 @@ $('#lm').onclick = e => {
   all();
   $('#bl').focus();
 };
-document.addEventListener('click', e => {
-  if (!e.target.closest('.lang')) closeLangMenu(false);
-});
+document.addEventListener('click', e => { if (!e.target.closest('.lang')) closeLangMenu(false); });
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') {
-    if ($('#lm').classList.contains('open')) { closeLangMenu(true); e.preventDefault(); }
-  }
-  // Навигация по пунктам меню стрелками
+  if (e.key === 'Escape' && $('#lm').classList.contains('open')) { closeLangMenu(true); e.preventDefault(); }
   if ($('#lm').classList.contains('open')) {
     const items = [...$('#lm').querySelectorAll('.lang-item')];
     const idx = items.indexOf(document.activeElement);
@@ -1621,7 +1670,6 @@ document.addEventListener('keydown', e => {
     if (e.key === 'ArrowUp')   { e.preventDefault(); items[Math.max(idx - 1, 0)]?.focus(); }
     if (e.key === 'Home')      { e.preventDefault(); items[0]?.focus(); }
     if (e.key === 'End')       { e.preventDefault(); items[items.length - 1]?.focus(); }
-    // фокус-ловушка для Tab
     if (e.key === 'Tab') {
       if (items.length === 0) return;
       const first = items[0], last = items[items.length - 1];
@@ -1631,16 +1679,11 @@ document.addEventListener('keydown', e => {
   }
 });
 
-/* --- Навигация стрелками по календарю --- */
-function getGridInfo(container) {
-  const cells = [...container.querySelectorAll('button[role="gridcell"], button[data-d]')];
-  const btn = cells.find(c => c.getAttribute('aria-selected') === 'true') || cells[0];
-  return { cells, btn, cols: 7 };
-}
+/* --- Клавиатура по календарю --- */
 function moveFocus(direction) {
   const cal = document.activeElement.closest('.cal');
   if (!cal) return;
-  const { cells } = getGridInfo(cal);
+  const cells = [...cal.querySelectorAll('button[role="gridcell"], button[data-d]')];
   const idx = cells.indexOf(document.activeElement);
   if (idx === -1) return;
   let next = -1;
@@ -1655,24 +1698,14 @@ function moveFocus(direction) {
     case 'PageDown':   next = idx + cols * 4; break;
     case 'PageUp':     next = idx - cols * 4; break;
   }
-  if (next >= 0 && next < cells.length) {
-    cells[next].focus();
-    // «умное» перемещение: стрелка вправо на последнем дне → следующий месяц
-    if ((direction === 'ArrowRight' && next === cells.length - 1 && idx === cells.length - 1)) {
-      // уже последний — не двигаем
-    }
-  }
+  if (next >= 0 && next < cells.length) cells[next].focus();
 }
 document.addEventListener('keydown', e => {
   if (e.target.matches('button[role="gridcell"], button[data-d]')) {
     const handled = ['ArrowRight','ArrowLeft','ArrowDown','ArrowUp','Home','End','PageUp','PageDown'];
     if (handled.includes(e.key)) { e.preventDefault(); moveFocus(e.key); }
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      e.target.click();
-    }
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.target.click(); }
   }
-  // навигация по списку праздников
   if (e.target.matches('#hl li')) {
     const items = [...document.querySelectorAll('#hl li')];
     const idx = items.indexOf(e.target);
@@ -1680,76 +1713,29 @@ document.addEventListener('keydown', e => {
     if (e.key === 'ArrowUp')   { e.preventDefault(); items[Math.max(idx - 1, 0)]?.focus(); }
     if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.target.click(); }
   }
-  // глобальные стрелки — предыдущий/следующий месяц
   if (document.activeElement === document.body && !$('#lm').classList.contains('open')) {
     if (e.key === 'ArrowLeft') $('#pp').click();
     if (e.key === 'ArrowRight') $('#pn').click();
   }
 });
 
-/* --- Остальные обработчики --- */
-$('#bs').onclick = () => {
-  sol = sol === 'aug' ? 'jul' : 'aug';
-  try { localStorage.setItem('sol', sol); } catch (e) {}
-  head(); result(); grid(); yearGrid();
-};
+/* --- Остальные --- */
+$('#bs').onclick = () => { sol = sol === 'aug' ? 'jul' : 'aug'; try { localStorage.setItem('sol', sol); } catch (e) {} head(); result(); grid(); yearGrid(); };
 $('#yp').onclick = () => { if (IV.y > 1) { IV.y--; yearGrid(); } };
 $('#yn').onclick = () => { if (IV.y < 9999) { IV.y++; yearGrid(); } };
 $('#yv').onclick = e => { const j = e.target.dataset.j; if (j) show(+j); };
-$('#bt').onclick = () => {
-  theme = dark() ? 'light' : 'dark';
-  try { localStorage.setItem('theme', theme); } catch (e) {}
-  head();
-};
-$('#pp').onclick = () => {
-  const maxM = S.c === 'c' ? 24 : (S.c === 'h' && hebrewLeap(PV.y) ? 13 : 12);
-  if (PV.m === 1) { if (PV.y > 1) { PV = { y: PV.y - 1, m: maxM }; } }
-  else PV.m--;
-  picker();
-};
-$('#pn').onclick = () => {
-  const maxM = S.c === 'c' ? 24 : (S.c === 'h' && hebrewLeap(PV.y) ? 13 : 12);
-  if (PV.m === maxM) { if (PV.y < 9999) { PV = { y: PV.y + 1, m: 1 }; } }
-  else PV.m++;
-  picker();
-};
-$('#ip').onclick = () => {
-  if (IV.m === 1) { if (IV.y > 1) { IV = { y: IV.y - 1, m: 13 }; } }
-  else IV.m--;
-  grid();
-};
-$('#in').onclick = () => {
-  if (IV.m === 13) { if (IV.y < 9999) { IV = { y: IV.y + 1, m: 1 }; } }
-  else IV.m++;
-  grid();
-};
-$('#pc').onclick = e => {
-  const d = e.target.dataset.d;
-  if (!d) return;
-  S = { ...S, y: PV.y, m: PV.m, d: +d };
-  head(); picker(); convert();
-};
+$('#bt').onclick = () => { theme = dark() ? 'light' : 'dark'; try { localStorage.setItem('theme', theme); } catch (e) {} head(); };
+$('#pp').onclick = () => { const maxM = S.c === 'c' ? 24 : (S.c === 'h' && hebrewLeap(PV.y) ? 13 : 12); if (PV.m === 1) { if (PV.y > 1) PV = { y: PV.y - 1, m: maxM }; } else PV.m--; picker(); };
+$('#pn').onclick = () => { const maxM = S.c === 'c' ? 24 : (S.c === 'h' && hebrewLeap(PV.y) ? 13 : 12); if (PV.m === maxM) { if (PV.y < 9999) PV = { y: PV.y + 1, m: 1 }; } else PV.m++; picker(); };
+$('#ip').onclick = () => { if (IV.m === 1) { if (IV.y > 1) IV = { y: IV.y - 1, m: 13 }; } else IV.m--; grid(); };
+$('#in').onclick = () => { if (IV.m === 13) { if (IV.y < 9999) IV = { y: IV.y + 1, m: 1 }; } else IV.m++; grid(); };
+$('#pc').onclick = e => { const d = e.target.dataset.d; if (!d) return; S = { ...S, y: PV.y, m: PV.m, d: +d }; head(); picker(); convert(); };
 $('#ic').onclick = e => { const j = e.target.dataset.j; if (j) show(+j); };
 $('#hl').onclick = e => { const li = e.target.closest('li'); if (li) show(+li.dataset.j); };
-$('#hl').onkeydown = e => {
-  if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('li')) {
-    e.preventDefault(); show(+e.target.dataset.j);
-  }
-};
+$('#hl').onkeydown = e => { if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('li')) { e.preventDefault(); show(+e.target.dataset.j); } };
 
-$('#bcopy').onclick = async () => {
-  const txt = $('#rb').textContent + ' | ' + $('#rs').textContent.replace(/<br>/g, ' · ').replace(/<[^>]+>/g, '');
-  const ok = await copyText(txt);
-  toast(ok ? T().copied : T().copyFail);
-};
-$('#bshare').onclick = async () => {
-  writeState(S.c, S.y, S.m, S.d);
-  if (navigator.share) {
-    try { await navigator.share({ title: document.title, url: location.href }); return; } catch (e) {}
-  }
-  const ok = await copyText(location.href);
-  toast(ok ? T().linkCopied : T().copyFail);
-};
+$('#bcopy').onclick = async () => { const txt = $('#rb').textContent + ' | ' + $('#rs').textContent.replace(/<br>/g, ' · ').replace(/<[^>]+>/g, ''); const ok = await copyText(txt); toast(ok ? T().copied : T().copyFail); };
+$('#bshare').onclick = async () => { writeState(S.c, S.y, S.m, S.d); if (navigator.share) { try { await navigator.share({ title: document.title, url: location.href }); return; } catch (e) {} } const ok = await copyText(location.href); toast(ok ? T().linkCopied : T().copyFail); };
 $('#bics').onclick = () => { downloadICS(ifcFromJDN(R).y); toast(T().icsDone); };
 
 $('#d1').value = new Date().toISOString().slice(0, 10);
@@ -1759,1771 +1745,120 @@ $('#d2').onchange = refreshDiff;
 
 window.addEventListener('hashchange', () => { initFromURL(); all(); });
 
-/* ============ СТАРТ ============ */
-initFromURL();
-all();
-</script>
-</body>
-</html> <!DOCTYPE html>
-<html lang="ru">
-<head>
-<meta charset="utf-8">
-<title>Международный фиксированный календарь</title>
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Конвертер дат: 8 календарей, 17 языков. Доступный интерфейс, экспорт ICS, разница дат.">
-<meta name="theme-color" content="#2f6f5e">
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="manifest" href="manifest.json">
-<style>
-:root{--bg:#f6f4ef;--card:#fff;--tx:#1d2330;--mu:#6b7280;--ac:#2f6f5e;--ac2:#e8f2ee;--bd:#e2ded4;--hol:#c2410c;--sel:#2f6f5e;--selt:#fff;--fo:#2f6f5e}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12161c;--card:#1a2029;--tx:#e8eaee;--mu:#98a1b0;--ac:#5fb59c;--ac2:#1f2e2a;--bd:#2b3442;--hol:#fb923c;--sel:#5fb59c;--selt:#0f1713;--fo:#5fb59c}}
-:root[data-theme="dark"]{--bg:#12161c;--card:#1a2029;--tx:#e8eaee;--mu:#98a1b0;--ac:#5fb59c;--ac2:#1f2e2a;--bd:#2b3442;--hol:#fb923c;--sel:#5fb59c;--selt:#0f1713;--fo:#5fb59c}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue","PingFang SC","Microsoft YaHei","Noto Sans Hebrew","Noto Naskh Arabic","Noto Sans Devanagari","Noto Sans JP","Noto Sans KR",sans-serif;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-.w{max-width:960px;margin:0 auto;padding:16px}
-.skip{position:absolute;top:-40px;inset-inline-start:8px;background:var(--ac);color:var(--selt);padding:8px 14px;border-radius:8px;text-decoration:none;z-index:200;transition:top .2s}
-.skip:focus{top:8px;outline:2px solid var(--fo);outline-offset:2px}
-header{display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:14px}
-h1{font-size:1.3rem;margin:0}
-.tools{display:flex;gap:8px;flex-wrap:wrap;position:relative}
-button,select,input{font:inherit;color:var(--tx)}
-.b{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:7px 12px;cursor:pointer}
-.b:hover{border-color:var(--ac)}
-:focus-visible{outline:2px solid var(--fo);outline-offset:2px;border-radius:6px}
-.lang{position:relative}
-.lang-menu{position:absolute;top:calc(100% + 6px);inset-inline-end:0;background:var(--card);border:1px solid var(--bd);border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.18);padding:6px;min-width:280px;max-height:75vh;overflow-y:auto;z-index:50;display:none;flex-direction:column;gap:2px}
-.lang-menu.open{display:flex}
-.lang-region{padding:8px 12px 4px;font-size:.78rem;text-transform:uppercase;letter-spacing:.04em;color:var(--mu);font-weight:600;display:flex;justify-content:space-between;align-items:center;margin-top:6px;border-top:1px solid var(--bd)}
-.lang-region:first-child{border-top:none;margin-top:0}
-.lang-region .cnt{background:var(--ac2);color:var(--ac);border-radius:10px;padding:1px 8px;font-size:.72rem}
-.lang-region.empty{opacity:.45}
-.lang-region.empty .cnt{background:var(--bd);color:var(--mu)}
-.lang-item{display:flex;align-items:center;gap:10px;padding:8px 12px;border:0;background:none;border-radius:8px;cursor:pointer;text-align:start;font-size:.95rem;width:100%}
-.lang-item:hover{background:var(--ac2)}
-.lang-item.on{background:var(--ac);color:var(--selt)}
-.lang-item:disabled{opacity:.4;cursor:not-allowed}
-.lang-item .fl{font-size:1.2rem;line-height:1}
-.lang-item .nm{flex:1}
-.lang-item .cd{color:var(--mu);font-size:.8rem;text-transform:uppercase}
-.lang-item.on .cd{color:var(--selt);opacity:.8}
-.g{display:grid;gap:14px;grid-template-columns:1fr 1fr}
-@media(max-width:720px){.g{grid-template-columns:1fr}}
-.c{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px;margin-bottom:14px}
-.g .c{margin-bottom:0}
-h2{font-size:1rem;margin:0 0 10px;color:var(--mu);font-weight:600}
-.seg{display:flex;border:1px solid var(--bd);border-radius:10px;overflow:hidden;margin-bottom:12px;flex-wrap:wrap}
-.seg button{flex:1;min-width:64px;padding:8px 4px;border:0;background:none;cursor:pointer;font-size:.78rem}
-.seg .on{background:var(--ac);color:var(--selt)}
-.row{display:flex;gap:8px;margin-bottom:12px}
-.row>*{flex:1;min-width:0;padding:9px;border:1px solid var(--bd);border-radius:10px;background:var(--bg)}
-.go{width:100%;padding:11px;border:0;border-radius:10px;background:var(--ac);color:var(--selt);font-weight:600;cursor:pointer}
-.err{color:var(--hol);min-height:1.3em;margin:8px 0 0;font-size:.9rem}
-.nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;font-weight:600}
-.nav button{border:1px solid var(--bd);background:none;border-radius:8px;width:34px;height:32px;cursor:pointer}
-.nav button:disabled{opacity:.4;cursor:not-allowed}
-.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;text-align:center}
-.cal .h{font-size:.75rem;color:var(--mu);padding:3px 0}
-.cal button{border:1px solid transparent;background:none;border-radius:8px;padding:7px 0;cursor:pointer;position:relative;font-size:.95rem}
-.cal button:hover{background:var(--ac2)}
-.cal button:focus-visible{outline:2px solid var(--fo);outline-offset:1px;background:var(--ac2)}
-.cal .sel{background:var(--sel);color:var(--selt)}
-.cal .td{border-color:var(--ac)}
-.cal .hol::after{content:"";position:absolute;inset-inline-end:4px;top:4px;width:6px;height:6px;border-radius:50%;background:var(--hol)}
-.cal .x{grid-column:1/-1;margin-top:3px;background:var(--ac2)}
-.big{font-size:1.6rem;font-weight:700;color:var(--ac);margin:2px 0}
-.mu{color:var(--mu);font-size:.92rem}
-.tag{display:inline-block;background:var(--hol);color:var(--selt);border-radius:20px;padding:2px 10px;font-size:.82rem;margin:6px 6px 0 0}
-.hl{list-style:none;margin:0;padding:0}
-.hl li{display:flex;gap:10px;justify-content:space-between;padding:8px 6px;border-bottom:1px solid var(--bd);cursor:pointer;border-radius:6px}
-.hl li:hover{background:var(--ac2)}
-.hl small{color:var(--mu);display:block}
-.hl b{white-space:nowrap;color:var(--ac)}
-.yv{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:12px}
-.mm{border:1px solid var(--bd);border-radius:10px;padding:8px}
-.mm h3{margin:0 0 4px;font-size:.9rem;color:var(--ac)}
-.mm .cal button{padding:3px 0;font-size:.8rem}
-.mm .cal .h{font-size:.65rem}
-footer{text-align:center;color:var(--mu);font-size:.85rem;padding:12px 0 24px}
-footer a{color:var(--ac)}
-.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--ac);color:var(--selt);padding:10px 18px;border-radius:10px;box-shadow:0 4px 12px rgba(0,0,0,.2);opacity:0;pointer-events:none;transition:opacity .25s;z-index:100}
-.toast.show{opacity:1}
-.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-</style>
-</head>
-<body>
-<a href="#result-card" class="skip" id="skipLink">Перейти к результату</a>
-<div class="w">
-<header>
-<h1 id="ttl"></h1>
-<div class="tools">
-<button class="b" id="bs" type="button" aria-label="Переключить формат Сол"></button>
-<div class="lang">
-<button class="b" id="bl" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="lm"></button>
-<div class="lang-menu" id="lm" role="menu" aria-label="Выбор языка" tabindex="-1"></div>
-</div>
-<button class="b" id="bt" type="button" aria-pressed="false"></button>
-</div>
-</header>
-
-<div class="g">
-<div class="c">
-<h2 id="t_in"></h2>
-<div class="seg" role="tablist" aria-label="Выбор календаря">
-<button id="cg" type="button" role="tab" aria-pressed="false"></button>
-<button id="cj" type="button" role="tab" aria-pressed="false"></button>
-<button id="cc" type="button" role="tab" aria-pressed="false"></button>
-<button id="ch" type="button" role="tab" aria-pressed="false"></button>
-<button id="ci" type="button" role="tab" aria-pressed="false"></button>
-<button id="cm" type="button" role="tab" aria-pressed="false"></button>
-<button id="cp" type="button" role="tab" aria-pressed="false"></button>
-<button id="ck" type="button" role="tab" aria-pressed="false"></button>
-</div>
-<div class="row">
-<input id="fd" type="number" min="1" max="31" inputmode="numeric" aria-label="День">
-<select id="fm" aria-label="Месяц"></select>
-<input id="fy" type="number" min="1" max="9999" inputmode="numeric" aria-label="Год">
-</div>
-<button class="go" id="go" type="button"></button>
-<p class="err" id="er" role="alert" aria-live="assertive"></p>
-</div>
-<div class="c">
-<h2 id="t_pk"></h2>
-<div class="nav">
-<button id="pp" type="button" aria-label="Предыдущий месяц">‹</button>
-<span id="pt" aria-live="polite"></span>
-<button id="pn" type="button" aria-label="Следующий месяц">›</button>
-</div>
-<div class="cal" id="pc" role="grid" aria-label="Выбор даты в календаре"></div>
-</div>
-</div>
-
-<div class="c" style="margin-top:14px" id="result-card">
-<h2 id="t_res"></h2>
-<div class="big" id="rb" aria-live="polite" tabindex="-1"></div>
-<div class="mu" id="rs" aria-live="polite"></div>
-<div id="rh"></div>
-<div class="row" style="margin-top:10px">
-<button class="b" id="bcopy" type="button"></button>
-<button class="b" id="bshare" type="button"></button>
-<button class="b" id="bics" type="button"></button>
-</div>
-<div class="nav" style="margin-top:14px">
-<button id="ip" type="button" aria-label="Предыдущий месяц МФК">‹</button>
-<span id="it" aria-live="polite"></span>
-<button id="in" type="button" aria-label="Следующий месяц МФК">›</button>
-</div>
-<div class="cal" id="ic" role="grid" aria-label="Календарь МФК"></div>
-<p class="mu" id="lg"></p>
-</div>
-
-<div class="c">
-<h2 id="t_diff"></h2>
-<div class="row">
-<label class="sr-only" for="d1">Дата начала</label>
-<input id="d1" type="date" aria-label="Дата начала">
-<label class="sr-only" for="d2">Дата окончания</label>
-<input id="d2" type="date" aria-label="Дата окончания">
-</div>
-<div id="dr" class="mu" aria-live="polite"></div>
-</div>
-
-<div class="c">
-<h2 id="t_yr"></h2>
-<div class="nav">
-<button id="yp" type="button" aria-label="Предыдущий год">‹</button>
-<span id="yt" aria-live="polite"></span>
-<button id="yn" type="button" aria-label="Следующий год">›</button>
-</div>
-<div class="yv" id="yv"></div>
-</div>
-
-<div class="c">
-<h2 id="t_hl"></h2>
-<ul class="hl" id="hl"></ul>
-</div>
-<p class="mu" id="nt"></p>
-<footer>
-<a href="https://github.com/" id="gh" target="_blank" rel="noopener">GitHub</a>
-</footer>
-</div>
-
-<script>
-"use strict";
 /* ============================================================
-   МЕЖДУНАРОДНЫЙ ФИКСИРОВАННЫЙ КАЛЕНДАРЬ — v1.7
+   ТЕСТЫ
    ============================================================ */
+function testEq(name, expected, got) {
+  const ok = JSON.stringify(expected) === JSON.stringify(got);
+  return { name, ok, expected, got };
+}
+function testRoundTrip(name, c, y, m, d) {
+  const j = toJDN(c, y, m, d);
+  const b = fromJDN(c, j);
+  const ok = b[0] === y && b[1] === m && b[2] === d;
+  return { name, ok, expected: [y, m, d], got: b };
+}
+function runTests() {
+  const results = [];
+  const push = r => results.push(r);
 
-const fl = Math.floor;
-const $ = s => document.querySelector(s);
-const mod = (a, n) => ((a % n) + n) % n;
-const isLeap = y => y % 4 === 0 && (y % 100 !== 0 || y % 400 === 0);
+  // 1. Эталонные JDN
+  push(testEq('Greg 2000-01-01 → JDN 2451545', 2451545, gregorianToJDN(2000, 1, 1)));
+  push(testEq('Greg 1858-11-17 → JDN 2400001', 2400001, gregorianToJDN(1858, 11, 17)));
+  push(testEq('Julian -4713-01-01 → JDN 0', 0, julianToJDN(-4713, 1, 1)));
+  push(testEq('Greg 1582-10-15 → JDN 2299161', 2299161, gregorianToJDN(1582, 10, 15)));
+  push(testEq('Greg 1600-01-01 → JDN 2305448', 2305448, gregorianToJDN(1600, 1, 1)));
+  push(testEq('Greg 1900-01-01 → JDN 2415021', 2415021, gregorianToJDN(1900, 1, 1)));
+  push(testEq('Greg 2100-01-01 → JDN 2488069', 2488069, gregorianToJDN(2100, 1, 1)));
+  push(testEq('Greg 2026-10-08 → JDN 2461323', 2461323, gregorianToJDN(2026, 10, 8)));
 
-/* ============ JDN ============ */
-function gregorianToJDN(y, m, d) {
-  const a = fl((14 - m) / 12);
-  const yy = y + 4800 - a;
-  const mm = m + 12 * a - 3;
-  const j = d + fl((153 * mm + 2) / 5) + 365 * yy + fl(yy / 4);
-  return j - fl(yy / 100) + fl(yy / 400) - 32045;
-}
-function julianToJDN(y, m, d) {
-  const a = fl((14 - m) / 12);
-  const yy = y + 4800 - a;
-  const mm = m + 12 * a - 3;
-  return d + fl((153 * mm + 2) / 5) + 365 * yy + fl(yy / 4) - 32083;
-}
-function jdnToGregorian(J) {
-  let f = J + 1401 + fl(fl((4 * J + 274277) / 146097) * 3 / 4) - 38;
-  const e = 4 * f + 3;
-  const g = fl((e % 1461) / 4);
-  const h = 5 * g + 2;
-  const D = fl((h % 153) / 5) + 1;
-  const M = (fl(h / 153) + 2) % 12 + 1;
-  return [fl(e / 1461) - 4716 + fl((14 - M) / 12), M, D];
-}
-function jdnToJulian(J) {
-  let f = J + 1401;
-  const e = 4 * f + 3;
-  const g = fl((e % 1461) / 4);
-  const h = 5 * g + 2;
-  const D = fl((h % 153) / 5) + 1;
-  const M = (fl(h / 153) + 2) % 12 + 1;
-  return [fl(e / 1461) - 4716 + fl((14 - M) / 12), M, D];
-}
-/* Персидский */
-function persianToJDN(y, m, d) {
-  const epBase = y - (y >= 0 ? 474 : 473);
-  const epYear = 474 + mod(epBase, 2820);
-  return d + (m <= 7 ? (m - 1) * 31 : (m - 1) * 30 + 6) + fl((epYear * 682 - 110) / 2816) + (epYear - 1) * 365 + fl(epBase / 2820) * 1029983 + (1948320 - 1);
-}
-function jdnToPersian(J) {
-  const depoch = J - persianToJDN(475, 1, 1);
-  const cycle = fl(depoch / 1029983);
-  const cyear = mod(depoch, 1029983);
-  let ycycle;
-  if (cyear === 1029982) ycycle = 2820;
-  else { const aux1 = fl(cyear / 366); const aux2 = mod(cyear, 366); ycycle = fl((2134 * aux1 + 2816 * aux2 + 2815) / 1028522) + aux1 + 1; }
-  let y = ycycle + 2820 * cycle + 474;
-  if (y <= 0) y--;
-  const yday = J - persianToJDN(y, 1, 1) + 1;
-  const m = yday <= 186 ? Math.ceil(yday / 31) : Math.ceil((yday - 6) / 30);
-  const d = J - persianToJDN(y, m, 1) + 1;
-  return [y, m, d];
-}
-function persianMonthDays(y, m) { return m <= 6 ? 31 : (m <= 11 ? 30 : (isPersianLeap(y) ? 30 : 29)); }
-function isPersianLeap(y) { return mod(((y - (y > 0 ? 474 : 473)) % 2820 + 474 + 38) * 682, 2816) < 682; }
-/* Коптский */
-const COPTIC_EPOCH = 1824665;
-function copticToJDN(y, m, d) { return COPTIC_EPOCH - 1 + 365 * (y - 1) + fl(y / 4) + 30 * (m - 1) + d; }
-function jdnToCoptic(J) { const y = fl((4 * (J - COPTIC_EPOCH) + 1463) / 1461); const m = fl((J - copticToJDN(y, 1, 1)) / 30) + 1; const d = J + 1 - copticToJDN(y, m, 1); return [y, m, d]; }
-function copticMonthDays(y, m) { if (m < 13) return 30; return mod(y, 4) === 3 ? 6 : 5; }
-/* Еврейский */
-function hebrewElapsedDays(y) {
-  const monthsElapsed = fl((235 * y - 234) / 19);
-  const partsElapsed = 12084 + 13753 * monthsElapsed;
-  const day = monthsElapsed * 29 + fl(partsElapsed / 25920);
-  if ((3 * (day + 1)) % 7 < 3) return day + 1;
-  return day;
-}
-function hebrewLeap(y) { return mod(7 * y + 1, 19) < 7; }
-function hebrewYearLength(y) { return hebrewElapsedDays(y + 1) - hebrewElapsedDays(y); }
-function hebrewMonthDays(y, m) {
-  if (m === 2 || m === 4 || m === 6 || m === 10 || m === 13) return 29;
-  if (m === 12 && !hebrewLeap(y)) return 29;
-  if (m === 8 && hebrewYearLength(y) % 10 === 5) return 29;
-  if (m === 9 && hebrewYearLength(y) % 10 === 3) return 29;
-  return 30;
-}
-const HEBREW_EPOCH = 347995;
-function hebrewToJDN(y, m, d) {
-  let jdn = HEBREW_EPOCH + hebrewElapsedDays(y) + d - 1;
-  const leap = hebrewLeap(y);
-  const lastMonth = leap ? 13 : 12;
-  if (m < 7) { for (let i = 7; i <= lastMonth; i++) jdn += hebrewMonthDays(y, i); for (let i = 1; i < m; i++) jdn += hebrewMonthDays(y, i); }
-  else { for (let i = 7; i < m; i++) jdn += hebrewMonthDays(y, i); }
-  return jdn;
-}
-function jdnToHebrew(J) {
-  let y = fl((J - HEBREW_EPOCH) / 366) + 1;
-  let guard = 0;
-  while (hebrewToJDN(y + 1, 7, 1) <= J && guard++ < 10000) y++;
-  guard = 0;
-  while (hebrewToJDN(y, 7, 1) > J && guard++ < 10000) y--;
-  const leap = hebrewLeap(y);
-  const lastMonth = leap ? 13 : 12;
-  const order = [7,8,9,10,11,12]; if (leap) order.push(13);
-  order.push(1,2,3,4,5,6);
-  let m = 7;
-  for (const mm of order) {
-    const days = hebrewMonthDays(y, mm);
-    if (J < hebrewToJDN(y, mm, 1) + days) { m = mm; break; }
-  }
-  return [y, m, J - hebrewToJDN(y, m, 1) + 1];
-}
-/* Китайский */
-function chineseToJDN(y, s, d) { return gregorianToJDN(y, 2, 4) + (s - 1) * 15 + (d - 1); }
-function jdnToChinese(J) {
-  const [gy] = jdnToGregorian(J);
-  let y = gy;
-  if (J < gregorianToJDN(gy, 2, 4)) y = gy - 1;
-  const dayInYear = J - gregorianToJDN(y, 2, 4);
-  return [y, mod(fl(dayInYear / 15), 24) + 1, mod(dayInYear, 15) + 1];
-}
-/* Индуистский */
-const HINDU_MONTHS_DAYS = [30, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 30];
-const HINDU_EPOCH = 1749630;
-function hinduIsLeap(y) { return ((y * 11 + 3) % 33) < 11; }
-function hinduToJDN(y, m, d) {
-  let jdn = HINDU_EPOCH;
-  for (let yy = 1; yy < y; yy++) jdn += 365 + (hinduIsLeap(yy) ? 1 : 0);
-  for (let mm = 1; mm < m; mm++) jdn += HINDU_MONTHS_DAYS[mm - 1];
-  if (m === 1 && hinduIsLeap(y)) jdn += 1;
-  return jdn + d - 1;
-}
-function jdnToHindu(J) {
-  let y = 1, guard = 0;
-  while (hinduToJDN(y + 1, 1, 1) <= J && guard++ < 100000) y++;
-  let rem = J - hinduToJDN(y, 1, 1);
-  let m = 1;
-  while (m < 12 && rem >= HINDU_MONTHS_DAYS[m - 1]) { rem -= HINDU_MONTHS_DAYS[m - 1]; m++; }
-  return [y, m, rem + 1];
-}
-/* Исламский */
-const ISLAMIC_EPOCH = 1948440;
-function islamicToJDN(y, m, d) { return d + Math.ceil(29.5 * (m - 1)) + (y - 1) * 354 + fl((3 + 11 * y) / 30) + ISLAMIC_EPOCH - 1; }
-function jdnToIslamic(J) {
-  let y = fl((30 * (J - ISLAMIC_EPOCH) + 10646) / 10631);
-  let guard = 0;
-  while (islamicToJDN(y + 1, 1, 1) <= J && guard++ < 10000) y++;
-  guard = 0;
-  while (islamicToJDN(y, 1, 1) > J && guard++ < 10000) y--;
-  let m = 1;
-  while (m < 12 && islamicToJDN(y, m + 1, 1) <= J) m++;
-  return [y, m, J - islamicToJDN(y, m, 1) + 1];
-}
-function islamicMonthDays(y, m) { return islamicToJDN(y, m + 1, 1) - islamicToJDN(y, m, 1); }
-
-/* Единый конвертор */
-function toJDN(c, y, m, d) {
-  switch (c) {
-    case 'g': return gregorianToJDN(y, m, d);
-    case 'j': return julianToJDN(y, m, d);
-    case 'h': return hebrewToJDN(y, m, d);
-    case 'c': return chineseToJDN(y, m, d);
-    case 'i': return hinduToJDN(y, m, d);
-    case 'm': return islamicToJDN(y, m, d);
-    case 'p': return persianToJDN(y, m, d);
-    case 'k': return copticToJDN(y, m, d);
-  }
-  return gregorianToJDN(y, m, d);
-}
-function fromJDN(c, J) {
-  switch (c) {
-    case 'g': return jdnToGregorian(J);
-    case 'j': return jdnToJulian(J);
-    case 'h': return jdnToHebrew(J);
-    case 'c': return jdnToChinese(J);
-    case 'i': return jdnToHindu(J);
-    case 'm': return jdnToIslamic(J);
-    case 'p': return jdnToPersian(J);
-    case 'k': return jdnToCoptic(J);
-  }
-  return jdnToGregorian(J);
-}
-
-/* ============ МФК ============ */
-function ifcFromJDN(J) {
-  const [y] = jdnToGregorian(J);
-  const doy = J - gregorianToJDN(y, 1, 1) + 1;
-  const lp = isLeap(y);
-  if (lp && doy === 169) return { y, k: 'leap', m: 6 };
-  let n = doy;
-  if (lp && doy > 169) n--;
-  if (n === 365) return { y, k: 'year', m: 13 };
-  return { y, k: 'n', m: fl((n - 1) / 28) + 1, d: (n - 1) % 28 + 1 };
-}
-function ifcMonthJ(y, m, d) {
-  const s = gregorianToJDN(y, 1, 1);
-  const lp = isLeap(y);
-  let n = (m - 1) * 28 + d;
-  if (lp && n >= 169) n++;
-  return s + n - 1;
-}
-
-/* ============ ПРАЗДНИКИ ============ */
-const FIX = [
-  [1,1,'ny'],[1,27,'holocaust'],[1,28,'peace2'],[2,14,'val'],[2,21,'lang'],
-  [3,8,'w'],[3,22,'water'],[4,7,'health'],[4,12,'space'],[4,22,'earth'],[4,23,'book'],
-  [5,1,'lab'],[5,8,'vdayW'],[5,8,'mother'],[5,9,'vdayE'],
-  [6,1,'ch'],[6,5,'env'],[6,8,'oceans'],[6,15,'father'],
-  [8,12,'youth'],[9,21,'peace'],
-  [10,1,'music'],[10,1,'elderly'],[10,5,'teach'],[10,9,'post'],[10,24,'un'],
-  [11,19,'men'],[11,21,'tv'],
-  [12,3,'disab'],[12,5,'vol'],[12,10,'hr'],[12,11,'mountains'],[12,18,'migrants'],[12,25,'xm'],[12,31,'ev']
-];
-const cache = {};
-function hols(y) {
-  if (cache[y]) return cache[y];
-  const r = FIX.map(([m, d, k]) => ({ j: gregorianToJDN(y, m, d), k }));
-  [y - 1, y].forEach(jy => {
-    const j = julianToJDN(jy, 12, 25);
-    if (jdnToGregorian(j)[0] === y) r.push({ j, k: 'orx' });
+  // 2. JDN → Greg → JDN
+  [2451545, 2400001, 2299161, 2461323].forEach(J => {
+    const [y, m, d] = jdnToGregorian(J);
+    push(testEq(`JDN ${J} → Greg → JDN`, J, gregorianToJDN(y, m, d)));
   });
-  let a = y % 19, b = fl(y / 100), c = y % 100, d = fl(b / 4), e = b % 4,
-      f = fl((b + 8) / 25), g = fl((b - f + 1) / 3),
-      h = (19 * a + b - d - g + 15) % 30,
-      i = fl(c / 4), k = c % 4,
-      l = (32 + 2 * e + 2 * i - h - k) % 7,
-      m = fl((a + 11 * h + 22 * l) / 451),
-      n = h + l - 7 * m + 114;
-  r.push({ j: gregorianToJDN(y, fl(n / 31), n % 31 + 1), k: 'ew' });
-  let a2 = y % 4, b2 = y % 7, c2 = y % 19,
-      d2 = (19 * c2 + 15) % 30,
-      e2 = (2 * a2 + 4 * b2 - d2 + 34) % 7,
-      n2 = d2 + e2 + 114;
-  const oj = julianToJDN(y, fl(n2 / 31), n2 % 31 + 1);
-  if (jdnToGregorian(oj)[0] === y) r.push({ j: oj, k: 'eo' });
-  r.push({ j: gregorianToJDN(y, 10, 19) + mod(y * 11, 19) - 9, k: 'diwali' });
-  r.push({ j: gregorianToJDN(y, 3, 6) + mod(y * 7, 11) - 5, k: 'holi' });
-  const islY = jdnToIslamic(gregorianToJDN(y, 6, 15))[0];
-  r.push({ j: islamicToJDN(islY, 10, 1), k: 'eidF' });
-  r.push({ j: islamicToJDN(islY, 12, 10), k: 'eidA' });
-  const filtered = r.filter(h => jdnToGregorian(h.j)[0] === y);
-  filtered.sort((p, q) => p.j - q.j);
-  return cache[y] = filtered;
-}
-function holAt(j) { return hols(jdnToGregorian(j)[0]).filter(h => h.j === j); }
 
-/* ============ ЛОКАЛИ ============ */
-const L = {};
-/* ---------- ru ---------- */
-L.ru = {
-  ttl:'Международный фиксированный календарь',
-  t_in:'Дата для перевода', t_yr:'Год целиком',
-  s1:'Сол: июнь–июль', s2:'Сол: июль–август',
-  t_pk:'Календарь', t_res:'Результат', t_hl:'Международные праздники года',
-  t_diff:'Разница между датами',
-  cg:'Григорианский', cj:'Юлианский', cc:'Китайский', ch:'Еврейский',
-  ci:'Индуистский', cm:'Исламский', cp:'Персидский', ck:'Коптский',
-  go:'Перевести', bad:'Такой даты нет в выбранном календаре',
-  badyear:'Год должен быть от 1 до 9999', badseason:'Сезон 1–24, день 1–15',
-  copy:'Копировать', share:'Поделиться', ics:'ICS',
-  copied:'Скопировано', copyFail:'Не удалось скопировать', linkCopied:'Ссылка скопирована', icsDone:'ICS-файл скачан',
-  dDiff:'Всего', dDays:'дней', dWeeks:'нед.', dYMD:'Календарно', dYears:'г.', dMonths:'мес.', dIFC:'По МФК',
-  m:['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'],
-  mg:['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'],
-  im:['Январь','Февраль','Март','Апрель','Май','Июнь','Сол','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'],
-  img:['января','февраля','марта','апреля','мая','июня','Сола','июля','августа','сентября','октября','ноября','декабря'],
-  wd:['воскресенье','понедельник','вторник','среда','четверг','пятница','суббота'],
-  ws:['Вс','Пн','Вт','Ср','Чт','Пт','Сб'], pw:['Пн','Вт','Ср','Чт','Пт','Сб','Вс'],
-  leap:'Високосный день', year:'День года', noweek:'вне недели',
-  gr:'Григорианский', ju:'Юлианский', cn:'Китайский', hb:'Еврейский',
-  in:'Индуистский', is:'Исламский', pe:'Персидский', co:'Коптский',
-  legend:'● — праздник. Каждый месяц начинается с воскресенья; наведите на день.',
-  note:'Все даты через JDN. Индуистский — упрощённая модель. Исламский, Персидский, Коптский — табличные алгоритмы.',
-  hm:['Тишрей','Хешван','Кислев','Тевет','Шват','Адар','Нисан','Ияр','Сиван','Таммуз','Ав','Элул','Адар II'],
-  hml:['Тишрея','Хешвана','Кислева','Тевета','Швата','Адара','Нисана','Ияра','Сивана','Таммуза','Ава','Элула','Адара II'],
-  im2:['Чайтра','Вайшакха','Джьештха','Ашадха','Шравана','Бхадрапада','Ашвина','Картика','Маргаширша','Пауша','Магха','Пхальгуна'],
-  iml:['Чайтры','Вайшакхи','Джьештхи','Ашадхи','Шраваны','Бхадрапады','Ашвины','Картики','Маргаширши','Пауши','Магхи','Пхальгуны'],
-  ism:['Мухаррам','Сафар','Раби аль-авваль','Раби ас-сани','Джумада аль-уля','Джумада ас-сания','Раджаб','Шаабан','Рамадан','Шавваль','Зуль-када','Зуль-хиджа'],
-  isml:['Мухаррама','Сафара','Раби аль-авваля','Раби ас-сани','Джумады аль-уля','Джумады ас-сании','Раджаба','Шаабана','Рамадана','Шавваля','Зуль-кады','Зуль-хиджи'],
-  pm:['Фарвардин','Ордибехешт','Хордад','Тир','Мордад','Шахривар','Мехр','Абан','Азар','Дей','Бахман','Эсфанд'],
-  pml:['фарвардина','ордибехешта','хордада','тира','мордада','шахривара','мехра','абана','азара','дея','бахмана','эсфанда'],
-  km:['Тот','Фаофи','Атир','Хояк','Тоби','Мешир','Паремхат','Пармути','Пахонс','Паони','Эпип','Мессори','Эпагомен'],
-  kml:['тота','фаофи','атира','хояка','тоби','мешира','паремхата','пармути','пахонса','паони','эпипа','мессори','эпагомена'],
-  jq:['Личунь','Юйшуй','Цзинчжэ','Чуньфэнь','Цинмин','Гуюй','Лися','Сяомань','Манчжун','Сячжи','Сяошу','Дашу','Лицю','Чушу','Байлу','Цюфэнь','Ханьлу','Шуанцзян','Лидун','Сяосюэ','Дасюэ','Дунчжи','Сяохань','Дахань'],
-  H: { ny:'Новый год', orx:'Рождество (православное)', lang:'День родного языка', w:'День женщин', water:'Всемирный день воды', earth:'День Земли', lab:'День труда', env:'День окружающей среды', ch:'День защиты детей', youth:'День молодёжи', peace:'День мира', teach:'День учителя', un:'День ООН', hr:'День прав человека', xm:'Рождество (католическое)', ev:'Канун Нового года', ew:'Пасха (западная)', eo:'Пасха (православная)', val:'День святого Валентина', father:'День отца', mother:'День матери', men:'Мужской день', book:'День книги', health:'День здоровья', space:'День космонавтики', music:'День музыки', disab:'День инвалидов', vol:'День волонтёра', vdayE:'День Победы (Восток)', vdayW:'День Победы (Запад)', holocaust:'День памяти Холокоста', oceans:'День океанов', elderly:'День пожилых людей', post:'День почты', tv:'День телевидения', mountains:'День гор', migrants:'День мигрантов', peace2:'День мира и примирения', diwali:'Дивали', holi:'Холи', eidF:'Ураза-байрам', eidA:'Курбан-байрам' },
-  tl:'Тёмная тема', tn:'Светлая тема', lb:'Язык', regions: {
-    we:'Западная Европа', ee:'Восточная Европа', af:'Африка', me:'Ближний Восток',
-    ca:'Средняя Азия', sa:'Южная Азия', sea:'Юго-Восточная Азия', ea:'Восточная Азия',
-    am:'Америка', oc:'Океания'
-  }
-};
-/* ---------- en ---------- */
-L.en = {
-  ttl:'International Fixed Calendar',
-  t_in:'Date to convert', t_yr:'Full year',
-  s1:'Sol: Jun–Jul', s2:'Sol: Jul–Aug',
-  t_pk:'Calendar', t_res:'Result', t_hl:'International holidays of the year',
-  t_diff:'Difference between dates',
-  cg:'Gregorian', cj:'Julian', cc:'Chinese', ch:'Hebrew', ci:'Hindu', cm:'Islamic', cp:'Persian', ck:'Coptic',
-  go:'Convert', bad:'This date does not exist in the chosen calendar',
-  badyear:'Year must be between 1 and 9999', badseason:'Season 1–24, day 1–15',
-  copy:'Copy', share:'Share', ics:'ICS',
-  copied:'Copied', copyFail:'Copy failed', linkCopied:'Link copied', icsDone:'ICS file downloaded',
-  dDiff:'Total', dDays:'days', dWeeks:'weeks', dYMD:'Calendar', dYears:'y.', dMonths:'mo.', dIFC:'By IFC',
-  m:['January','February','March','April','May','June','July','August','September','October','November','December'],
-  mg:['January','February','March','April','May','June','July','August','September','October','November','December'],
-  im:['January','February','March','April','May','June','Sol','July','August','September','October','November','December'],
-  img:['January','February','March','April','May','June','Sol','July','August','September','October','November','December'],
-  wd:['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
-  ws:['Su','Mo','Tu','We','Th','Fr','Sa'], pw:['Mo','Tu','We','Th','Fr','Sa','Su'],
-  leap:'Leap Day', year:'Year Day', noweek:'outside the week',
-  gr:'Gregorian', ju:'Julian', cn:'Chinese', hb:'Hebrew', in:'Hindu', is:'Islamic', pe:'Persian', co:'Coptic',
-  legend:'● — holiday. Every month starts on Sunday; hover a day.',
-  note:'All dates via JDN. Hindu — simplified model. Islamic, Persian, Coptic — tabular algorithms.',
-  hm:['Tishrei','Cheshvan','Kislev','Tevet','Shevat','Adar','Nisan','Iyar','Sivan','Tammuz','Av','Elul','Adar II'],
-  hml:['Tishrei','Cheshvan','Kislev','Tevet','Shevat','Adar','Nisan','Iyar','Sivan','Tammuz','Av','Elul','Adar II'],
-  im2:['Chaitra','Vaisakha','Jyeshtha','Ashadha','Shravana','Bhadrapada','Ashvin','Kartika','Margashirsha','Pausha','Magha','Phalguna'],
-  iml:['Chaitra','Vaisakha','Jyeshtha','Ashadha','Shravana','Bhadrapada','Ashvin','Kartika','Margashirsha','Pausha','Magha','Phalguna'],
-  ism:['Muharram','Safar','Rabi al-awwal','Rabi al-thani','Jumada al-ula','Jumada al-akhirah','Rajab','Shaaban','Ramadan','Shawwal','Dhu al-Qadah','Dhu al-Hijjah'],
-  isml:['Muharram','Safar','Rabi al-awwal','Rabi al-thani','Jumada al-ula','Jumada al-akhirah','Rajab','Shaaban','Ramadan','Shawwal','Dhu al-Qadah','Dhu al-Hijjah'],
-  pm:['Farvardin','Ordibehesht','Khordad','Tir','Mordad','Shahrivar','Mehr','Aban','Azar','Dey','Bahman','Esfand'],
-  pml:['Farvardin','Ordibehesht','Khordad','Tir','Mordad','Shahrivar','Mehr','Aban','Azar','Dey','Bahman','Esfand'],
-  km:['Thout','Paopi','Hathor','Koiak','Tobi','Meshir','Paremhat','Parmouti','Pashons','Paoni','Epip','Mesori','Epagomenal'],
-  kml:['Thout','Paopi','Hathor','Koiak','Tobi','Meshir','Paremhat','Parmouti','Pashons','Paoni','Epip','Mesori','Epagomenal'],
-  jq:['Lichun','Yushui','Jingzhe','Chunfen','Qingming','Guyu','Lixia','Xiaoman','Mangzhong','Xiazhi','Xiaoshu','Dashu','Liqiu','Chushu','Bailu','Qiufen','Hanlu','Shuangjiang','Lidong','Xiaoxue','Daxue','Dongzhi','Xiaohan','Dahan'],
-  H: { ny:"New Year's Day", orx:'Christmas (Orthodox)', lang:'Mother Language Day', w:"Women's Day", water:'World Water Day', earth:'Earth Day', lab:'Labour Day', env:'Environment Day', ch:"Children's Day", youth:'Youth Day', peace:'Day of Peace', teach:"Teachers' Day", un:'United Nations Day', hr:'Human Rights Day', xm:'Christmas (Western)', ev:"New Year's Eve", ew:'Easter (Western)', eo:'Easter (Orthodox)', val:"Valentine's Day", father:"Father's Day", mother:"Mother's Day", men:"International Men's Day", book:'World Book Day', health:'World Health Day', space:'Human Space Flight Day', music:'International Music Day', disab:'Day of Persons with Disabilities', vol:'Volunteer Day', vdayE:'Victory Day (East)', vdayW:'Victory Day (West)', holocaust:'Holocaust Remembrance Day', oceans:'World Oceans Day', elderly:'Day of Older Persons', post:'World Post Day', tv:'World Television Day', mountains:'International Mountain Day', migrants:'International Migrants Day', peace2:'Day of Peace and Reconciliation', diwali:'Diwali', holi:'Holi', eidF:'Eid al-Fitr', eidA:'Eid al-Adha' },
-  tl:'Dark theme', tn:'Light theme', lb:'Language',
-  regions: { we:'Western Europe', ee:'Eastern Europe', af:'Africa', me:'Middle East', ca:'Central Asia', sa:'South Asia', sea:'Southeast Asia', ea:'East Asia', am:'Americas', oc:'Oceania' }
-};
-/* ---------- de ---------- */
-L.de = {
-  ttl:'Internationaler Fixkalender', t_in:'Datum zum Konvertieren', t_yr:'Ganzes Jahr',
-  s1:'Sol: Juni–Juli', s2:'Sol: Juli–August',
-  t_pk:'Kalender', t_res:'Ergebnis', t_hl:'Internationale Feiertage des Jahres', t_diff:'Differenz zwischen Daten',
-  cg:'Gregorianisch', cj:'Julianisch', cc:'Chinesisch', ch:'Hebräisch', ci:'Hinduistisch', cm:'Islamisch', cp:'Persisch', ck:'Koptisch',
-  go:'Konvertieren', bad:'Dieses Datum existiert nicht im gewählten Kalender',
-  badyear:'Jahr muss zwischen 1 und 9999 liegen', badseason:'Jahreszeit 1–24, Tag 1–15',
-  copy:'Kopieren', share:'Teilen', ics:'ICS',
-  copied:'Kopiert', copyFail:'Kopieren fehlgeschlagen', linkCopied:'Link kopiert', icsDone:'ICS-Datei heruntergeladen',
-  dDiff:'Gesamt', dDays:'Tage', dWeeks:'Wochen', dYMD:'Kalendarisch', dYears:'J.', dMonths:'Mon.', dIFC:'Nach IFC',
-  m:['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'],
-  mg:['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'],
-  im:['Januar','Februar','März','April','Mai','Juni','Sol','Juli','August','September','Oktober','November','Dezember'],
-  img:['Januar','Februar','März','April','Mai','Juni','Sol','Juli','August','September','Oktober','November','Dezember'],
-  wd:['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'],
-  ws:['So','Mo','Di','Mi','Do','Fr','Sa'], pw:['Mo','Di','Mi','Do','Fr','Sa','So'],
-  leap:'Schalttag', year:'Jahrestag', noweek:'außerhalb der Woche',
-  gr:'Gregorianisch', ju:'Julianisch', cn:'Chinesisch', hb:'Hebräisch', in:'Hinduistisch', is:'Islamisch', pe:'Persisch', co:'Koptisch',
-  legend:'● — Feiertag. Jeder Monat beginnt am Sonntag.', note:'Alle Daten über JDN.',
-  hm:['Tischri','Cheschwan','Kislew','Tewet','Schewat','Adar','Nisan','Ijar','Siwan','Tammus','Aw','Elul','Adar II'],
-  hml:['Tischri','Cheschwan','Kislew','Tewet','Schewat','Adar','Nisan','Ijar','Siwan','Tammus','Aw','Elul','Adar II'],
-  im2:['Tschaitra','Waischacha','Dschjeschttha','Aschadha','Schrawana','Bhadrapada','Aschwina','Kartika','Margaschirscha','Pauscha','Magha','Phalguna'],
-  iml:['Tschaitra','Waischacha','Dschjeschttha','Aschadha','Schrawana','Bhadrapada','Aschwina','Kartika','Margaschirscha','Pauscha','Magha','Phalguna'],
-  ism:['Muharram','Safar','Rabi al-awwal','Rabi al-thani','Dschumada al-ula','Dschumada al-achira','Radschab','Schaaban','Ramadan','Schawwal','Dhu l-Qada','Dhu l-Hiddscha'],
-  isml:['Muharram','Safar','Rabi al-awwal','Rabi al-thani','Dschumada al-ula','Dschumada al-achira','Radschab','Schaaban','Ramadan','Schawwal','Dhu l-Qada','Dhu l-Hiddscha'],
-  pm:['Farvardin','Ordibehescht','Chordad','Tir','Mordad','Schahrivar','Mehr','Aban','Asar','Dei','Bahman','Esfand'],
-  pml:['Farvardin','Ordibehescht','Chordad','Tir','Mordad','Schahrivar','Mehr','Aban','Asar','Dei','Bahman','Esfand'],
-  km:['Thout','Paopi','Hathor','Koiak','Tobi','Mescher','Paremhat','Parmouti','Paschons','Paoni','Epip','Mesori','Epagomenal'],
-  kml:['Thout','Paopi','Hathor','Koiak','Tobi','Mescher','Paremhat','Parmouti','Paschons','Paoni','Epip','Mesori','Epagomenal'],
-  jq:['Lichun','Yushui','Jingzhe','Chunfen','Qingming','Guyu','Lixia','Xiaoman','Mangzhong','Xiazhi','Xiaoshu','Dashu','Liqiu','Chushu','Bailu','Qiufen','Hanlu','Shuangjiang','Lidong','Xiaoxue','Daxue','Dongzhi','Xiaohan','Dahan'],
-  H: { ny:'Neujahr', orx:'Weihnachten (orthodox)', lang:'Tag der Muttersprache', w:'Frauentag', water:'Weltwassertag', earth:'Tag der Erde', lab:'Tag der Arbeit', env:'Weltumwelttag', ch:'Kindertag', youth:'Jugendtag', peace:'Weltfriedenstag', teach:'Lehrertag', un:'Tag der Vereinten Nationen', hr:'Tag der Menschenrechte', xm:'Weihnachten (westlich)', ev:'Silvester', ew:'Ostern (westlich)', eo:'Ostern (orthodox)', val:'Valentinstag', father:'Vatertag', mother:'Muttertag', men:'Internationaler Männertag', book:'Welttag des Buches', health:'Weltgesundheitstag', space:'Tag der bemannten Raumfahrt', music:'Internationaler Musiktag', disab:'Tag der Menschen mit Behinderung', vol:'Tag des Ehrenamts', vdayE:'Tag des Sieges (Ost)', vdayW:'Tag des Sieges (West)', holocaust:'Holocaust-Gedenktag', oceans:'Welttag der Ozeane', elderly:'Tag der älteren Menschen', post:'Weltposttag', tv:'Welttag des Fernsehens', mountains:'Internationaler Tag der Berge', migrants:'Internationaler Tag der Migranten', peace2:'Tag des Friedens und der Versöhnung', diwali:'Diwali', holi:'Holi', eidF:'Eid al-Fitr', eidA:'Eid al-Adha' },
-  tl:'Dunkles Thema', tn:'Helles Thema', lb:'Sprache',
-  regions: { we:'Westeuropa', ee:'Osteuropa', af:'Afrika', me:'Naher Osten', ca:'Zentralasien', sa:'Südasien', sea:'Südostasien', ea:'Ostasien', am:'Amerika', oc:'Ozeanien' }
-};
-/* ---------- fr ---------- */
-L.fr = {
-  ttl:'Calendrier Fixe International', t_in:'Date à convertir', t_yr:'Année complète',
-  s1:'Sol: juin–juil', s2:'Sol: juil–août',
-  t_pk:'Calendrier', t_res:'Résultat', t_hl:'Jours fériés internationaux', t_diff:'Différence entre les dates',
-  cg:'Grégorien', cj:'Julien', cc:'Chinois', ch:'Hébreu', ci:'Hindou', cm:'Islamique', cp:'Persan', ck:'Copte',
-  go:'Convertir', bad:'Cette date n\'existe pas dans le calendrier choisi',
-  badyear:'L\'année doit être entre 1 et 9999', badseason:'Saison 1–24, jour 1–15',
-  copy:'Copier', share:'Partager', ics:'ICS',
-  copied:'Copié', copyFail:'Échec de la copie', linkCopied:'Lien copié', icsDone:'Fichier ICS téléchargé',
-  dDiff:'Total', dDays:'jours', dWeeks:'sem.', dYMD:'Calendaire', dYears:'a.', dMonths:'m.', dIFC:'Par CFI',
-  m:['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'],
-  mg:['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'],
-  im:['Janvier','Février','Mars','Avril','Mai','Juin','Sol','Juillet','Août','Septembre','Octobre','Novembre','Décembre'],
-  img:['janvier','février','mars','avril','mai','juin','Sol','juillet','août','septembre','octobre','novembre','décembre'],
-  wd:['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'],
-  ws:['Di','Lu','Ma','Me','Je','Ve','Sa'], pw:['Lu','Ma','Me','Je','Ve','Sa','Di'],
-  leap:'Jour Bissextile', year:'Jour de l\'Année', noweek:'hors semaine',
-  gr:'Grégorien', ju:'Julien', cn:'Chinois', hb:'Hébreu', in:'Hindou', is:'Islamique', pe:'Persan', co:'Copte',
-  legend:'● — jour férié.', note:'Toutes les dates via JDN.',
-  hm:['Tichri','Hechvan','Kislev','Tevet','Chevat','Adar','Nissan','Iyar','Sivan','Tamouz','Av','Eloul','Adar II'],
-  hml:['Tichri','Hechvan','Kislev','Tevet','Chevat','Adar','Nissan','Iyar','Sivan','Tamouz','Av','Eloul','Adar II'],
-  im2:['Chaitra','Vaisakha','Jyeshtha','Ashadha','Shravana','Bhadrapada','Ashvin','Kartika','Margashirsha','Pausha','Magha','Phalguna'],
-  iml:['Chaitra','Vaisakha','Jyeshtha','Ashadha','Shravana','Bhadrapada','Ashvin','Kartika','Margashirsha','Pausha','Magha','Phalguna'],
-  ism:['Mouharram','Safar','Rabi al-awwal','Rabi al-thani','Joumada al-oula','Joumada al-akhira','Rajab','Chaabane','Ramadan','Chawwal','Dhou al-Qada','Dhou al-Hijja'],
-  isml:['Mouharram','Safar','Rabi al-awwal','Rabi al-thani','Joumada al-oula','Joumada al-akhira','Rajab','Chaabane','Ramadan','Chawwal','Dhou al-Qada','Dhou al-Hijja'],
-  pm:['Farwardin','Ordibehecht','Khordad','Tir','Mordad','Chahrivar','Mehr','Aban','Azar','Dey','Bahman','Esfand'],
-  pml:['Farwardin','Ordibehecht','Khordad','Tir','Mordad','Chahrivar','Mehr','Aban','Azar','Dey','Bahman','Esfand'],
-  km:['Thout','Paopi','Hathor','Koiak','Tobi','Mechir','Paremhat','Parmouti','Pachons','Paoni','Epip','Mesori','Épagoménal'],
-  kml:['Thout','Paopi','Hathor','Koiak','Tobi','Mechir','Paremhat','Parmouti','Pachons','Paoni','Epip','Mesori','Épagoménal'],
-  jq:['Lichun','Yushui','Jingzhe','Chunfen','Qingming','Guyu','Lixia','Xiaoman','Mangzhong','Xiazhi','Xiaoshu','Dashu','Liqiu','Chushu','Bailu','Qiufen','Hanlu','Shuangjiang','Lidong','Xiaoxue','Daxue','Dongzhi','Xiaohan','Dahan'],
-  H: { ny:'Jour de l\'An', orx:'Noël (Orthodoxe)', lang:'Journée de la Langue Maternelle', w:'Journée de la Femme', water:'Journée Mondiale de l\'Eau', earth:'Jour de la Terre', lab:'Fête du Travail', env:'Journée de l\'Environnement', ch:'Journée de l\'Enfance', youth:'Journée de la Jeunesse', peace:'Journée de la Paix', teach:'Journée des Enseignants', un:'Journée de l\'ONU', hr:'Journée des Droits de l\'Homme', xm:'Noël (Occidental)', ev:'Saint-Sylvestre', ew:'Pâques (Occidentale)', eo:'Pâques (Orthodoxe)', val:'Saint-Valentin', father:'Fête des Pères', mother:'Fête des Mères', men:'Journée Internationale de l\'Homme', book:'Journée Mondiale du Livre', health:'Journée Mondiale de la Santé', space:'Journée du Vol Spatial Habité', music:'Journée Internationale de la Musique', disab:'Journée des Personnes Handicapées', vol:'Journée du Bénévolat', vdayE:'Jour de la Victoire (Est)', vdayW:'Jour de la Victoire (Ouest)', holocaust:'Journée de la Shoah', oceans:'Journée Mondiale des Océans', elderly:'Journée des Personnes Âgées', post:'Journée Mondiale de la Poste', tv:'Journée Mondiale de la Télévision', mountains:'Journée Internationale de la Montagne', migrants:'Journée Internationale des Migrants', peace2:'Journée de la Paix et de la Réconciliation', diwali:'Diwali', holi:'Holi', eidF:'Aïd al-Fitr', eidA:'Aïd al-Adha' },
-  tl:'Thème sombre', tn:'Thème clair', lb:'Langue',
-  regions: { we:'Europe de l\'Ouest', ee:'Europe de l\'Est', af:'Afrique', me:'Moyen-Orient', ca:'Asie centrale', sa:'Asie du Sud', sea:'Asie du Sud-Est', ea:'Asie de l\'Est', am:'Amérique', oc:'Océanie' }
-};
-/* ---------- it ---------- */
-L.it = {
-  ttl:'Calendario Fisso Internazionale', t_in:'Data da convertire', t_yr:'Anno intero',
-  s1:'Sol: giu–lug', s2:'Sol: lug–ago',
-  t_pk:'Calendario', t_res:'Risultato', t_hl:'Festività internazionali dell\'anno', t_diff:'Differenza tra date',
-  cg:'Gregoriano', cj:'Giuliano', cc:'Cinese', ch:'Ebraico', ci:'Indù', cm:'Islamico', cp:'Persiano', ck:'Copto',
-  go:'Converti', bad:'Questa data non esiste nel calendario scelto',
-  badyear:'L\'anno deve essere tra 1 e 9999', badseason:'Stagione 1–24, giorno 1–15',
-  copy:'Copia', share:'Condividi', ics:'ICS',
-  copied:'Copiato', copyFail:'Copia fallita', linkCopied:'Link copiato', icsDone:'File ICS scaricato',
-  dDiff:'Totale', dDays:'giorni', dWeeks:'sett.', dYMD:'Calendario', dYears:'a.', dMonths:'mesi', dIFC:'Per CFI',
-  m:['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'],
-  mg:['gennaio','febbraio','marzo','aprile','maggio','giugno','luglio','agosto','settembre','ottobre','novembre','dicembre'],
-  im:['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Sol','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'],
-  img:['gennaio','febbraio','marzo','aprile','maggio','giugno','Sol','luglio','agosto','settembre','ottobre','novembre','dicembre'],
-  wd:['domenica','lunedì','martedì','mercoledì','giovedì','venerdì','sabato'],
-  ws:['Do','Lu','Ma','Me','Gi','Ve','Sa'], pw:['Lu','Ma','Me','Gi','Ve','Sa','Do'],
-  leap:'Giorno Bissextile', year:'Giorno dell\'Anno', noweek:'fuori settimana',
-  gr:'Gregoriano', ju:'Giuliano', cn:'Cinese', hb:'Ebraico', in:'Indù', is:'Islamico', pe:'Persiano', co:'Copto',
-  legend:'● — festività.', note:'Tutte le date via JDN.',
-  hm:['Tishrei','Cheshvan','Kislev','Tevet','Shevat','Adar','Nisan','Iyar','Sivan','Tammuz','Av','Elul','Adar II'],
-  hml:['Tishrei','Cheshvan','Kislev','Tevet','Shevat','Adar','Nisan','Iyar','Sivan','Tammuz','Av','Elul','Adar II'],
-  im2:['Chaitra','Vaisakha','Jyeshtha','Ashadha','Shravana','Bhadrapada','Ashvin','Kartika','Margashirsha','Pausha','Magha','Phalguna'],
-  iml:['Chaitra','Vaisakha','Jyeshtha','Ashadha','Shravana','Bhadrapada','Ashvin','Kartika','Margashirsha','Pausha','Magha','Phalguna'],
-  ism:['Muharram','Safar','Rabi al-awwal','Rabi al-thani','Jumada al-ula','Jumada al-akhira','Rajab','Shaaban','Ramadan','Shawwal','Dhu al-Qadah','Dhu al-Hijjah'],
-  isml:['Muharram','Safar','Rabi al-awwal','Rabi al-thani','Jumada al-ula','Jumada al-akhira','Rajab','Shaaban','Ramadan','Shawwal','Dhu al-Qadah','Dhu al-Hijjah'],
-  pm:['Farwardin','Ordibehesht','Khordad','Tir','Mordad','Shahrivar','Mehr','Aban','Azar','Dey','Bahman','Esfand'],
-  pml:['Farwardin','Ordibehesht','Khordad','Tir','Mordad','Shahrivar','Mehr','Aban','Azar','Dey','Bahman','Esfand'],
-  km:['Thout','Paopi','Hathor','Koiak','Tobi','Meshir','Paremhat','Parmouti','Pashons','Paoni','Epip','Mesori','Epagomenale'],
-  kml:['Thout','Paopi','Hathor','Koiak','Tobi','Meshir','Paremhat','Parmouti','Pashons','Paoni','Epip','Mesori','Epagomenale'],
-  jq:['Lichun','Yushui','Jingzhe','Chunfen','Qingming','Guyu','Lixia','Xiaoman','Mangzhong','Xiazhi','Xiaoshu','Dashu','Liqiu','Chushu','Bailu','Qiufen','Hanlu','Shuangjiang','Lidong','Xiaoxue','Daxue','Dongzhi','Xiaohan','Dahan'],
-  H: { ny:'Capodanno', orx:'Natale (Ortodosso)', lang:'Giornata della Lingua Madre', w:'Festa della Donna', water:'Giornata Mondiale dell\'Acqua', earth:'Giornata della Terra', lab:'Festa del Lavoro', env:'Giornata dell\'Ambiente', ch:'Giornata dei Bambini', youth:'Giornata della Gioventù', peace:'Giornata della Pace', teach:'Giornata degli Insegnanti', un:'Giornata delle Nazioni Unite', hr:'Giornata dei Diritti Umani', xm:'Natale (Occidentale)', ev:'Vigilia di Capodanno', ew:'Pasqua (Occidentale)', eo:'Pasqua (Ortodossa)', val:'San Valentino', father:'Festa del Papà', mother:'Festa della Mamma', men:'Giornata Internazionale dell\'Uomo', book:'Giornata Mondiale del Libro', health:'Giornata Mondiale della Salute', space:'Giornata del Volo Spaziale Umano', music:'Giornata Internazionale della Musica', disab:'Giornata delle Persone con Disabilità', vol:'Giornata del Volontariato', vdayE:'Giorno della Vittoria (Est)', vdayW:'Giorno della Vittoria (Ovest)', holocaust:'Giorno della Memoria', oceans:'Giornata Mondiale degli Oceani', elderly:'Giornata Internazionale degli Anziani', post:'Giornata Mondiale della Posta', tv:'Giornata Mondiale della Televisione', mountains:'Giornata Internazionale della Montagna', migrants:'Giornata Internazionale dei Migranti', peace2:'Giornata della Pace e della Riconciliazione', diwali:'Diwali', holi:'Holi', eidF:'Eid al-Fitr', eidA:'Eid al-Adha' },
-  tl:'Tema scuro', tn:'Tema chiaro', lb:'Lingua',
-  regions: { we:'Europa occidentale', ee:'Europa orientale', af:'Africa', me:'Medio Oriente', ca:'Asia centrale', sa:'Asia meridionale', sea:'Sud-est asiatico', ea:'Asia orientale', am:'Americhe', oc:'Oceania' }
-};
-/* ---------- es ---------- */
-L.es = {
-  ttl:'Calendario Fijo Internacional', t_in:'Fecha a convertir', t_yr:'Año completo',
-  s1:'Sol: jun–jul', s2:'Sol: jul–ago',
-  t_pk:'Calendario', t_res:'Resultado', t_hl:'Días festivos internacionales', t_diff:'Diferencia entre fechas',
-  cg:'Gregoriano', cj:'Juliano', cc:'Chino', ch:'Hebreo', ci:'Hindú', cm:'Islámico', cp:'Persa', ck:'Copto',
-  go:'Convertir', bad:'Esta fecha no existe en el calendario elegido',
-  badyear:'El año debe estar entre 1 y 9999', badseason:'Estación 1–24, día 1–15',
-  copy:'Copiar', share:'Compartir', ics:'ICS',
-  copied:'Copiado', copyFail:'Error al copiar', linkCopied:'Enlace copiado', icsDone:'Archivo ICS descargado',
-  dDiff:'Total', dDays:'días', dWeeks:'sem.', dYMD:'Calendario', dYears:'a.', dMonths:'meses', dIFC:'Por CFI',
-  m:['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
-  mg:['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'],
-  im:['Enero','Febrero','Marzo','Abril','Mayo','Junio','Sol','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
-  img:['enero','febrero','marzo','abril','mayo','junio','Sol','julio','agosto','septiembre','octubre','noviembre','diciembre'],
-  wd:['domingo','lunes','martes','miércoles','jueves','viernes','sábado'],
-  ws:['Do','Lu','Ma','Mi','Ju','Vi','Sá'], pw:['Lu','Ma','Mi','Ju','Vi','Sá','Do'],
-  leap:'Día Bisiesto', year:'Día del Año', noweek:'fuera de la semana',
-  gr:'Gregoriano', ju:'Juliano', cn:'Chino', hb:'Hebreo', in:'Hindú', is:'Islámico', pe:'Persa', co:'Copto',
-  legend:'● — festivo.', note:'Todas las fechas vía JDN.',
-  hm:['Tishrei','Cheshvan','Kislev','Tevet','Shevat','Adar','Nisan','Iyar','Sivan','Tammuz','Av','Elul','Adar II'],
-  hml:['Tishrei','Cheshvan','Kislev','Tevet','Shevat','Adar','Nisan','Iyar','Sivan','Tammuz','Av','Elul','Adar II'],
-  im2:['Chaitra','Vaisakha','Jyeshtha','Ashadha','Shravana','Bhadrapada','Ashvin','Kartika','Margashirsha','Pausha','Magha','Phalguna'],
-  iml:['Chaitra','Vaisakha','Jyeshtha','Ashadha','Shravana','Bhadrapada','Ashvin','Kartika','Margashirsha','Pausha','Magha','Phalguna'],
-  ism:['Muharram','Safar','Rabi al-awwal','Rabi al-thani','Jumada al-ula','Jumada al-akhira','Rajab','Shaaban','Ramadán','Shawwal','Dhu al-Qadah','Dhu al-Hijjah'],
-  isml:['Muharram','Safar','Rabi al-awwal','Rabi al-thani','Jumada al-ula','Jumada al-akhira','Rajab','Shaaban','Ramadán','Shawwal','Dhu al-Qadah','Dhu al-Hijjah'],
-  pm:['Farvardin','Ordibehesht','Khordad','Tir','Mordad','Shahrivar','Mehr','Aban','Azar','Dey','Bahman','Esfand'],
-  pml:['Farvardin','Ordibehesht','Khordad','Tir','Mordad','Shahrivar','Mehr','Aban','Azar','Dey','Bahman','Esfand'],
-  km:['Thout','Paopi','Hathor','Koiak','Tobi','Meshir','Paremhat','Parmouti','Pashons','Paoni','Epip','Mesori','Epagomenal'],
-  kml:['Thout','Paopi','Hathor','Koiak','Tobi','Meshir','Paremhat','Parmouti','Pashons','Paoni','Epip','Mesori','Epagomenal'],
-  jq:['Lichun','Yushui','Jingzhe','Chunfen','Qingming','Guyu','Lixia','Xiaoman','Mangzhong','Xiazhi','Xiaoshu','Dashu','Liqiu','Chushu','Bailu','Qiufen','Hanlu','Shuangjiang','Lidong','Xiaoxue','Daxue','Dongzhi','Xiaohan','Dahan'],
-  H: { ny:'Año Nuevo', orx:'Navidad (Ortodoxa)', lang:'Día de la Lengua Materna', w:'Día de la Mujer', water:'Día Mundial del Agua', earth:'Día de la Tierra', lab:'Día del Trabajo', env:'Día del Medio Ambiente', ch:'Día del Niño', youth:'Día de la Juventud', peace:'Día de la Paz', teach:'Día del Maestro', un:'Día de las Naciones Unidas', hr:'Día de los Derechos Humanos', xm:'Navidad (Occidental)', ev:'Nochevieja', ew:'Pascua (Occidental)', eo:'Pascua (Ortodoxa)', val:'Día de San Valentín', father:'Día del Padre', mother:'Día de la Madre', men:'Día Internacional del Hombre', book:'Día Mundial del Libro', health:'Día Mundial de la Salud', space:'Día del Vuelo Espacial Humano', music:'Día Internacional de la Música', disab:'Día de las Personas con Discapacidad', vol:'Día del Voluntario', vdayE:'Día de la Victoria (Este)', vdayW:'Día de la Victoria (Oeste)', holocaust:'Día de la Memoria del Holocausto', oceans:'Día Mundial de los Océanos', elderly:'Día Internacional de las Personas Mayores', post:'Día Mundial del Correo', tv:'Día Mundial de la Televisión', mountains:'Día Internacional de las Montañas', migrants:'Día Internacional del Migrante', peace2:'Día de la Paz y Reconciliación', diwali:'Diwali', holi:'Holi', eidF:'Eid al-Fitr', eidA:'Eid al-Adha' },
-  tl:'Tema oscuro', tn:'Tema claro', lb:'Idioma',
-  regions: { we:'Europa Occidental', ee:'Europa Oriental', af:'África', me:'Oriente Medio', ca:'Asia Central', sa:'Asia del Sur', sea:'Sudeste Asiático', ea:'Asia Oriental', am:'América', oc:'Oceanía' }
-};
-/* ---------- pt ---------- */
-L.pt = {
-  ttl:'Calendário Fixo Internacional', t_in:'Data para converter', t_yr:'Ano completo',
-  s1:'Sol: jun–jul', s2:'Sol: jul–ago',
-  t_pk:'Calendário', t_res:'Resultado', t_hl:'Feriados internacionais', t_diff:'Diferença entre datas',
-  cg:'Gregoriano', cj:'Juliano', cc:'Chinês', ch:'Hebraico', ci:'Hindu', cm:'Islâmico', cp:'Persa', ck:'Copta',
-  go:'Converter', bad:'Esta data não existe no calendário escolhido',
-  badyear:'O ano deve estar entre 1 e 9999', badseason:'Estação 1–24, dia 1–15',
-  copy:'Copiar', share:'Compartilhar', ics:'ICS',
-  copied:'Copiado', copyFail:'Falha ao copiar', linkCopied:'Link copiado', icsDone:'Arquivo ICS baixado',
-  dDiff:'Total', dDays:'dias', dWeeks:'sem.', dYMD:'Calendário', dYears:'a.', dMonths:'m.', dIFC:'Por CFI',
-  m:['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
-  mg:['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'],
-  im:['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Sol','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
-  img:['janeiro','fevereiro','março','abril','maio','junho','Sol','julho','agosto','setembro','outubro','novembro','dezembro'],
-  wd:['domingo','segunda-feira','terça-feira','quarta-feira','quinta-feira','sexta-feira','sábado'],
-  ws:['Do','Se','Te','Qa','Qi','Se','Sá'], pw:['Se','Te','Qa','Qi','Se','Sá','Do'],
-  leap:'Dia Bissexto', year:'Dia do Ano', noweek:'fora da semana',
-  gr:'Gregoriano', ju:'Juliano', cn:'Chinês', hb:'Hebraico', in:'Hindu', is:'Islâmico', pe:'Persa', co:'Copta',
-  legend:'● — feriado.', note:'Todas as datas via JDN.',
-  hm:['Tishrei','Cheshvan','Kislev','Tevet','Shevat','Adar','Nisan','Iyar','Sivan','Tammuz','Av','Elul','Adar II'],
-  hml:['Tishrei','Cheshvan','Kislev','Tevet','Shevat','Adar','Nisan','Iyar','Sivan','Tammuz','Av','Elul','Adar II'],
-  im2:['Chaitra','Vaisakha','Jyeshtha','Ashadha','Shravana','Bhadrapada','Ashvin','Kartika','Margashirsha','Pausha','Magha','Phalguna'],
-  iml:['Chaitra','Vaisakha','Jyeshtha','Ashadha','Shravana','Bhadrapada','Ashvin','Kartika','Margashirsha','Pausha','Magha','Phalguna'],
-  ism:['Muharram','Safar','Rabi al-awwal','Rabi al-thani','Jumada al-ula','Jumada al-akhira','Rajab','Shaaban','Ramadã','Shawwal','Dhu al-Qadah','Dhu al-Hijjah'],
-  isml:['Muharram','Safar','Rabi al-awwal','Rabi al-thani','Jumada al-ula','Jumada al-akhira','Rajab','Shaaban','Ramadã','Shawwal','Dhu al-Qadah','Dhu al-Hijjah'],
-  pm:['Farwardin','Ordibehesht','Khordad','Tir','Mordad','Shahrivar','Mehr','Aban','Azar','Dey','Bahman','Esfand'],
-  pml:['Farwardin','Ordibehesht','Khordad','Tir','Mordad','Shahrivar','Mehr','Aban','Azar','Dey','Bahman','Esfand'],
-  km:['Thout','Paopi','Hathor','Koiak','Tobi','Meshir','Paremhat','Parmouti','Pashons','Paoni','Epip','Mesori','Epagomenal'],
-  kml:['Thout','Paopi','Hathor','Koiak','Tobi','Meshir','Paremhat','Parmouti','Pashons','Paoni','Epip','Mesori','Epagomenal'],
-  jq:['Lichun','Yushui','Jingzhe','Chunfen','Qingming','Guyu','Lixia','Xiaoman','Mangzhong','Xiazhi','Xiaoshu','Dashu','Liqiu','Chushu','Bailu','Qiufen','Hanlu','Shuangjiang','Lidong','Xiaoxue','Daxue','Dongzhi','Xiaohan','Dahan'],
-  H: { ny:'Ano Novo', orx:'Natal (Ortodoxo)', lang:'Dia da Língua Materna', w:'Dia da Mulher', water:'Dia Mundial da Água', earth:'Dia da Terra', lab:'Dia do Trabalho', env:'Dia do Meio Ambiente', ch:'Dia das Crianças', youth:'Dia da Juventude', peace:'Dia da Paz', teach:'Dia do Professor', un:'Dia da ONU', hr:'Dia dos Direitos Humanos', xm:'Natal (Ocidental)', ev:'Véspera de Ano Novo', ew:'Páscoa (Ocidental)', eo:'Páscoa (Ortodoxa)', val:'Dia dos Namorados', father:'Dia dos Pais', mother:'Dia das Mães', men:'Dia Internacional do Homem', book:'Dia Mundial do Livro', health:'Dia Mundial da Saúde', space:'Dia do Voo Espacial Humano', music:'Dia Internacional da Música', disab:'Dia das Pessoas com Deficiência', vol:'Dia do Voluntário', vdayE:'Dia da Vitória (Leste)', vdayW:'Dia da Vitória (Oeste)', holocaust:'Dia da Memória do Holocausto', oceans:'Dia Mundial dos Oceanos', elderly:'Dia Internacional do Idoso', post:'Dia Mundial dos Correios', tv:'Dia Mundial da Televisão', mountains:'Dia Internacional das Montanhas', migrants:'Dia Internacional dos Migrantes', peace2:'Dia da Paz e Reconciliação', diwali:'Diwali', holi:'Holi', eidF:'Eid al-Fitr', eidA:'Eid al-Adha' },
-  tl:'Tema escuro', tn:'Tema claro', lb:'Idioma',
-  regions: { we:'Europa Ocidental', ee:'Europa Oriental', af:'África', me:'Oriente Médio', ca:'Ásia Central', sa:'Ásia do Sul', sea:'Sudeste Asiático', ea:'Ásia Oriental', am:'América', oc:'Oceania' }
-};
-/* ---------- tr ---------- */
-L.tr = {
-  ttl:'Uluslararası Sabit Takvim', t_in:'Dönüştürülecek tarih', t_yr:'Tam yıl',
-  s1:'Sol: Haz–Tem', s2:'Sol: Tem–Ağu',
-  t_pk:'Takvim', t_res:'Sonuç', t_hl:'Yılın uluslararası tatilleri', t_diff:'Tarihler arası fark',
-  cg:'Miladi', cj:'Jülyen', cc:'Çin', ch:'İbrani', ci:'Hindu', cm:'İslami', cp:'Pers', ck:'Kıpti',
-  go:'Dönüştür', bad:'Bu tarih seçilen takvimde yok',
-  badyear:'Yıl 1 ile 9999 arasında olmalı', badseason:'Mevsim 1–24, gün 1–15',
-  copy:'Kopyala', share:'Paylaş', ics:'ICS',
-  copied:'Kopyalandı', copyFail:'Kopyalanamadı', linkCopied:'Bağlantı kopyalandı', icsDone:'ICS indirildi',
-  dDiff:'Toplam', dDays:'gün', dWeeks:'hafta', dYMD:'Takvimsel', dYears:'y.', dMonths:'ay', dIFC:'MFS göre',
-  m:['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'],
-  mg:['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'],
-  im:['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Sol','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'],
-  img:['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Sol','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'],
-  wd:['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'],
-  ws:['Pz','Pt','Sa','Ça','Pe','Cu','Ct'], pw:['Pt','Sa','Ça','Pe','Cu','Ct','Pz'],
-  leap:'Artık Gün', year:'Yıl Günü', noweek:'hafta dışı',
-  gr:'Miladi', ju:'Jülyen', cn:'Çin', hb:'İbrani', in:'Hindu', is:'İslami', pe:'Pers', co:'Kıpti',
-  legend:'● — tatil.', note:'Tüm tarihler JDN üzerinden.',
-  hm:['Tişri','Heşvan','Kislev','Tevet','Şevat','Adar','Nisan','İyar','Sivan','Tammuz','Av','Elul','Adar II'],
-  hml:['Tişri','Heşvan','Kislev','Tevet','Şevat','Adar','Nisan','İyar','Sivan','Tammuz','Av','Elul','Adar II'],
-  im2:['Çaytra','Vaişaka','Cyeştha','Aşadha','Şravana','Bhadrapada','Aşvin','Kartika','Margashirsha','Pauşa','Magha','Phalguna'],
-  iml:['Çaytra','Vaişaka','Cyeştha','Aşadha','Şravana','Bhadrapada','Aşvin','Kartika','Margashirsha','Pauşa','Magha','Phalguna'],
-  ism:['Muharrem','Safer','Rebiülevvel','Rebiülahir','Cemaziyelevvel','Cemaziyelahir','Recep','Şaban','Ramazan','Şevval','Zilkade','Zilhicce'],
-  isml:['Muharrem','Safer','Rebiülevvel','Rebiülahir','Cemaziyelevvel','Cemaziyelahir','Recep','Şaban','Ramazan','Şevval','Zilkade','Zilhicce'],
-  pm:['Ferverdin','Ordibeheşt','Hordad','Tir','Mordad','Şehriver','Mehr','Aban','Azar','Dey','Bahman','İsfend'],
-  pml:['Ferverdin','Ordibeheşt','Hordad','Tir','Mordad','Şehriver','Mehr','Aban','Azar','Dey','Bahman','İsfend'],
-  km:['Tout','Paopi','Hator','Koiak','Tobi','Meşir','Paremhat','Parmouti','Paşons','Paoni','Epip','Mesori','Epagomenal'],
-  kml:['Tout','Paopi','Hator','Koiak','Tobi','Meşir','Paremhat','Parmouti','Paşons','Paoni','Epip','Mesori','Epagomenal'],
-  jq:['Liçun','Yuşui','Jingje','Çunfen','Çingming','Guyu','Lisiya','Syaoman','Mangzhong','Syaçi','Syaoşu','Daşu','Liçiu','Çuşu','Bailu','Çiufen','Hanlu','Şuangjiang','Lidong','Syaoşue','Daşue','Dongçi','Syaohan','Dahan'],
-  H: { ny:'Yılbaşı', orx:'Noel (Ortodoks)', lang:'Ana Dil Günü', w:'Kadınlar Günü', water:'Dünya Su Günü', earth:'Dünya Günü', lab:'Emek Günü', env:'Çevre Günü', ch:'Çocuk Günü', youth:'Gençlik Günü', peace:'Barış Günü', teach:'Öğretmenler Günü', un:'BM Günü', hr:'İnsan Hakları Günü', xm:'Noel (Batı)', ev:'Yılbaşı Gecesi', ew:'Paskalya (Batı)', eo:'Paskalya (Ortodoks)', val:'Sevgililer Günü', father:'Babalar Günü', mother:'Anneler Günü', men:'Uluslararası Erkekler Günü', book:'Dünya Kitap Günü', health:'Dünya Sağlık Günü', space:'Uzay Uçuşu Günü', music:'Müzik Günü', disab:'Engelliler Günü', vol:'Gönüllüler Günü', vdayE:'Zafer Günü (Doğu)', vdayW:'Zafer Günü (Batı)', holocaust:'Holokost Anma Günü', oceans:'Dünya Okyanuslar Günü', elderly:'Yaşlılar Günü', post:'Dünya Posta Günü', tv:'Dünya Televizyon Günü', mountains:'Dağlar Günü', migrants:'Göçmenler Günü', peace2:'Barış ve Uzlaşma Günü', diwali:'Divali', holi:'Holi', eidF:'Ramazan Bayramı', eidA:'Kurban Bayramı' },
-  tl:'Koyu tema', tn:'Açık tema', lb:'Dil',
-  regions: { we:'Batı Avrupa', ee:'Doğu Avrupa', af:'Afrika', me:'Orta Doğu', ca:'Orta Asya', sa:'Güney Asya', sea:'Güneydoğu Asya', ea:'Doğu Asya', am:'Amerika', oc:'Okyanusya' }
-};
-/* ---------- pl ---------- */
-L.pl = {
-  ttl:'Międzynarodowy Kalendarz Stały', t_in:'Data do konwersji', t_yr:'Cały rok',
-  s1:'Sol: cze–lip', s2:'Sol: lip–sie',
-  t_pk:'Kalendarz', t_res:'Wynik', t_hl:'Międzynarodowe święta roku', t_diff:'Różnica między datami',
-  cg:'Gregoriański', cj:'Juliański', cc:'Chiński', ch:'Hebrajski', ci:'Hinduski', cm:'Islamski', cp:'Perski', ck:'Koptyjski',
-  go:'Konwertuj', bad:'Ta data nie istnieje w wybranym kalendarzu',
-  badyear:'Rok musi być między 1 a 9999', badseason:'Sezon 1–24, dzień 1–15',
-  copy:'Kopiuj', share:'Udostępnij', ics:'ICS',
-  copied:'Skopiowano', copyFail:'Nie udało się skopiować', linkCopied:'Skopiowano link', icsDone:'Pobrano ICS',
-  dDiff:'Razem', dDays:'dni', dWeeks:'tyg.', dYMD:'Kalendarzowo', dYears:'l.', dMonths:'mies.', dIFC:'Wg MKS',
-  m:['Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec','Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzień'],
-  mg:['stycznia','lutego','marca','kwietnia','maja','czerwca','lipca','sierpnia','września','października','listopada','grudnia'],
-  im:['Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec','Sol','Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzień'],
-  img:['stycznia','lutego','marca','kwietnia','maja','czerwca','Sol','lipca','sierpnia','września','października','listopada','grudnia'],
-  wd:['niedziela','poniedziałek','wtorek','środa','czwartek','piątek','sobota'],
-  ws:['Nd','Pn','Wt','Śr','Cz','Pt','Sb'], pw:['Pn','Wt','Śr','Cz','Pt','Sb','Nd'],
-  leap:'Dzień Przestępny', year:'Dzień Roku', noweek:'poza tygodniem',
-  gr:'Gregoriański', ju:'Juliański', cn:'Chiński', hb:'Hebrajski', in:'Hinduski', is:'Islamski', pe:'Perski', co:'Koptyjski',
-  legend:'● — święto.', note:'Wszystkie daty przez JDN.',
-  hm:['Tiszri','Cheszwan','Kislew','Tewet','Szewat','Adar','Nisan','Ijar','Siwan','Tamuz','Aw','Elul','Adar II'],
-  hml:['Tiszri','Cheszwan','Kislew','Tewet','Szewat','Adar','Nisan','Ijar','Siwan','Tamuz','Aw','Elul','Adar II'],
-  im2:['Czajtra','Waiszaka','Dźjesztha','Aszadha','Szrawana','Bhadrapada','Aszwin','Kartika','Margaszirsza','Pausza','Magha','Phalguna'],
-  iml:['Czajtra','Waiszaka','Dźjesztha','Aszadha','Szrawana','Bhadrapada','Aszwin','Kartika','Margaszirsza','Pausza','Magha','Phalguna'],
-  ism:['Muharram','Safar','Rabi al-awwal','Rabi as-sani','Dżumada al-ula','Dżumada as-sanija','Radżab','Szaban','Ramadan','Sziwwal','Zul-kada','Zul-hidżdża'],
-  isml:['Muharram','Safar','Rabi al-awwal','Rabi as-sani','Dżumada al-ula','Dżumada as-sanija','Radżab','Szaban','Ramadan','Sziwwal','Zul-kada','Zul-hidżdża'],
-  pm:['Farwardin','Ordibeheszt','Chordad','Tir','Mordad','Szahriwar','Mehr','Aban','Azar','Dej','Bahman','Esfand'],
-  pml:['Farwardin','Ordibeheszt','Chordad','Tir','Mordad','Szahriwar','Mehr','Aban','Azar','Dej','Bahman','Esfand'],
-  km:['Thout','Paopi','Hathor','Koiak','Tobi','Meshir','Paremhat','Parmouti','Pashons','Paoni','Epip','Mesori','Epagomenalny'],
-  kml:['Thout','Paopi','Hathor','Koiak','Tobi','Meshir','Paremhat','Parmouti','Pashons','Paoni','Epip','Mesori','Epagomenalny'],
-  jq:['Liczun','Juszui','Jingdże','Czunfen','Cingming','Guju','Lisja','Sjaoman','Mangdżong','Sjadży','Sjaoszu','Daszu','Liciu','Czuszu','Bajlu','Czufen','Hanlu','Szuangdżiang','Lidong','Sjaoszie','Daszie','Dongdży','Sjaohan','Dahan'],
-  H: { ny:'Nowy Rok', orx:'Boże Narodzenie (prawosławne)', lang:'Dzień Języka Ojczystego', w:'Dzień Kobiet', water:'Światowy Dzień Wody', earth:'Dzień Ziemi', lab:'Święto Pracy', env:'Dzień Środowiska', ch:'Dzień Dziecka', youth:'Dzień Młodzieży', peace:'Dzień Pokoju', teach:'Dzień Nauczyciela', un:'Dzień ONZ', hr:'Dzień Praw Człowieka', xm:'Boże Narodzenie (katolickie)', ev:'Sylwester', ew:'Wielkanoc (zachodnia)', eo:'Wielkanoc (prawosławna)', val:'Walentynki', father:'Dzień Ojca', mother:'Dzień Matki', men:'Międzynarodowy Dzień Mężczyzn', book:'Światowy Dzień Książki', health:'Światowy Dzień Zdrowia', space:'Dzień Lotów Kosmicznych', music:'Dzień Muzyki', disab:'Dzień Osób Niepełnosprawnych', vol:'Dzień Wolontariusza', vdayE:'Dzień Zwycięstwa (Wschód)', vdayW:'Dzień Zwycięstwa (Zachód)', holocaust:'Dzień Pamięci o Holokauście', oceans:'Dzień Oceanów', elderly:'Dzień Osób Starszych', post:'Światowy Dzień Poczty', tv:'Światowy Dzień Telewizji', mountains:'Dzień Gór', migrants:'Dzień Migrantów', peace2:'Dzień Pokoju i Pojednania', diwali:'Diwali', holi:'Holi', eidF:'Id al-Fitr', eidA:'Id al-Adha' },
-  tl:'Ciemny motyw', tn:'Jasny motyw', lb:'Język',
-  regions: { we:'Europa Zachodnia', ee:'Europa Wschodnia', af:'Afryka', me:'Bliski Wschód', ca:'Azja Centralna', sa:'Azja Południowa', sea:'Azja Południowo-Wschodnia', ea:'Azja Wschodnia', am:'Ameryka', oc:'Oceania' }
-};
-/* ---------- uk ---------- */
-L.uk = {
-  ttl:'Міжнародний фіксований календар', t_in:'Дата для переведення', t_yr:'Повний рік',
-  s1:'Sol: червень–липень', s2:'Sol: липень–серпень',
-  t_pk:'Календар', t_res:'Результат', t_hl:'Міжнародні свята року', t_diff:'Різниця між датами',
-  cg:'Григоріанський', cj:'Юліанський', cc:'Китайський', ch:'Єврейський', ci:'Індуїстський', cm:'Ісламський', cp:'Перський', ck:'Коптський',
-  go:'Перекласти', bad:'Такої дати немає у вибраному календарі',
-  badyear:'Рік має бути від 1 до 9999', badseason:'Сезон 1–24, день 1–15',
-  copy:'Копіювати', share:'Поділитися', ics:'ICS',
-  copied:'Скопійовано', copyFail:'Не вдалося скопіювати', linkCopied:'Посилання скопійовано', icsDone:'ICS-файл завантажено',
-  dDiff:'Усього', dDays:'днів', dWeeks:'тиж.', dYMD:'Календарно', dYears:'р.', dMonths:'міс.', dIFC:'За МФК',
-  m:['Січень','Лютий','Березень','Квітень','Травень','Червень','Липень','Серпень','Вересень','Жовтень','Листопад','Грудень'],
-  mg:['січня','лютого','березня','квітня','травня','червня','липня','серпня','вересня','жовтня','листопада','грудня'],
-  im:['Січень','Лютий','Березень','Квітень','Травень','Червень','Сол','Липень','Серпень','Вересень','Жовтень','Листопад','Грудень'],
-  img:['січня','лютого','березня','квітня','травня','червня','Сола','липня','серпня','вересня','жовтня','листопада','грудня'],
-  wd:['неділя','понеділок','вівторок','середа','четвер','пʼятниця','субота'],
-  ws:['Нд','Пн','Вт','Ср','Чт','Пт','Сб'], pw:['Пн','Вт','Ср','Чт','Пт','Сб','Нд'],
-  leap:'Високосний день', year:'День року', noweek:'поза тижнем',
-  gr:'Григоріанський', ju:'Юліанський', cn:'Китайський', hb:'Єврейський', in:'Індуїстський', is:'Ісламський', pe:'Перський', co:'Коптський',
-  legend:'● — свято.', note:'Усі дати через JDN.',
-  hm:['Тішрей','Хешван','Кислев','Тевет','Шват','Адар','Нісан','Іяр','Сиван','Таммуз','Ав','Елул','Адар II'],
-  hml:['Тішрея','Хешвана','Кислева','Тевета','Швата','Адара','Нісана','Іяра','Сивана','Таммуза','Ава','Елула','Адара II'],
-  im2:['Чайтра','Вайшакха','Джʼєштха','Ашадха','Шравана','Бхадрапада','Ашвіна','Картіка','Маргаширша','Пауша','Магха','Пхальгуна'],
-  iml:['Чайтри','Вайшакхи','Джʼєштхи','Ашадхи','Шравани','Бхадрапади','Ашвіни','Картіки','Маргаширши','Пауши','Магхи','Пхальгуни'],
-  ism:['Мухаррам','Сафар','Рабі аль-авваль','Рабі ас-сані','Джумада аль-уля','Джумада ас-санія','Раджаб','Шаабан','Рамадан','Шавваль','Зуль-када','Зуль-хіджа'],
-  isml:['Мухаррама','Сафара','Рабі аль-авваля','Рабі ас-сані','Джумади аль-уля','Джумади ас-санії','Раджаба','Шаабана','Рамадана','Шавваля','Зуль-кади','Зуль-хіджі'],
-  pm:['Фарвардін','Ордібехешт','Хордад','Тір','Мордад','Шахрівар','Мехр','Абан','Азар','Дей','Бахман','Есфанд'],
-  pml:['фарвардіна','ордібехешта','хордада','тіра','мордада','шахрівара','мехра','абана','азара','дея','бахмана','есфанда'],
-  km:['Тот','Фаофі','Атір','Хояк','Тобі','Мешір','Паремхат','Пармуті','Пахонс','Паоні','Епіп','Мессорі','Епагомен'],
-  kml:['тота','фаофі','атіра','хояка','тобі','мешіра','паремхата','пармуті','пахонса','паоні','епіпа','мессорі','епагомена'],
-  jq:['Лічунь','Юйшуй','Цзінчже','Чуньфень','Цінмін','Гуюй','Ліся','Сяомань','Манчжун','Сячжи','Сяошу','Дашу','Ліцю','Чушу','Байлу','Цюфень','Ханьлу','Шуанцзян','Лідун','Сяосюе','Дасюе','Дунчжи','Сяохань','Дахань'],
-  H: { ny:'Новий рік', orx:'Різдво (православне)', lang:'День рідної мови', w:'День жінок', water:'Всесвітній день води', earth:'День Землі', lab:'День праці', env:'День довкілля', ch:'День захисту дітей', youth:'День молоді', peace:'День миру', teach:'День учителя', un:'День ООН', hr:'День прав людини', xm:'Різдво (католицьке)', ev:'Переддень Нового року', ew:'Великдень (західний)', eo:'Великдень (православний)', val:'День святого Валентина', father:'День батька', mother:'День матері', men:'Міжнародний чоловічий день', book:'День книги', health:'День здоровʼя', space:'День космонавтики', music:'День музики', disab:'День інвалідів', vol:'День волонтера', vdayE:'День Перемоги (Схід)', vdayW:'День Перемоги (Захід)', holocaust:'День памʼяті Голокосту', oceans:'День океанів', elderly:'День людей похилого віку', post:'День пошти', tv:'День телебачення', mountains:'День гір', migrants:'День мігрантів', peace2:'День миру та примирення', diwali:'Дівалі', holi:'Холі', eidF:'Ураза-байрам', eidA:'Курбан-байрам' },
-  tl:'Темна тема', tn:'Світла тема', lb:'Мова',
-  regions: { we:'Західна Європа', ee:'Східна Європа', af:'Африка', me:'Близький Схід', ca:'Центральна Азія', sa:'Південна Азія', sea:'Південно-Східна Азія', ea:'Східна Азія', am:'Америка', oc:'Океанія' }
-};
-/* ---------- id ---------- */
-L.id = {
-  ttl:'Kalender Tetap Internasional', t_in:'Tanggal untuk dikonversi', t_yr:'Tahun penuh',
-  s1:'Sol: Jun–Jul', s2:'Sol: Jul–Agu',
-  t_pk:'Kalender', t_res:'Hasil', t_hl:'Hari libur internasional', t_diff:'Selisih antara tanggal',
-  cg:'Gregorian', cj:'Julian', cc:'Tionghoa', ch:'Ibrani', ci:'Hindu', cm:'Islam', cp:'Persia', ck:'Koptik',
-  go:'Konversi', bad:'Tanggal ini tidak ada di kalender yang dipilih',
-  badyear:'Tahun harus antara 1 dan 9999', badseason:'Musim 1–24, hari 1–15',
-  copy:'Salin', share:'Bagikan', ics:'ICS',
-  copied:'Disalin', copyFail:'Gagal menyalin', linkCopied:'Tautan disalin', icsDone:'File ICS diunduh',
-  dDiff:'Total', dDays:'hari', dWeeks:'mgg.', dYMD:'Kalender', dYears:'th.', dMonths:'bln', dIFC:'Per KTI',
-  m:['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'],
-  mg:['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'],
-  im:['Januari','Februari','Maret','April','Mei','Juni','Sol','Juli','Agustus','September','Oktober','November','Desember'],
-  img:['Januari','Februari','Maret','April','Mei','Juni','Sol','Juli','Agustus','September','Oktober','November','Desember'],
-  wd:['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'],
-  ws:['Mg','Sn','Sl','Rb','Km','Jm','Sb'], pw:['Sn','Sl','Rb','Km','Jm','Sb','Mg'],
-  leap:'Hari Kabisat', year:'Hari Tahun', noweek:'di luar minggu',
-  gr:'Gregorian', ju:'Julian', cn:'Tionghoa', hb:'Ibrani', in:'Hindu', is:'Islam', pe:'Persia', co:'Koptik',
-  legend:'● — hari libur.', note:'Semua tanggal melalui JDN.',
-  hm:['Tishrei','Cheshvan','Kislev','Tevet','Shevat','Adar','Nisan','Iyar','Sivan','Tammuz','Av','Elul','Adar II'],
-  hml:['Tishrei','Cheshvan','Kislev','Tevet','Shevat','Adar','Nisan','Iyar','Sivan','Tammuz','Av','Elul','Adar II'],
-  im2:['Chaitra','Waisakha','Jyeshtha','Ashadha','Shravana','Bhadrapada','Asywin','Kartika','Margasirsha','Pausha','Magha','Phalguna'],
-  iml:['Chaitra','Waisakha','Jyeshtha','Ashadha','Shravana','Bhadrapada','Asywin','Kartika','Margasirsha','Pausha','Magha','Phalguna'],
-  ism:['Muharram','Safar','Rabiul Awal','Rabiul Akhir','Jumadil Awal','Jumadil Akhir','Rajab','Syaban','Ramadan','Syawal','Zulkaidah','Zulhijah'],
-  isml:['Muharram','Safar','Rabiul Awal','Rabiul Akhir','Jumadil Awal','Jumadil Akhir','Rajab','Syaban','Ramadan','Syawal','Zulkaidah','Zulhijah'],
-  pm:['Farvardin','Ordibehesht','Khordad','Tir','Mordad','Shahrivar','Mehr','Aban','Azar','Dey','Bahman','Esfand'],
-  pml:['Farvardin','Ordibehesht','Khordad','Tir','Mordad','Shahrivar','Mehr','Aban','Azar','Dey','Bahman','Esfand'],
-  km:['Thout','Paopi','Hathor','Koiak','Tobi','Meshir','Paremhat','Parmouti','Pashons','Paoni','Epip','Mesori','Epagomenal'],
-  kml:['Thout','Paopi','Hathor','Koiak','Tobi','Meshir','Paremhat','Parmouti','Pashons','Paoni','Epip','Mesori','Epagomenal'],
-  jq:['Lichun','Yushui','Jingzhe','Chunfen','Qingming','Guyu','Lixia','Xiaoman','Mangzhong','Xiazhi','Xiaoshu','Dashu','Liqiu','Chushu','Bailu','Qiufen','Hanlu','Shuangjiang','Lidong','Xiaoxue','Daxue','Dongzhi','Xiaohan','Dahan'],
-  H: { ny:'Tahun Baru', orx:'Natal (Ortodoks)', lang:'Hari Bahasa Ibu', w:'Hari Perempuan', water:'Hari Air Sedunia', earth:'Hari Bumi', lab:'Hari Buruh', env:'Hari Lingkungan Hidup', ch:'Hari Anak', youth:'Hari Pemuda', peace:'Hari Perdamaian', teach:'Hari Guru', un:'Hari PBB', hr:'Hari Hak Asasi Manusia', xm:'Natal (Barat)', ev:'Malam Tahun Baru', ew:'Paskah (Barat)', eo:'Paskah (Ortodoks)', val:'Hari Valentine', father:'Hari Ayah', mother:'Hari Ibu', men:'Hari Pria Internasional', book:'Hari Buku Sedunia', health:'Hari Kesehatan Sedunia', space:'Hari Penerbangan Antariksa', music:'Hari Musik Internasional', disab:'Hari Penyandang Disabilitas', vol:'Hari Relawan', vdayE:'Hari Kemenangan (Timur)', vdayW:'Hari Kemenangan (Barat)', holocaust:'Hari Peringatan Holocaust', oceans:'Hari Laut Sedunia', elderly:'Hari Lansia Internasional', post:'Hari Pos Sedunia', tv:'Hari Televisi Sedunia', mountains:'Hari Gunung Internasional', migrants:'Hari Migran Internasional', peace2:'Hari Perdamaian dan Rekonsiliasi', diwali:'Diwali', holi:'Holi', eidF:'Idul Fitri', eidA:'Idul Adha' },
-  tl:'Tema gelap', tn:'Tema terang', lb:'Bahasa',
-  regions: { we:'Eropa Barat', ee:'Eropa Timur', af:'Afrika', me:'Timur Tengah', ca:'Asia Tengah', sa:'Asia Selatan', sea:'Asia Tenggara', ea:'Asia Timur', am:'Amerika', oc:'Oseania' }
-};
-/* ---------- zh ---------- */
-L.zh = {
-  ttl:'国际固定历', t_in:'要转换的日期', t_yr:'全年',
-  s1:'Sol：6–7月', s2:'Sol：7–8月',
-  t_pk:'日历', t_res:'结果', t_hl:'年度国际节日', t_diff:'日期差',
-  cg:'公历', cj:'儒略历', cc:'中国历', ch:'希伯来历', ci:'印度历', cm:'伊斯兰历', cp:'波斯历', ck:'科普特历',
-  go:'转换', bad:'所选历法中不存在该日期',
-  badyear:'年份必须在 1 到 9999 之间', badseason:'节气 1–24，日 1–15',
-  copy:'复制', share:'分享', ics:'ICS',
-  copied:'已复制', copyFail:'复制失败', linkCopied:'链接已复制', icsDone:'ICS 文件已下载',
-  dDiff:'总计', dDays:'天', dWeeks:'周', dYMD:'日历', dYears:'年', dMonths:'月', dIFC:'按国际固定历',
-  m:['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
-  mg:['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
-  im:['一月','二月','三月','四月','五月','六月','Sol','七月','八月','九月','十月','十一月','十二月'],
-  img:['一月','二月','三月','四月','五月','六月','Sol','七月','八月','九月','十月','十一月','十二月'],
-  wd:['星期日','星期一','星期二','星期三','星期四','星期五','星期六'],
-  ws:['日','一','二','三','四','五','六'], pw:['一','二','三','四','五','六','日'],
-  leap:'闰日', year:'年日', noweek:'周外',
-  gr:'公历', ju:'儒略历', cn:'中国阳历', hb:'希伯来历', in:'印度历', is:'伊斯兰历', pe:'波斯历', co:'科普特历',
-  legend:'● — 节日。', note:'所有日期通过 JDN 转换。',
-  hm:['提斯利月','玛西班月','基斯流月','提别月','细罢特月','亚达月','尼散月','以珥月','西弯月','搭模斯月','埃波月','以禄月','闰亚达月'],
-  hml:['提斯利月','玛西班月','基斯流月','提别月','细罢特月','亚达月','尼散月','以珥月','西弯月','搭模斯月','埃波月','以禄月','闰亚达月'],
-  im2:['制呾罗月','吠舍佉月','逝瑟吒月','頞沙荼月','室罗伐拿月','婆达罗钵陀月','頞湿缚庾阇月','迦剌底迦月','磨伽始罗月','报沙月','磨祛月','颇勒窭拿月'],
-  iml:['制呾罗月','吠舍佉月','逝瑟吒月','頞沙荼月','室罗伐拿月','婆达罗钵陀月','頞湿缚庾阇月','迦剌底迦月','磨伽始罗月','报沙月','磨祛月','颇勒窭拿月'],
-  ism:['穆哈兰姆月','色法尔月','赖比尔·敖外鲁月','赖比尔·阿色尼月','主马达·敖外鲁月','主马达·阿色尼月','赖哲卜月','舍尔邦月','赖买丹月','闪瓦鲁月','都尔喀尔德月','都尔黑哲月'],
-  isml:['穆哈兰姆月','色法尔月','赖比尔·敖外鲁月','赖比尔·阿色尼月','主马达·敖外鲁月','主马达·阿色尼月','赖哲卜月','舍尔邦月','赖买丹月','闪瓦鲁月','都尔喀尔德月','都尔黑哲月'],
-  pm:['法尔瓦丁月','奥尔迪贝赫什特月','霍尔达德月','提尔月','莫尔达德月','沙赫里瓦尔月','梅赫尔月','阿班月','阿扎尔月','德伊月','巴赫曼月','埃斯凡德月'],
-  pml:['法尔瓦丁月','奥尔迪贝赫什特月','霍尔达德月','提尔月','莫尔达德月','沙赫里瓦尔月','梅赫尔月','阿班月','阿扎尔月','德伊月','巴赫曼月','埃斯凡德月'],
-  km:['托特月','帕奥皮月','哈托尔月','科亚克月','托比月','梅希尔月','帕伦哈特月','帕尔穆提月','帕松斯月','帕奥尼月','埃皮普月','梅索里月','埃帕戈梅纳月'],
-  kml:['托特月','帕奥皮月','哈托尔月','科亚克月','托比月','梅希尔月','帕伦哈特月','帕尔穆提月','帕松斯月','帕奥尼月','埃皮普月','梅索里月','埃帕戈梅纳月'],
-  jq:['立春','雨水','惊蛰','春分','清明','谷雨','立夏','小满','芒种','夏至','小暑','大暑','立秋','处暑','白露','秋分','寒露','霜降','立冬','小雪','大雪','冬至','小寒','大寒'],
-  H: { ny:'元旦', orx:'圣诞节（东正教）', lang:'母语日', w:'妇女节', water:'世界水日', earth:'地球日', lab:'劳动节', env:'世界环境日', ch:'儿童节', youth:'青年节', peace:'和平日', teach:'教师节', un:'联合国日', hr:'人权日', xm:'圣诞节（西方）', ev:'新年前夜', ew:'复活节（西方）', eo:'复活节（东正教）', val:'情人节', father:'父亲节', mother:'母亲节', men:'国际男人节', book:'世界读书日', health:'世界卫生日', space:'载人航天日', music:'国际音乐日', disab:'国际残疾人日', vol:'国际志愿者日', vdayE:'胜利日（东方）', vdayW:'胜利日（西方）', holocaust:'大屠杀纪念日', oceans:'世界海洋日', elderly:'国际老年人日', post:'世界邮政日', tv:'世界电视日', mountains:'国际山岳日', migrants:'国际移民日', peace2:'和平与和解日', diwali:'排灯节', holi:'洒红节', eidF:'开斋节', eidA:'古尔邦节' },
-  tl:'深色主题', tn:'浅色主题', lb:'语言',
-  regions: { we:'西欧', ee:'东欧', af:'非洲', me:'中东', ca:'中亚', sa:'南亚', sea:'东南亚', ea:'东亚', am:'美洲', oc:'大洋洲' }
-};
-/* ---------- ja ---------- */
-L.ja = {
-  ttl:'国際固定暦', t_in:'変換する日付', t_yr:'年間',
-  s1:'Sol: 6–7月', s2:'Sol: 7–8月',
-  t_pk:'カレンダー', t_res:'結果', t_hl:'年間の国際祝日', t_diff:'日付の差',
-  cg:'グレゴリオ暦', cj:'ユリウス暦', cc:'中国暦', ch:'ヘブライ暦', ci:'ヒンドゥー暦', cm:'イスラム暦', cp:'ペルシア暦', ck:'コプト暦',
-  go:'変換', bad:'選択した暦にこの日付はありません',
-  badyear:'年は1〜9999の範囲で入力してください', badseason:'季節1〜24、日1〜15',
-  copy:'コピー', share:'共有', ics:'ICS',
-  copied:'コピーしました', copyFail:'コピー失敗', linkCopied:'リンクをコピーしました', icsDone:'ICSファイルをダウンロードしました',
-  dDiff:'合計', dDays:'日', dWeeks:'週', dYMD:'暦', dYears:'年', dMonths:'ヶ月', dIFC:'IFC換算',
-  m:['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'],
-  mg:['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'],
-  im:['1月','2月','3月','4月','5月','6月','Sol','7月','8月','9月','10月','11月','12月'],
-  img:['1月','2月','3月','4月','5月','6月','Sol','7月','8月','9月','10月','11月','12月'],
-  wd:['日曜日','月曜日','火曜日','水曜日','木曜日','金曜日','土曜日'],
-  ws:['日','月','火','水','木','金','土'], pw:['月','火','水','木','金','土','日'],
-  leap:'閏日', year:'年末日', noweek:'週外',
-  gr:'グレゴリオ暦', ju:'ユリウス暦', cn:'中国暦', hb:'ヘブライ暦', in:'ヒンドゥー暦', is:'イスラム暦', pe:'ペルシア暦', co:'コプト暦',
-  legend:'● — 祝日。', note:'すべての日付はJDN経由。',
-  hm:['ティシュレイ','ヘシュヴァン','キスレヴ','テヴェト','シュヴァト','アダル','ニサン','イヤル','シヴァン','タムズ','アヴ','エルル','アダルII'],
-  hml:['ティシュレイ','ヘシュヴァン','キスレヴ','テヴェト','シュヴァト','アダル','ニサン','イヤル','シヴァン','タムズ','アヴ','エルル','アダルII'],
-  im2:['チャイトラ','ヴァイシャーカ','ジェーシュタ','アーシャーダ','シュラーヴァナ','バードラパダ','アシュヴィン','カールティカ','マールガシールシャ','パウシャ','マーガ','パールグナ'],
-  iml:['チャイトラ','ヴァイシャーカ','ジェーシュタ','アーシャーダ','シュラーヴァナ','バードラパダ','アシュヴィン','カールティカ','マールガシールシャ','パウシャ','マーガ','パールグナ'],
-  ism:['ムハッラム','サファル','ラビー・アル＝アウワル','ラビー・アッ＝サーニー','ジュマーダー・アル＝ウーラー','ジュマーダー・アッ＝サーニヤ','ラジャブ','シャアバーン','ラマダーン','シャッワール','ズル・カアダ','ズル・ヒッジャ'],
-  isml:['ムハッラム','サファル','ラビー・アル＝アウワル','ラビー・アッ＝サーニー','ジュマーダー・アル＝ウーラー','ジュマーダー・アッ＝サーニヤ','ラジャブ','シャアバーン','ラマダーン','シャッワール','ズル・カアダ','ズル・ヒッジャ'],
-  pm:['ファルヴァルディーン','オルディーベヘシュト','ホルダード','ティール','モルダード','シャフリーヴァル','メフル','アーバーン','アーザル','デイ','バフマン','エスファンド'],
-  pml:['ファルヴァルディーン','オルディーベヘシュト','ホルダード','ティール','モルダード','シャフリーヴァル','メフル','アーバーン','アーザル','デイ','バフマン','エスファンド'],
-  km:['トート','パオピ','ハトール','コイアック','トビ','メシル','パレムハト','パルムーティ','パションス','パオニ','エピプ','メソリ','エパゴメナ'],
-  kml:['トート','パオピ','ハトール','コイアック','トビ','メシル','パレムハト','パルムーティ','パションス','パオニ','エピプ','メソリ','エパゴメナ'],
-  jq:['立春','雨水','啓蟄','春分','清明','穀雨','立夏','小満','芒種','夏至','小暑','大暑','立秋','処暑','白露','秋分','寒露','霜降','立冬','小雪','大雪','冬至','小寒','大寒'],
-  H: { ny:'元日', orx:'クリスマス（正教）', lang:'母国語の日', w:'国際女性デー', water:'世界水の日', earth:'アースデイ', lab:'メーデー', env:'世界環境デー', ch:'こどもの日', youth:'青年の日', peace:'国際平和デー', teach:'世界教師デー', un:'国連の日', hr:'人権デー', xm:'クリスマス（西方）', ev:'大晦日', ew:'イースター（西方）', eo:'イースター（正教）', val:'バレンタインデー', father:'父の日', mother:'母の日', men:'国際男性デー', book:'世界本の日', health:'世界保健デー', space:'有人宇宙飛行の日', music:'国際音楽デー', disab:'障害者の日', vol:'ボランティアの日', vdayE:'戦勝記念日（東）', vdayW:'戦勝記念日（西）', holocaust:'ホロコースト犠牲者を想起する日', oceans:'世界海洋デー', elderly:'高齢者の日', post:'世界郵便デー', tv:'世界テレビデー', mountains:'国際山岳デー', migrants:'国際移住者デー', peace2:'平和と和解の日', diwali:'ディワリ', holi:'ホーリー', eidF:'イード・アル＝フィトル', eidA:'イード・アル＝アドハー' },
-  tl:'ダークテーマ', tn:'ライトテーマ', lb:'言語',
-  regions: { we:'西ヨーロッパ', ee:'東ヨーロッパ', af:'アフリカ', me:'中東', ca:'中央アジア', sa:'南アジア', sea:'東南アジア', ea:'東アジア', am:'アメリカ', oc:'オセアニア' }
-};
-/* ---------- ko ---------- */
-L.ko = {
-  ttl:'국제 고정 달력', t_in:'변환할 날짜', t_yr:'연간',
-  s1:'Sol: 6–7월', s2:'Sol: 7–8월',
-  t_pk:'달력', t_res:'결과', t_hl:'연간 국제 공휴일', t_diff:'날짜 차이',
-  cg:'그레고리력', cj:'율리우스력', cc:'중국력', ch:'히브리력', ci:'힌두력', cm:'이슬람력', cp:'페르시아력', ck:'콥트력',
-  go:'변환', bad:'선택한 달력에 이 날짜가 없습니다',
-  badyear:'연도는 1~9999 사이여야 합니다', badseason:'계절 1–24, 일 1–15',
-  copy:'복사', share:'공유', ics:'ICS',
-  copied:'복사됨', copyFail:'복사 실패', linkCopied:'링크 복사됨', icsDone:'ICS 파일 다운로드됨',
-  dDiff:'합계', dDays:'일', dWeeks:'주', dYMD:'달력', dYears:'년', dMonths:'개월', dIFC:'IFC 기준',
-  m:['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
-  mg:['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
-  im:['1월','2월','3월','4월','5월','6월','Sol','7월','8월','9월','10월','11월','12월'],
-  img:['1월','2월','3월','4월','5월','6월','Sol','7월','8월','9월','10월','11월','12월'],
-  wd:['일요일','월요일','화요일','수요일','목요일','금요일','토요일'],
-  ws:['일','월','화','수','목','금','토'], pw:['월','화','수','목','금','토','일'],
-  leap:'윤일', year:'연말일', noweek:'주 외',
-  gr:'그레고리력', ju:'율리우스력', cn:'중국력', hb:'히브리력', in:'힌두력', is:'이슬람력', pe:'페르시아력', co:'콥트력',
-  legend:'● — 공휴일.', note:'모든 날짜는 JDN을 통해.',
-  hm:['티슈레이','헤슈반','키슬레브','테베트','셰바트','아다르','니산','이야르','시반','탐무즈','아브','엘룰','아다르 II'],
-  hml:['티슈레이','헤슈반','키슬레브','테베트','셰바트','아다르','니산','이야르','시반','탐무즈','아브','엘룰','아다르 II'],
-  im2:['차이트라','바이샤카','제슈타','아샤다','슈라바나','바드라파다','아슈빈','카르티카','마르가시르샤','파우샤','마가','팔구나'],
-  iml:['차이트라','바이샤카','제슈타','아샤다','슈라바나','바드라파다','아슈빈','카르티카','마르가시르샤','파우샤','마가','팔구나'],
-  ism:['무하람','사파르','라비 알 아우왈','라비 알 타니','주마다 알 우라','주마다 알 아키라','라자브','샤아반','라마단','샤왈','둘 카다','둘 히자'],
-  isml:['무하람','사파르','라비 알 아우왈','라비 알 타니','주마다 알 우라','주마다 알 아키라','라자브','샤아반','라마단','샤왈','둘 카다','둘 히자'],
-  pm:['파르바르딘','오르디베헤슈트','호르다드','티르','모르다드','샤흐리바르','메흐르','아반','아자르','데이','바흐만','에스판드'],
-  pml:['파르바르딘','오르디베헤슈트','호르다드','티르','모르다드','샤흐리바르','메흐르','아반','아자르','데이','바흐만','에스판드'],
-  km:['토트','파오피','하토르','코이악','토비','메시르','파렘하트','파르무티','파숀스','파오니','에피프','메소리','에파고메날'],
-  kml:['토트','파오피','하토르','코이악','토비','메시르','파렘하트','파르무티','파숀스','파오니','에피프','메소리','에파고메날'],
-  jq:['입춘','우수','경칩','춘분','청명','곡우','입하','소만','망종','하지','소서','대서','입추','처서','백로','추분','한로','상강','입동','소설','대설','동지','소한','대한'],
-  H: { ny:'신정', orx:'크리스마스 (정교회)', lang:'모국어의 날', w:'세계 여성의 날', water:'세계 물의 날', earth:'지구의 날', lab:'노동절', env:'세계 환경의 날', ch:'어린이날', youth:'청년의 날', peace:'세계 평화의 날', teach:'스승의 날', un:'유엔의 날', hr:'세계 인권의 날', xm:'크리스마스 (서방)', ev:'섣달그믐', ew:'부활절 (서방)', eo:'부활절 (정교회)', val:'밸런타인데이', father:'아버지의 날', mother:'어머니의 날', men:'국제 남성의 날', book:'세계 책의 날', health:'세계 보건의 날', space:'유인 우주 비행의 날', music:'국제 음악의 날', disab:'세계 장애인의 날', vol:'자원봉사자의 날', vdayE:'전승기념일 (동방)', vdayW:'전승기념일 (서방)', holocaust:'홀로코스트 추모일', oceans:'세계 해양의 날', elderly:'노인의 날', post:'세계 우편의 날', tv:'세계 텔레비전의 날', mountains:'세계 산의 날', migrants:'국제 이주자의 날', peace2:'평화와 화해의 날', diwali:'디왈리', holi:'홀리', eidF:'이드 알피트르', eidA:'이드 알아드하' },
-  tl:'어두운 테마', tn:'밝은 테마', lb:'언어',
-  regions: { we:'서유럽', ee:'동유럽', af:'아프리카', me:'중동', ca:'중앙아시아', sa:'남아시아', sea:'동남아시아', ea:'동아시아', am:'아메리카', oc:'오세아니아' }
-};
-/* ---------- hi ---------- */
-L.hi = {
-  ttl:'अंतर्राष्ट्रीय निश्चित कैलेंडर', t_in:'परिवर्तित करने की तिथि', t_yr:'पूरा वर्ष',
-  s1:'Sol: जून–जुलाई', s2:'Sol: जुलाई–अगस्त',
-  t_pk:'कैलेंडर', t_res:'परिणाम', t_hl:'वर्ष के अंतर्राष्ट्रीय अवकाश', t_diff:'तिथियों के बीच अंतर',
-  cg:'ग्रेगोरियन', cj:'जूलियन', cc:'चीनी', ch:'हिब्रू', ci:'हिंदू', cm:'इस्लामी', cp:'फ़ारसी', ck:'कॉप्टिक',
-  go:'परिवर्तित करें', bad:'चयनित कैलेंडर में यह तिथि मौजूद नहीं है',
-  badyear:'वर्ष 1 से 9999 के बीच होना चाहिए', badseason:'ऋतु 1–24, दिन 1–15',
-  copy:'कॉपी', share:'साझा करें', ics:'ICS',
-  copied:'कॉपी किया गया', copyFail:'कॉपी विफल', linkCopied:'लिंक कॉपी किया गया', icsDone:'ICS फ़ाइल डाउनलोड हुई',
-  dDiff:'कुल', dDays:'दिन', dWeeks:'सप्ताह', dYMD:'कैलेंडर', dYears:'वर्ष', dMonths:'माह', dIFC:'IFC अनुसार',
-  m:['जनवरी','फ़रवरी','मार्च','अप्रैल','मई','जून','जुलाई','अगस्त','सितंबर','अक्टूबर','नवंबर','दिसंबर'],
-  mg:['जनवरी','फ़रवरी','मार्च','अप्रैल','मई','जून','जुलाई','अगस्त','सितंबर','अक्टूबर','नवंबर','दिसंबर'],
-  im:['जनवरी','फ़रवरी','मार्च','अप्रैल','मई','जून','Sol','जुलाई','अगस्त','सितंबर','अक्टूबर','नवंबर','दिसंबर'],
-  img:['जनवरी','फ़रवरी','मार्च','अप्रैल','मई','जून','Sol','जुलाई','अगस्त','सितंबर','अक्टूबर','नवंबर','दिसंबर'],
-  wd:['रविवार','सोमवार','मंगलवार','बुधवार','गुरुवार','शुक्रवार','शनिवार'],
-  ws:['रवि','सोम','मंगल','बुध','गुरु','शुक्र','शनि'], pw:['सोम','मंगल','बुध','गुरु','शुक्र','शनि','रवि'],
-  leap:'अधिवर्ष दिवस', year:'वर्ष दिवस', noweek:'सप्ताह से बाहर',
-  gr:'ग्रेगोरियन', ju:'जूलियन', cn:'चीनी', hb:'हिब्रू', in:'हिंदू', is:'इस्लामी', pe:'फ़ारसी', co:'कॉप्टिक',
-  legend:'● — अवकाश।', note:'सभी तिथियाँ JDN के माध्यम से।',
-  hm:['तिश्रेई','चेशवान','किसलेव','तेवेत','शेवात','अदार','निसान','इयार','सिवान','तम्मूज़','अव','एलुल','अदार II'],
-  hml:['तिश्रेई','चेशवान','किसलेव','तेवेत','शेवात','अदार','निसान','इयार','सिवान','तम्मूज़','अव','एलुल','अदार II'],
-  im2:['चैत्र','वैशाख','ज्येष्ठ','आषाढ़','श्रावण','भाद्रपद','आश्विन','कार्तिक','मार्गशीर्ष','पौष','माघ','फाल्गुन'],
-  iml:['चैत्र','वैशाख','ज्येष्ठ','आषाढ़','श्रावण','भाद्रपद','आश्विन','कार्तिक','मार्गशीर्ष','पौष','माघ','फाल्गुन'],
-  ism:['मुहर्रम','सफ़र','रबी अल-अव्वल','रबी अल-सानी','जुमादा अल-उला','जुमादा अल-अखिरा','रजब','शाबान','रमज़ान','शव्वाल','ज़ुल-क़ादा','ज़ुल-हिज्जा'],
-  isml:['मुहर्रम','सफ़र','रबी अल-अव्वल','रबी अल-सानी','जुमादा अल-उला','जुमादा अल-अखिरा','रजब','शाबान','रमज़ान','शव्वाल','ज़ुल-क़ादा','ज़ुल-हिज्जा'],
-  pm:['फ़रवर्दीन','ओर्दीबेहेश्त','ख़ोर्दाद','तीर','मोर्दाद','शहरीवर','मेहर','अबान','आज़र','दे','बहमन','एसफ़ंद'],
-  pml:['फ़रवर्दीन','ओर्दीबेहेश्त','ख़ोर्दाद','तीर','मोर्दाद','शहरीवर','मेहर','अबान','आज़र','दे','बहमन','एसफ़ंद'],
-  km:['थोउत','पाओपी','हाथोर','कोइयाक','तोबी','मेशीर','पारेमहात','पारमौती','पाशोंस','पाओनी','एपिप','मेसोरी','एपागोमेनल'],
-  kml:['थोउत','पाओपी','हाथोर','कोइयाक','तोबी','मेशीर','पारेमहात','पारमौती','पाशोंस','पाओनी','एपिप','मेसोरी','एपागोमेनल'],
-  jq:['लिचुन','युशुई','जिंगझे','चुन्फेन','किंगमिंग','गुयु','लिक्सिया','शियाओमान','मांगझोंग','शियाझी','शियाओशु','दाशु','लिकिउ','चुशु','बाईलू','किउफेन','हानलू','शुआंगजियांग','लिडोंग','शियाओशुई','दाशुई','डोंगझी','शियाओहान','दाहान'],
-  H: { ny:'नया साल', orx:'क्रिसमस (ऑर्थोडॉक्स)', lang:'मातृभाषा दिवस', w:'महिला दिवस', water:'विश्व जल दिवस', earth:'पृथ्वी दिवस', lab:'मजदूर दिवस', env:'पर्यावरण दिवस', ch:'बाल दिवस', youth:'युवा दिवस', peace:'शांति दिवस', teach:'शिक्षक दिवस', un:'संयुक्त राष्ट्र दिवस', hr:'मानवाधिकार दिवस', xm:'क्रिसमस (पश्चिमी)', ev:'नए साल की पूर्वसंध्या', ew:'ईस्टर (पश्चिमी)', eo:'ईस्टर (ऑर्थोडॉक्स)', val:'वैलेंटाइन दिवस', father:'पितृ दिवस', mother:'मातृ दिवस', men:'अंतर्राष्ट्रीय पुरुष दिवस', book:'विश्व पुस्तक दिवस', health:'विश्व स्वास्थ्य दिवस', space:'मानव अंतरिक्ष उड़ान दिवस', music:'अंतर्राष्ट्रीय संगीत दिवस', disab:'विकलांग दिवस', vol:'स्वयंसेवक दिवस', vdayE:'विजय दिवस (पूर्व)', vdayW:'विजय दिवस (पश्चिम)', holocaust:'प्रलय स्मृति दिवस', oceans:'विश्व महासागर दिवस', elderly:'वृद्धजन दिवस', post:'विश्व डाक दिवस', tv:'विश्व टेलीविजन दिवस', mountains:'अंतर्राष्ट्रीय पर्वत दिवस', migrants:'अंतर्राष्ट्रीय प्रवासी दिवस', peace2:'शांति और सुलह दिवस', diwali:'दिवाली', holi:'होली', eidF:'ईद उल-फ़ितर', eidA:'ईद उल-अज़हा' },
-  tl:'गहरा थीम', tn:'हल्का थीम', lb:'भाषा',
-  regions: { we:'पश्चिमी यूरोप', ee:'पूर्वी यूरोप', af:'अफ़्रीका', me:'मध्य पूर्व', ca:'मध्य एशिया', sa:'दक्षिण एशिया', sea:'दक्षिण-पूर्व एशिया', ea:'पूर्वी एशिया', am:'अमेरिका', oc:'ओशिनिया' }
-};
-/* ---------- he ---------- */
-L.he = {
-  ttl:'לוח השנה הקבוע הבינלאומי', t_in:'תאריך להמרה', t_yr:'שנה שלמה',
-  s1:'Sol: יוני–יולי', s2:'Sol: יולי–אוגוסט',
-  t_pk:'לוח שנה', t_res:'תוצאה', t_hl:'חגים בינלאומיים של השנה', t_diff:'הפרש בין תאריכים',
-  cg:'גרגוריאני', cj:'יוליאני', cc:'סיני', ch:'עברי', ci:'הינדי', cm:'איסלאמי', cp:'פרסי', ck:'קופטי',
-  go:'המר', bad:'תאריך זה אינו קיים בלוח שנבחר',
-  badyear:'השנה חייבת להיות בין 1 ל-9999', badseason:'עונה 1–24, יום 1–15',
-  copy:'העתק', share:'שתף', ics:'ICS',
-  copied:'הועתק', copyFail:'ההעתקה נכשלה', linkCopied:'הקישור הועתק', icsDone:'קובץ ICS הורד',
-  dDiff:'סה"כ', dDays:'ימים', dWeeks:'שבועות', dYMD:'לוח שנה', dYears:'שנים', dMonths:'חודשים', dIFC:'לפי IFC',
-  m:['ינואר','פברואר','מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'],
-  mg:['בינואר','בפברואר','במרץ','באפריל','במאי','ביוני','ביולי','באוגוסט','בספטמבר','באוקטובר','בנובמבר','בדצמבר'],
-  im:['ינואר','פברואר','מרץ','אפריל','מאי','יוני','Sol','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'],
-  img:['בינואר','בפברואר','במרץ','באפריל','במאי','ביוני','ב-Sol','ביולי','באוגוסט','בספטמבר','באוקטובר','בנובמבר','בדצמבר'],
-  wd:['יום ראשון','יום שני','יום שלישי','יום רביעי','יום חמישי','יום שישי','שבת'],
-  ws:['א\'','ב\'','ג\'','ד\'','ה\'','ו\'','ש\''], pw:['ב\'','ג\'','ד\'','ה\'','ו\'','ש\'','א\''],
-  leap:'יום מעובר', year:'יום השנה', noweek:'מחוץ לשבוע',
-  gr:'גרגוריאני', ju:'יוליאני', cn:'סיני', hb:'עברי', in:'הינדי', is:'איסלאמי', pe:'פרסי', co:'קופטי',
-  legend:'● — חג.', note:'כל התאריכים דרך JDN.',
-  hm:['תשרי','חשוון','כסלו','טבת','שבט','אדר','ניסן','אייר','סיוון','תמוז','אב','אלול','אדר ב\''],
-  hml:['תשרי','חשוון','כסלו','טבת','שבט','אדר','ניסן','אייר','סיוון','תמוז','אב','אלול','אדר ב\''],
-  im2:['צ\'ייטרה','ואישארה','ג\'יישטה','אשאדה','שרבנה','בהדרפאדה','אשווין','קרטיקה','מרגשירשה','פאושה','מגהה','פאלגונה'],
-  iml:['צ\'ייטרה','ואישארה','ג\'יישטה','אשאדה','שרבנה','בהדרפאדה','אשווין','קרטיקה','מרגשירשה','פאושה','מגהה','פאלגונה'],
-  ism:['מוחרם','צפר','רביע אל-אוול','רביע א-ת\'אני','ג\'ומאדה אל-אולא','ג\'ומאדה א-ת\'אניה','רג\'ב','שעבאן','רמדאן','שוואל','ד\'ו אל-קעדה','ד\'ו אל-חיג\'ה'],
-  isml:['מוחרם','צפר','רביע אל-אוול','רביע א-ת\'אני','ג\'ומאדה אל-אולא','ג\'ומאדה א-ת\'אניה','רג\'ב','שעבאן','רמדאן','שוואל','ד\'ו אל-קעדה','ד\'ו אל-חיג\'ה'],
-  pm:['פרברדין','אורדיבהשת','חורדד','תיר','מורדד','שהריוור','מהר','אבאן','אזר','די','בהמן','אספנד'],
-  pml:['פרברדין','אורדיבהשת','חורדד','תיר','מורדד','שהריוור','מהר','אבאן','אזר','די','בהמן','אספנד'],
-  km:['תות','פאופי','התור','קויאק','טובי','משיר','פרהמהת','פרמוטי','פשונס','פאוני','אפיפ','מסורי','אפגומנל'],
-  kml:['תות','פאופי','התור','קויאק','טובי','משיר','פרהמהת','פרמוטי','פשונס','פאוני','אפיפ','מסורי','אפגומנל'],
-  jq:['ליצ\'ון','יושוי','ג\'ינגג\'ה','צ\'ונפן','צ\'ינגמינג','גויו','ליסיה','שיאומן','מנג\'ונג','שיאג\'י','שיאושו','דאשו','ליצ\'יו','צ\'ושו','באילו','צ\'יופן','חנלו','שואנג\'יאנג','לידונג','שיאושואה','דאשואה','דונג\'י','שיאוחן','דאחן'],
-  H: { ny:'ראש השנה', orx:'חג המולד (אורתודוקסי)', lang:'יום שפת האם', w:'יום האישה', water:'יום המים העולמי', earth:'יום כדור הארץ', lab:'יום העבודה', env:'יום איכות הסביבה', ch:'יום הילד', youth:'יום הנוער', peace:'יום השלום', teach:'יום המורה', un:'יום האו"ם', hr:'יום זכויות האדם', xm:'חג המולד (מערבי)', ev:'ערב ראש השנה', ew:'פסחא (מערבי)', eo:'פסחא (אורתודוקסי)', val:'יום ולנטיין', father:'יום האב', mother:'יום האם', men:'יום הגבר הבינלאומי', book:'יום הספר העולמי', health:'יום הבריאות העולמי', space:'יום הטיסה בחלל', music:'יום המוזיקה הבינלאומי', disab:'יום הנכים', vol:'יום המתנדב', vdayE:'יום הניצחון (מזרח)', vdayW:'יום הניצחון (מערב)', holocaust:'יום השואה', oceans:'יום האוקיינוסים', elderly:'יום הקשישים', post:'יום הדואר העולמי', tv:'יום הטלוויזיה העולמי', mountains:'יום ההרים הבינלאומי', migrants:'יום המהגרים הבינלאומי', peace2:'יום השלום והפיוס', diwali:'דיוואלי', holi:'הולי', eidF:'עיד אל-פיטר', eidA:'עיד אל-אדחא' },
-  tl:'ערכת נושא כהה', tn:'ערכת נושא בהירה', lb:'שפה',
-  regions: { we:'מערב אירופה', ee:'מזרח אירופה', af:'אפריקה', me:'המזרח התיכון', ca:'מרכז אסיה', sa:'דרום אסיה', sea:'דרום-מזרח אסיה', ea:'מזרח אסיה', am:'אמריקה', oc:'אוקיאניה' }
-};
-/* ---------- ar ---------- */
-L.ar = {
-  ttl:'التقويم الثابت الدولي', t_in:'التاريخ للتحويل', t_yr:'السنة الكاملة',
-  s1:'Sol: يونيو–يوليو', s2:'Sol: يوليو–أغسطس',
-  t_pk:'التقويم', t_res:'النتيجة', t_hl:'الأعياد الدولية للسنة', t_diff:'الفرق بين التواريخ',
-  cg:'الميلادي', cj:'اليولياني', cc:'الصيني', ch:'العبري', ci:'الهندوسي', cm:'الإسلامي', cp:'الفارسي', ck:'القبطي',
-  go:'تحويل', bad:'هذا التاريخ غير موجود في التقويم المختار',
-  badyear:'يجب أن تكون السنة بين 1 و 9999', badseason:'الموسم 1–24، اليوم 1–15',
-  copy:'نسخ', share:'مشاركة', ics:'ICS',
-  copied:'تم النسخ', copyFail:'فشل النسخ', linkCopied:'تم نسخ الرابط', icsDone:'تم تنزيل ملف ICS',
-  dDiff:'الإجمالي', dDays:'أيام', dWeeks:'أسابيع', dYMD:'تقويمي', dYears:'س.', dMonths:'شهر', dIFC:'حسب IFC',
-  m:['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'],
-  mg:['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'],
-  im:['يناير','فبراير','مارس','أبريل','مايو','يونيو','Sol','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'],
-  img:['يناير','فبراير','مارس','أبريل','مايو','يونيو','Sol','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'],
-  wd:['الأحد','الإثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'],
-  ws:['أحد','إثن','ثلا','أرب','خمي','جمع','سبت'], pw:['إثن','ثلا','أرب','خمي','جمع','سبت','أحد'],
-  leap:'اليوم الكبيس', year:'يوم السنة', noweek:'خارج الأسبوع',
-  gr:'الميلادي', ju:'اليولياني', cn:'الصيني الشمسي', hb:'العبري', in:'الهندوسي', is:'الإسلامي', pe:'الفارسي', co:'القبطي',
-  legend:'● — عيد.', note:'جميع التواريخ عبر JDN.',
-  hm:['تيشري','حشفان','كيسليف','طيفيت','شفاط','أدار','نيسان','إيار','سيفان','تموز','آب','إيلول','أدار الثاني'],
-  hml:['تيشري','حشفان','كيسليف','طيفيت','شفاط','أدار','نيسان','إيار','سيفان','تموز','آب','إيلول','أدار الثاني'],
-  im2:['تشايترا','فايشاكا','جيشثا','أشادا','شرافانا','بهادرابادا','أشفين','كارتيكا','مارغاشيرشا','باوشا','ماغا','فالغونا'],
-  iml:['تشايترا','فايشاكا','جيشثا','أشادا','شرافانا','بهادرابادا','أشفين','كارتيكا','مارغاشيرشا','باوشا','ماغا','فالغونا'],
-  ism:['محرم','صفر','ربيع الأول','ربيع الثاني','جمادى الأولى','جمادى الآخرة','رجب','شعبان','رمضان','شوال','ذو القعدة','ذو الحجة'],
-  isml:['محرم','صفر','ربيع الأول','ربيع الثاني','جمادى الأولى','جمادى الآخرة','رجب','شعبان','رمضان','شوال','ذو القعدة','ذو الحجة'],
-  pm:['فروردين','أرديبهشت','خرداد','تير','مرداد','شهريور','مهر','آبان','آذر','دي','بهمن','اسفند'],
-  pml:['فروردين','أرديبهشت','خرداد','تير','مرداد','شهريور','مهر','آبان','آذر','دي','بهمن','اسفند'],
-  km:['توت','بابه','هاتور','كياك','طوبة','أمشير','برمهات','برمودة','بشنس','بؤونة','أبيب','مسرى','نسيء'],
-  kml:['توت','بابه','هاتور','كياك','طوبة','أمشير','برمهات','برمودة','بشنس','بؤونة','أبيب','مسرى','نسيء'],
-  jq:['لي تشون','يو شوي','جينغ تشه','تشون فن','تشينغ مينغ','قو يو','لي شيا','شياو مان','مانغ تشونغ','شيا تشي','شياو شو','دا شو','لي تشيو','تشو شو','باي لو','تشيو فن','هان لو','شوانغ جيانغ','لي دونغ','شياو شيويه','دا شيويه','دونغ تشي','شياو هان','دا هان'],
-  H: { ny:'رأس السنة', orx:'عيد الميلاد (الأرثوذكسي)', lang:'يوم اللغة الأم', w:'يوم المرأة', water:'اليوم العالمي للمياه', earth:'يوم الأرض', lab:'عيد العمال', env:'يوم البيئة', ch:'يوم الطفل', youth:'يوم الشباب', peace:'يوم السلام', teach:'يوم المعلم', un:'يوم الأمم المتحدة', hr:'يوم حقوق الإنسان', xm:'عيد الميلاد (الغربي)', ev:'ليلة رأس السنة', ew:'عيد الفصح (الغربي)', eo:'عيد الفصح (الأرثوذكسي)', val:'عيد الحب', father:'عيد الأب', mother:'عيد الأم', men:'اليوم العالمي للرجل', book:'اليوم العالمي للكتاب', health:'يوم الصحة العالمي', space:'يوم رحلات الفضاء', music:'اليوم العالمي للموسيقى', disab:'اليوم العالمي للمعاقين', vol:'يوم المتطوعين', vdayE:'يوم النصر (الشرق)', vdayW:'يوم النصر (الغرب)', holocaust:'يوم ذكرى المحرقة', oceans:'اليوم العالمي للمحيطات', elderly:'يوم المسنين', post:'اليوم العالمي للبريد', tv:'اليوم العالمي للتلفزيون', mountains:'اليوم الدولي للجبال', migrants:'اليوم الدولي للمهاجرين', peace2:'يوم السلام والمصالحة', diwali:'ديوالي', holi:'هولي', eidF:'عيد الفطر', eidA:'عيد الأضحى' },
-  tl:'المظهر الداكن', tn:'المظهر الفاتح', lb:'اللغة',
-  regions: { we:'أوروبا الغربية', ee:'أوروبا الشرقية', af:'أفريقيا', me:'الشرق الأوسط', ca:'آسيا الوسطى', sa:'جنوب آسيا', sea:'جنوب شرق آسيا', ea:'شرق آسيا', am:'الأمريكتان', oc:'أوقيانوسيا' }
-};
+  // 3. Обратная конвертация — все календари
+  push(testRoundTrip('Greg round-trip 2026-10-08', 'g', 2026, 10, 8));
+  push(testRoundTrip('Julian round-trip 2026-10-08', 'j', 2026, 10, 8));
+  push(testRoundTrip('Hebrew round-trip 5787-7-1', 'h', 5787, 7, 1));
+  push(testRoundTrip('Hebrew round-trip 5785-12-30', 'h', 5785, 12, 30));
+  push(testRoundTrip('Islamic round-trip 1448-1-1', 'm', 1448, 1, 1));
+  push(testRoundTrip('Islamic round-trip 1440-9-1', 'm', 1440, 9, 1));
+  push(testRoundTrip('Persian round-trip 1405-7-17', 'p', 1405, 7, 17));
+  push(testRoundTrip('Persian round-trip 1399-12-30', 'p', 1399, 12, 30));
+  push(testRoundTrip('Coptic round-trip 1743-1-1', 'k', 1743, 1, 1));
+  push(testRoundTrip('Coptic round-trip 1740-13-5', 'k', 1740, 13, 5));
+  push(testRoundTrip('Chinese round-trip 2026-10-1', 'c', 2026, 10, 1));
+  push(testRoundTrip('Hindu round-trip 2083-1-1', 'i', 2083, 1, 1));
 
-/* ============ РЕГИОНЫ И ЯЗЫКИ ============ */
-const REGIONS = [
-  { key:'we',  langs:['en','de','es','it','fr','pt'] },
-  { key:'ee',  langs:['ru','pl','uk'] },
-  { key:'af',  langs:[] },
-  { key:'me',  langs:['ar','tr'] },
-  { key:'ca',  langs:[] },
-  { key:'sa',  langs:['hi'] },
-  { key:'sea', langs:['id'] },
-  { key:'ea',  langs:['zh','ko','ja'] },
-  { key:'am',  langs:['pt'] },
-  { key:'oc',  langs:[] }
-];
-
-const LANG_META = {
-  ru: { flag:'🇷🇺', name:'Русский',        dir:'ltr' },
-  en: { flag:'🇬🇧', name:'English',        dir:'ltr' },
-  de: { flag:'🇩🇪', name:'Deutsch',        dir:'ltr' },
-  fr: { flag:'🇫🇷', name:'Français',       dir:'ltr' },
-  it: { flag:'🇮🇹', name:'Italiano',       dir:'ltr' },
-  es: { flag:'🇪🇸', name:'Español',        dir:'ltr' },
-  pt: { flag:'🇧🇷', name:'Português (BR)', dir:'ltr' },
-  tr: { flag:'🇹🇷', name:'Türkçe',         dir:'ltr' },
-  pl: { flag:'🇵🇱', name:'Polski',         dir:'ltr' },
-  uk: { flag:'🇺🇦', name:'Українська',     dir:'ltr' },
-  id: { flag:'🇮🇩', name:'Bahasa Indonesia', dir:'ltr' },
-  zh: { flag:'🇨🇳', name:'中文',            dir:'ltr' },
-  ja: { flag:'🇯🇵', name:'日本語',          dir:'ltr' },
-  ko: { flag:'🇰🇷', name:'한국어',           dir:'ltr' },
-  hi: { flag:'🇮🇳', name:'हिन्दी',           dir:'ltr' },
-  he: { flag:'🇮🇱', name:'עברית',          dir:'rtl' },
-  ar: { flag:'🇸🇦', name:'العربية',        dir:'rtl' }
-};
-
-/* ============ СОСТОЯНИЕ ============ */
-function detectLang() {
-  const n = (navigator.language || '').toLowerCase();
-  if (n.startsWith('ru')) return 'ru';
-  if (n.startsWith('uk')) return 'uk';
-  if (n.startsWith('de')) return 'de';
-  if (n.startsWith('it')) return 'it';
-  if (n.startsWith('id') || n.startsWith('in')) return 'id';
-  if (n.startsWith('pt')) return 'pt';
-  if (n.startsWith('es')) return 'es';
-  if (n.startsWith('zh')) return 'zh';
-  if (n.startsWith('ja')) return 'ja';
-  if (n.startsWith('ko')) return 'ko';
-  if (n.startsWith('hi')) return 'hi';
-  if (n.startsWith('he') || n.startsWith('iw')) return 'he';
-  if (n.startsWith('ar')) return 'ar';
-  if (n.startsWith('tr')) return 'tr';
-  if (n.startsWith('pl')) return 'pl';
-  if (n.startsWith('fr')) return 'fr';
-  return 'en';
-}
-
-let lang = detectLang();
-let theme = null;
-let sol = 'aug';
-let S, R, PV, IV;
-const CAL_KEYS = ['g','j','c','h','i','m','p','k'];
-
-try {
-  lang = localStorage.getItem('lang') || lang;
-  theme = localStorage.getItem('theme');
-  sol = localStorage.getItem('sol') || sol;
-} catch (e) {}
-
-if (!L[lang]) lang = 'en';
-const T = () => L[lang];
-const dark = () => theme ? theme === 'dark' : matchMedia('(prefers-color-scheme:dark)').matches;
-const today = () => {
-  const n = new Date();
-  return gregorianToJDN(n.getFullYear(), n.getMonth() + 1, n.getDate());
-};
-
-{
-  const t = jdnToGregorian(today());
-  S = { c:'g', y:t[0], m:t[1], d:t[2] };
-  PV = { y:t[0], m:t[1] };
-  R = today();
-  IV = { y:t[0], m: ifcFromJDN(R).m };
-}
-
-/* ============ ФОРМАТИРОВАНИЕ ============ */
-function fmtIFC(j) {
-  const o = ifcFromJDN(j);
-  const t = T();
-  const img = sol === 'aug'
-    ? t.img.map((_, i) => t.img[i === 6 ? 7 : i === 7 ? 6 : i])
-    : t.img;
-  return o.k === 'n'
-    ? `${o.d} ${img[o.m - 1]} ${o.y}`
-    : `${o.k === 'leap' ? t.leap : t.year}, ${o.y}`;
-}
-function fmtCal(c, j) {
-  const t = T();
-  const [y, m, d] = fromJDN(c, j);
-  if (c === 'g' || c === 'j') return `${d} ${t.mg[m - 1]} ${y}`;
-  if (c === 'h') return `${d} ${t.hml[m - 1]} ${y}`;
-  if (c === 'c') return `${t.jq[m - 1]}, ${d}`;
-  if (c === 'i') return `${d} ${t.iml[m - 1]} ${y}`;
-  if (c === 'm') return `${d} ${t.isml[m - 1]} ${y}`;
-  if (c === 'p') return `${d} ${t.pml[m - 1]} ${y}`;
-  if (c === 'k') return `${d} ${t.kml[m - 1]} ${y}`;
-  return '';
-}
-
-/* ============ ЯЗЫКОВОЕ МЕНЮ С РЕГИОНАМИ ============ */
-function buildLangMenu() {
-  const t = T();
-  const menu = $('#lm');
-  let html = '';
-  REGIONS.forEach(r => {
-    const regionName = t.regions[r.key] || r.key;
-    const uniqueLangs = [...new Set(r.langs)];
-    const cnt = uniqueLangs.length;
-    if (cnt === 0) {
-      html += `<div class="lang-region empty" aria-disabled="true">
-        <span>${regionName}</span>
-        <span class="cnt">0</span>
-      </div>`;
-      return;
-    }
-    html += `<div class="lang-region">
-      <span>${regionName}</span>
-      <span class="cnt">${cnt}</span>
-    </div>`;
-    uniqueLangs.forEach(code => {
-      const meta = LANG_META[code];
-      if (!meta) return;
-      html += `<button class="lang-item ${code === lang ? 'on' : ''}" data-lang="${code}" type="button" role="menuitem" aria-current="${code === lang ? 'true' : 'false'}">
-        <span class="fl" aria-hidden="true">${meta.flag}</span>
-        <span class="nm">${meta.name}</span>
-        <span class="cd">${code}</span>
-      </button>`;
-    });
+  // 4. МФК ↔ JDN
+  [2026, 2025, 2024, 2023, 2000, 1900, 2100].forEach(y => {
+    const jan1 = gregorianToJDN(y, 1, 1);
+    const o = ifcFromJDN(jan1);
+    push(testEq(`IFC ${y}-01-01 → (y, m=1, d=1)`, [y, 1, 1], [o.y, o.m, o.d]));
+    const dec31 = gregorianToJDN(y, 12, 31);
+    const o2 = ifcFromJDN(dec31);
+    push(testEq(`IFC ${y}-12-31 → (y, m=13, d=1)`, [y, 13, 1], [o2.y, o2.m, o2.d]));
   });
-  menu.innerHTML = html;
-  const meta = LANG_META[lang];
-  $('#bl').innerHTML = `<span style="font-size:1.1rem" aria-hidden="true">${meta.flag}</span> ${t.lb} ▾`;
+
+  // 5. Високосные дни
+  const leapJ = gregorianToJDN(2024, 6, 29);
+  const leapO = ifcFromJDN(leapJ);
+  push(testEq('IFC 2024 leap day after Jun 28', 'leap', leapO.k));
+  const nonLeapJ = gregorianToJDN(2023, 6, 29);
+  const nonLeapO = ifcFromJDN(nonLeapJ);
+  push(testEq('IFC 2023 no leap day', 'n', nonLeapO.k));
+
+  // 6. Прямые эталоны по календарям
+  push(testEq('Hebrew 1 Tishrei 5785 = JDN 2460565', 2460565, hebrewToJDN(5785, 7, 1)));
+  push(testEq('Islamic 1 Muharram 1446 = JDN 2460538', 2460538, islamicToJDN(1446, 1, 1)));
+  push(testEq('Persian 1 Farvardin 1404 = JDN 2460755', 2460755, persianToJDN(1404, 1, 1)));
+  push(testEq('Coptic 1 Thout 1741 = JDN 2460558', 2460558, copticToJDN(1741, 1, 1)));
+
+  // 7. Проверка границ
+  push(testEq('Year 1 Gregorian Jan 1 → JDN 1721426', 1721426, gregorianToJDN(1, 1, 1)));
+  push(testEq('Year 9999 Gregorian Dec 31 → JDN 5373484', 5373484, gregorianToJDN(9999, 12, 31)));
+
+  return results;
 }
 
-/* ============ UI ============ */
-function head() {
+/* --- UI тестов --- */
+function renderTestResults() {
+  const results = runTests();
   const t = T();
-  const meta = LANG_META[lang];
-  document.documentElement.lang = lang;
-  document.documentElement.dir = meta.dir;
-  document.documentElement.dataset.theme = dark() ? 'dark' : 'light';
-  document.body.dir = meta.dir;
-  document.title = t.ttl;
-  $('#ttl').textContent = t.ttl;
-  ['t_in', 't_pk', 't_res', 't_hl', 't_yr', 't_diff'].forEach(i => $('#' + i).textContent = t[i]);
-  $('#cg').textContent = t.cg;
-  $('#cj').textContent = t.cj;
-  $('#cc').textContent = t.cc;
-  $('#ch').textContent = t.ch;
-  $('#ci').textContent = t.ci;
-  $('#cm').textContent = t.cm;
-  $('#cp').textContent = t.cp;
-  $('#ck').textContent = t.ck;
-  $('#go').textContent = t.go;
-  $('#lg').textContent = t.legend;
-  $('#nt').textContent = t.note;
-  $('#bs').textContent = sol === 'aug' ? t.s2 : t.s1;
-  $('#bt').textContent = dark() ? t.tn : t.tl;
-  $('#bcopy').textContent = t.copy;
-  $('#bshare').textContent = t.share;
-  $('#bics').textContent = t.ics;
-  CAL_KEYS.forEach(k => {
-    const el = $('#c' + k);
-    if (el) {
-      const on = S.c === k;
-      el.className = on ? 'on' : '';
-      el.setAttribute('aria-pressed', on ? 'true' : 'false');
-    }
-  });
-  $('#bt').setAttribute('aria-pressed', dark() ? 'true' : 'false');
-  buildLangMenu();
-  buildMonthOptions();
-  $('#fd').value = S.d;
-  $('#fm').value = S.m;
-  $('#fy').value = S.y;
-  // skip link label per language
-  $('#skipLink').textContent = t.t_res || 'Перейти к результату';
+  const ok = results.filter(r => r.ok).length;
+  const bad = results.length - ok;
+  let html = `<div class="test-summary ${bad === 0 ? 'all-ok' : 'has-bad'}">${t.testSummary}: ${ok}/${results.length} ${bad === 0 ? '· ' + t.testAllOk : '· ' + t.testHasBad}</div>`;
+  html += results.map(r => `
+    <div class="test-row">
+      <span class="${r.ok ? 'ok' : 'bad'}">${r.ok ? t.testPass : t.testFail}</span>
+      <span style="flex:1">${r.name}${!r.ok ? `<br><small>${t.testExp}: ${JSON.stringify(r.expected)} · ${t.testGot}: ${JSON.stringify(r.got)}</small>` : ''}</span>
+    </div>
+  `).join('');
+  $('#testResults').innerHTML = html;
+  return { ok, bad, total: results.length };
 }
-
-function buildMonthOptions() {
-  const t = T();
-  const sel = $('#fm');
-  const cur = S.m;
-  let names;
-  if (S.c === 'h') {
-    const leap = hebrewLeap(S.y);
-    names = t.hm.slice(0, leap ? 13 : 12);
-  } else if (S.c === 'c') {
-    names = t.jq.map((n, i) => `${i + 1}. ${n}`);
-  } else if (S.c === 'i') {
-    names = t.im2;
-  } else if (S.c === 'm') {
-    names = t.ism;
-  } else if (S.c === 'p') {
-    names = t.pm;
-  } else if (S.c === 'k') {
-    names = t.km;
-  } else {
-    names = t.m;
-  }
-  sel.innerHTML = names.map((n, i) => `<option value="${i + 1}">${n}</option>`).join('');
-  if (+sel.value !== cur) sel.value = cur;
+function openTestOverlay() {
+  renderTestResults();
+  $('#testOverlay').classList.add('open');
+  $('#testClose').focus();
 }
-
-function weekHeader(t) {
-  return t.pw.map(w => `<div class="h" role="columnheader">${w}</div>`).join('');
+function closeTestOverlay() {
+  $('#testOverlay').classList.remove('open');
 }
-
-function picker() {
-  const t = T();
-  const c = S.c;
-  const cal = $('#pc');
-  const meta = LANG_META[lang];
-  cal.setAttribute('dir', meta.dir);
-  if (c === 'c') {
-    const { y, m } = PV;
-    $('#pt').textContent = `${m}. ${t.jq[m - 1]} · ${y}`;
-    let h = weekHeader(t);
-    for (let d = 1; d <= 15; d++) {
-      const j = chineseToJDN(y, m, d);
-      h += dayCellHTML(j, d, 'c');
-    }
-    cal.innerHTML = h;
-    return;
-  }
-  if (c === 'h') {
-    const { y, m } = PV;
-    $('#pt').textContent = `${t.hm[m - 1]} ${y}`;
-    const days = hebrewMonthDays(y, m);
-    const firstJ = hebrewToJDN(y, m, 1);
-    const off = ((firstJ + 1) % 7 + 6) % 7;
-    let h = weekHeader(t) + '<span></span>'.repeat(off);
-    for (let d = 1; d <= days; d++) h += dayCellHTML(firstJ + d - 1, d, 'h');
-    cal.innerHTML = h;
-    return;
-  }
-  if (c === 'i') {
-    const { y, m } = PV;
-    $('#pt').textContent = `${t.im2[m - 1]} ${y}`;
-    const days = HINDU_MONTHS_DAYS[m - 1];
-    const firstJ = hinduToJDN(y, m, 1);
-    const off = ((firstJ + 1) % 7 + 6) % 7;
-    let h = weekHeader(t) + '<span></span>'.repeat(off);
-    for (let d = 1; d <= days; d++) h += dayCellHTML(firstJ + d - 1, d, 'i');
-    cal.innerHTML = h;
-    return;
-  }
-  if (c === 'm') {
-    const { y, m } = PV;
-    $('#pt').textContent = `${t.ism[m - 1]} ${y}`;
-    const days = islamicMonthDays(y, m);
-    const firstJ = islamicToJDN(y, m, 1);
-    const off = ((firstJ + 1) % 7 + 6) % 7;
-    let h = weekHeader(t) + '<span></span>'.repeat(off);
-    for (let d = 1; d <= days; d++) h += dayCellHTML(firstJ + d - 1, d, 'm');
-    cal.innerHTML = h;
-    return;
-  }
-  if (c === 'p') {
-    const { y, m } = PV;
-    $('#pt').textContent = `${t.pm[m - 1]} ${y}`;
-    const days = persianMonthDays(y, m);
-    const firstJ = persianToJDN(y, m, 1);
-    const off = ((firstJ + 1) % 7 + 6) % 7;
-    let h = weekHeader(t) + '<span></span>'.repeat(off);
-    for (let d = 1; d <= days; d++) h += dayCellHTML(firstJ + d - 1, d, 'p');
-    cal.innerHTML = h;
-    return;
-  }
-  if (c === 'k') {
-    const { y, m } = PV;
-    $('#pt').textContent = `${t.km[m - 1]} ${y}`;
-    const days = copticMonthDays(y, m);
-    const firstJ = copticToJDN(y, m, 1);
-    const off = ((firstJ + 1) % 7 + 6) % 7;
-    let h = weekHeader(t) + '<span></span>'.repeat(off);
-    for (let d = 1; d <= days; d++) h += dayCellHTML(firstJ + d - 1, d, 'k');
-    cal.innerHTML = h;
-    return;
-  }
-  const { y, m } = PV;
-  const s = toJDN(c, y, m, 1);
-  const nx = m === 12 ? toJDN(c, y + 1, 1, 1) : toJDN(c, y, m + 1, 1);
-  const n = nx - s;
-  const off = ((s + 1) % 7 + 6) % 7;
-  $('#pt').textContent = `${t.m[m - 1]} ${y} · ${c === 'g' ? t.gr : t.ju}`;
-  let h = weekHeader(t) + '<span></span>'.repeat(off);
-  for (let d = 1; d <= n; d++) h += dayCellHTML(s + d - 1, d, c);
-  cal.innerHTML = h;
-}
-
-/* — Доступная ячейка дня — */
-function dayCellHTML(j, txt, calType) {
-  const t = T();
-  const hs = holAt(j);
-  const ifcStr = fmtIFC(j);
-  const gregStr = fmtCal('g', j);
-  const holStr = hs.length ? t.H[hs[0].k] + (hs.length > 1 ? ` +${hs.length - 1}` : '') : '';
-  const label = `${txt} · ${gregStr} · ${ifcStr}${holStr ? ' · ' + holStr : ''}`;
-  const isSel = j === R;
-  const cls = `${isSel ? 'sel' : ''} ${j === today() ? 'td' : ''} ${hs.length ? 'hol' : ''}`;
-  return `<button type="button" role="gridcell" tabindex="${isSel ? 0 : -1}" data-j="${j}" data-d="${txt}" aria-selected="${isSel ? 'true' : 'false'}" aria-label="${label.replace(/"/g, '&quot;')}" class="${cls}">${txt}</button>`;
-}
-
-function cellHTML(j, txt, extra) {
-  const t = T();
-  const hs = holAt(j);
-  const ifcStr = fmtIFC(j);
-  const gregStr = fmtCal('g', j);
-  const holStr = hs.length ? ' · ' + hs.map(q => t.H[q.k]).join(', ') : '';
-  const label = `${txt} · ${gregStr} · ${ifcStr}${holStr}`;
-  const isSel = j === R;
-  return `<button type="button" role="gridcell" tabindex="${isSel ? 0 : -1}" data-j="${j}" aria-selected="${isSel ? 'true' : 'false'}" aria-label="${label.replace(/"/g, '&quot;')}" class="${isSel ? 'sel' : ''} ${j === today() ? 'td' : ''} ${hs.length ? 'hol' : ''} ${extra || ''}">${txt}</button>`;
-}
-
-function grid() {
-  const t = T(), { y, m } = IV, lp = isLeap(y);
-  const img = sol === 'aug' ? t.im.map((_, i) => t.im[i === 6 ? 7 : i === 7 ? 6 : i]) : t.im;
-  $('#it').textContent = `${img[m - 1]} ${y}`;
-  let h = t.ws.map(w => `<div class="h" role="columnheader">${w}</div>`).join('');
-  for (let d = 1; d <= 28; d++) h += cellHTML(ifcMonthJ(y, m, d), d);
-  if (m === 6 && lp) h += cellHTML(gregorianToJDN(y, 1, 1) + 168, t.leap, 'x');
-  if (m === 13) h += cellHTML(gregorianToJDN(y, 1, 1) + (lp ? 365 : 364), t.year, 'x');
-  $('#ic').innerHTML = h;
-}
-
-function yearGrid() {
-  const t = T(), y = IV.y, lp = isLeap(y);
-  const img = sol === 'aug' ? t.im.map((_, i) => t.im[i === 6 ? 7 : i === 7 ? 6 : i]) : t.im;
-  $('#yt').textContent = y;
-  let h = '';
-  for (let m = 1; m <= 13; m++) {
-    let c = t.ws.map(w => `<div class="h">${w[0]}</div>`).join('');
-    for (let d = 1; d <= 28; d++) c += cellHTML(ifcMonthJ(y, m, d), d);
-    if (m === 6 && lp) c += cellHTML(gregorianToJDN(y, 1, 1) + 168, t.leap, 'x');
-    if (m === 13) c += cellHTML(gregorianToJDN(y, 1, 1) + (lp ? 365 : 364), t.year, 'x');
-    h += `<div class="mm"><h3>${img[m - 1]}</h3><div class="cal">${c}</div></div>`;
-  }
-  $('#yv').innerHTML = h;
-}
-
-function result() {
-  const t = T(), o = ifcFromJDN(R);
-  $('#rb').textContent = fmtIFC(R);
-  const wd = o.k === 'n' ? t.wd[(o.d - 1) % 7] : t.noweek;
-  const lines = [
-    wd,
-    `${t.gr}: ${fmtCal('g', R)}`,
-    `${t.ju}: ${fmtCal('j', R)}`,
-    `${t.cn}: ${fmtCal('c', R)}`,
-    `${t.hb}: ${fmtCal('h', R)}`,
-    `${t.in}: ${fmtCal('i', R)}`,
-    `${t.is}: ${fmtCal('m', R)}`,
-    `${t.pe}: ${fmtCal('p', R)}`,
-    `${t.co}: ${fmtCal('k', R)}`
-  ];
-  $('#rs').innerHTML = lines.join('<br>');
-  $('#rh').innerHTML = holAt(R).map(h => `<span class="tag">${t.H[h.k]}</span>`).join('');
-  $('#hl').innerHTML = hols(o.y).map(h => {
-    const short = fmtIFC(h.j).replace(/,?\s*\d{1,4}$/, '');
-    return `<li data-j="${h.j}" tabindex="0" role="button" aria-label="${t.H[h.k]}, ${fmtCal('g', h.j)}"><span>${t.H[h.k]}<small>${fmtCal('g', h.j)}</small></span><b>${short}</b></li>`;
-  }).join('');
-}
-
-function refreshDiff() {
-  const v1 = $('#d1').value;
-  const v2 = $('#d2').value;
-  if (!v1 || !v2) { $('#dr').textContent = ''; return; }
-  const m1 = /^(\d{4})-(\d{2})-(\d{2})$/.exec(v1);
-  const m2 = /^(\d{4})-(\d{2})-(\d{2})$/.exec(v2);
-  if (!m1 || !m2) { $('#dr').textContent = ''; return; }
-  const j1 = gregorianToJDN(+m1[1], +m1[2], +m1[3]);
-  const j2 = gregorianToJDN(+m2[1], +m2[2], +m2[3]);
-  const [a, b] = j1 <= j2 ? [j1, j2] : [j2, j1];
-  const days = b - a;
-  const weeks = fl(days / 7);
-  const remDays = days % 7;
-  const [y1, mo1, dd1] = jdnToGregorian(a);
-  const [y2, mo2, dd2] = jdnToGregorian(b);
-  let years = y2 - y1, months = mo2 - mo1, dd = dd2 - dd1;
-  if (dd < 0) { months--; dd += 30; }
-  if (months < 0) { years--; months += 12; }
-  const o1 = ifcFromJDN(a), o2 = ifcFromJDN(b);
-  const ifcDays = (o2.y - o1.y) * 365 + (o2.m - o1.m) * 28 + ((o2.d || 1) - (o1.d || 1));
-  const t = T();
-  $('#dr').innerHTML = `${t.dDiff}: <b>${days}</b> ${t.dDays} (${weeks} ${t.dWeeks} ${remDays} ${t.dDays})<br>${t.dYMD}: <b>${years}</b> ${t.dYears}, <b>${months}</b> ${t.dMonths}, <b>${dd}</b> ${t.dDays}<br>${t.dIFC}: <b>${ifcDays}</b> ${t.dDays}`;
-}
-
-/* ============ URL-РОУТИНГ ============ */
-function readState() {
-  const h = location.hash.replace(/^#\/?/, '');
-  if (!h) return null;
-  const parts = h.split('/');
-  if (parts.length < 4) return null;
-  return { c: parts[0], y: +parts[1], m: +parts[2], d: +parts[3] };
-}
-function writeState(c, y, m, d) {
-  const h = `#/${c}/${y}/${m}/${d}`;
-  if (location.hash !== h) history.replaceState(null, '', h);
-}
-async function copyText(text) {
-  try { if (navigator.clipboard) { await navigator.clipboard.writeText(text); return true; } } catch (e) {}
-  const ta = document.createElement('textarea');
-  ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
-  document.body.appendChild(ta); ta.select();
-  try { document.execCommand('copy'); document.body.removeChild(ta); return true; }
-  catch (e) { document.body.removeChild(ta); return false; }
-}
-function toast(msg) {
-  let el = document.getElementById('toast');
-  if (!el) { el = document.createElement('div'); el.id = 'toast'; el.className = 'toast'; el.setAttribute('role','status'); el.setAttribute('aria-live','polite'); document.body.appendChild(el); }
-  el.textContent = msg; el.classList.add('show');
-  clearTimeout(toast._t); toast._t = setTimeout(() => el.classList.remove('show'), 1800);
-}
-
-/* ============ ICS ============ */
-function downloadICS(year) {
-  const t = T();
-  const holidays = hols(year);
-  const pad = n => String(n).padStart(2, '0');
-  const jdnToICS = j => { const [y, m, d] = jdnToGregorian(j); return `${y}${pad(m)}${pad(d)}`; };
-  const esc = s => s.replace(/[\\,;]/g, '\\$&').replace(/\n/g, '\\n');
-  const lines = ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//IFC Calendar//v1.7//EN','CALSCALE:GREGORIAN','METHOD:PUBLISH'];
-  const stamp = new Date().toISOString().replace(/[-:.]/g, '').slice(0, 15) + 'Z';
-  for (const h of holidays) {
-    lines.push(
-      'BEGIN:VEVENT',
-      `UID:ifc-${h.j}-${h.k}@ifc-calendar`,
-      `DTSTAMP:${stamp}`,
-      `DTSTART;VALUE=DATE:${jdnToICS(h.j)}`,
-      `DTEND;VALUE=DATE:${jdnToICS(h.j + 1)}`,
-      `SUMMARY:${esc(t.H[h.k])}`,
-      'TRANSP:TRANSPARENT',
-      'END:VEVENT'
-    );
-  }
-  lines.push('END:VCALENDAR');
-  const blob = new Blob([lines.join('\r\n')], { type:'text/calendar;charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = `ifc-holidays-${year}.ics`;
-  document.body.appendChild(a); a.click(); document.body.removeChild(a);
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
-}
-
-/* ============ INIT ============ */
-function initFromURL() {
-  const st = readState();
-  if (!st) return;
-  if (!CAL_KEYS.includes(st.c)) return;
-  try {
-    S = { c: st.c, y: st.y, m: st.m, d: st.d };
-    const j = toJDN(st.c, st.y, st.m, st.d);
-    R = j;
-    const o = ifcFromJDN(j);
-    IV = { y: o.y, m: o.m };
-    const [cy, cm] = fromJDN(st.c, j);
-    PV = { y: cy, m: cm };
-  } catch (e) {}
-}
-
-function all() {
-  head(); picker(); grid(); yearGrid(); result(); refreshDiff();
-  writeState(S.c, S.y, S.m, S.d);
-  focusSelected();
-}
-
-function show(j) {
-  R = j;
-  const o = ifcFromJDN(j);
-  IV = { y: o.y, m: o.m };
-  result(); grid(); yearGrid();
-  const [cy, cm] = fromJDN(S.c, j);
-  PV = { y: cy, m: cm };
-  picker();
-  writeState(S.c, S.y, S.m, S.d);
-  focusSelected();
-}
-
-function focusSelected() {
-  // устанавливаем tabindex=0 на выделенную ячейку и убираем с других
-  document.querySelectorAll('.cal button[role="gridcell"]').forEach(b => {
-    const sel = b.getAttribute('aria-selected') === 'true';
-    b.setAttribute('tabindex', sel ? '0' : '-1');
-  });
-}
-
-function convert() {
-  const c = S.c;
-  const y = +$('#fy').value;
-  const m = +$('#fm').value;
-  const d = +$('#fd').value;
-  const t = T();
-  if (!(y >= 1 && y <= 9999)) { $('#er').textContent = t.badyear; return; }
-  if (!(d >= 1)) { $('#er').textContent = t.bad; return; }
-  if (c === 'c' && (m < 1 || m > 24 || d < 1 || d > 15)) { $('#er').textContent = t.badseason; return; }
-  if (c === 'h' && (m < 1 || m > 13)) { $('#er').textContent = t.bad; return; }
-  if (c === 'i' && (m < 1 || m > 12 || d > HINDU_MONTHS_DAYS[m - 1])) { $('#er').textContent = t.bad; return; }
-  if (c === 'm' && (m < 1 || m > 12)) { $('#er').textContent = t.bad; return; }
-  if (c === 'p' && (m < 1 || m > 12 || d > persianMonthDays(y, m))) { $('#er').textContent = t.bad; return; }
-  if (c === 'k' && (m < 1 || m > 13 || d > copticMonthDays(y, m))) { $('#er').textContent = t.bad; return; }
-  let j;
-  try { j = toJDN(c, y, m, d); } catch (e) { $('#er').textContent = t.bad; return; }
-  if (['g','j','h','i','m','p','k'].includes(c)) {
-    const b = fromJDN(c, j);
-    if (b[0] !== y || b[1] !== m || b[2] !== d) { $('#er').textContent = t.bad; return; }
-  }
-  $('#er').textContent = '';
-  S = { c, y, m, d };
-  PV = { y, m };
-  picker();
-  show(j);
-}
-
-/* ============ ОБРАБОТЧИКИ ============ */
-$('#go').onclick = convert;
-$('#er').id = 'er';
-
-CAL_KEYS.forEach(k => {
-  const el = $('#c' + k);
-  if (!el) return;
-  el.onclick = () => {
-    S.c = k;
-    if (k === 'h') { S.m = 7; S.d = 1; } else { S.m = 1; S.d = 1; }
-    PV = { y: S.y, m: S.m };
-    head(); picker();
-    writeState(S.c, S.y, S.m, S.d);
-  };
-});
-
-/* --- Языковое меню (доступное) --- */
-let lastFocusedBeforeMenu = null;
-function openLangMenu() {
-  lastFocusedBeforeMenu = document.activeElement;
-  $('#lm').classList.add('open');
-  $('#bl').setAttribute('aria-expanded', 'true');
-  // фокус на текущий выбранный язык или первый элемент
-  const current = $('#lm').querySelector('.lang-item.on') || $('#lm').querySelector('.lang-item');
-  if (current) setTimeout(() => current.focus(), 10);
-}
-function closeLangMenu(returnFocus) {
-  $('#lm').classList.remove('open');
-  $('#bl').setAttribute('aria-expanded', 'false');
-  if (returnFocus && lastFocusedBeforeMenu) lastFocusedBeforeMenu.focus();
-}
-$('#bl').onclick = e => {
-  e.stopPropagation();
-  if ($('#lm').classList.contains('open')) closeLangMenu(true);
-  else openLangMenu();
-};
-$('#lm').onclick = e => {
-  const item = e.target.closest('.lang-item');
-  if (!item) return;
-  lang = item.dataset.lang;
-  try { localStorage.setItem('lang', lang); } catch (e) {}
-  closeLangMenu(false);
-  all();
-  $('#bl').focus();
-};
-document.addEventListener('click', e => {
-  if (!e.target.closest('.lang')) closeLangMenu(false);
-});
+$('#testLink').onclick = e => { e.preventDefault(); openTestOverlay(); };
+$('#testRerun').onclick = () => renderTestResults();
+$('#testClose').onclick = () => closeTestOverlay();
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') {
-    if ($('#lm').classList.contains('open')) { closeLangMenu(true); e.preventDefault(); }
-  }
-  // Навигация по пунктам меню стрелками
-  if ($('#lm').classList.contains('open')) {
-    const items = [...$('#lm').querySelectorAll('.lang-item')];
-    const idx = items.indexOf(document.activeElement);
-    if (e.key === 'ArrowDown') { e.preventDefault(); items[Math.min(idx + 1, items.length - 1)]?.focus(); }
-    if (e.key === 'ArrowUp')   { e.preventDefault(); items[Math.max(idx - 1, 0)]?.focus(); }
-    if (e.key === 'Home')      { e.preventDefault(); items[0]?.focus(); }
-    if (e.key === 'End')       { e.preventDefault(); items[items.length - 1]?.focus(); }
-    // фокус-ловушка для Tab
-    if (e.key === 'Tab') {
-      if (items.length === 0) return;
-      const first = items[0], last = items[items.length - 1];
-      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-    }
-  }
+  if (e.key === 'Escape' && $('#testOverlay').classList.contains('open')) { closeTestOverlay(); e.preventDefault(); }
 });
-
-/* --- Навигация стрелками по календарю --- */
-function getGridInfo(container) {
-  const cells = [...container.querySelectorAll('button[role="gridcell"], button[data-d]')];
-  const btn = cells.find(c => c.getAttribute('aria-selected') === 'true') || cells[0];
-  return { cells, btn, cols: 7 };
+// Автозапуск через ?test=1 или #test
+if (/[?&]test=1/.test(location.search) || location.hash === '#test') {
+  setTimeout(openTestOverlay, 100);
 }
-function moveFocus(direction) {
-  const cal = document.activeElement.closest('.cal');
-  if (!cal) return;
-  const { cells } = getGridInfo(cal);
-  const idx = cells.indexOf(document.activeElement);
-  if (idx === -1) return;
-  let next = -1;
-  const cols = 7;
-  switch (direction) {
-    case 'ArrowRight': next = idx + 1; break;
-    case 'ArrowLeft':  next = idx - 1; break;
-    case 'ArrowDown':  next = idx + cols; break;
-    case 'ArrowUp':    next = idx - cols; break;
-    case 'Home':       next = idx - (idx % cols); break;
-    case 'End':        next = idx - (idx % cols) + cols - 1; break;
-    case 'PageDown':   next = idx + cols * 4; break;
-    case 'PageUp':     next = idx - cols * 4; break;
-  }
-  if (next >= 0 && next < cells.length) {
-    cells[next].focus();
-    // «умное» перемещение: стрелка вправо на последнем дне → следующий месяц
-    if ((direction === 'ArrowRight' && next === cells.length - 1 && idx === cells.length - 1)) {
-      // уже последний — не двигаем
-    }
-  }
-}
-document.addEventListener('keydown', e => {
-  if (e.target.matches('button[role="gridcell"], button[data-d]')) {
-    const handled = ['ArrowRight','ArrowLeft','ArrowDown','ArrowUp','Home','End','PageUp','PageDown'];
-    if (handled.includes(e.key)) { e.preventDefault(); moveFocus(e.key); }
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      e.target.click();
-    }
-  }
-  // навигация по списку праздников
-  if (e.target.matches('#hl li')) {
-    const items = [...document.querySelectorAll('#hl li')];
-    const idx = items.indexOf(e.target);
-    if (e.key === 'ArrowDown') { e.preventDefault(); items[Math.min(idx + 1, items.length - 1)]?.focus(); }
-    if (e.key === 'ArrowUp')   { e.preventDefault(); items[Math.max(idx - 1, 0)]?.focus(); }
-    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.target.click(); }
-  }
-  // глобальные стрелки — предыдущий/следующий месяц
-  if (document.activeElement === document.body && !$('#lm').classList.contains('open')) {
-    if (e.key === 'ArrowLeft') $('#pp').click();
-    if (e.key === 'ArrowRight') $('#pn').click();
-  }
-});
-
-/* --- Остальные обработчики --- */
-$('#bs').onclick = () => {
-  sol = sol === 'aug' ? 'jul' : 'aug';
-  try { localStorage.setItem('sol', sol); } catch (e) {}
-  head(); result(); grid(); yearGrid();
-};
-$('#yp').onclick = () => { if (IV.y > 1) { IV.y--; yearGrid(); } };
-$('#yn').onclick = () => { if (IV.y < 9999) { IV.y++; yearGrid(); } };
-$('#yv').onclick = e => { const j = e.target.dataset.j; if (j) show(+j); };
-$('#bt').onclick = () => {
-  theme = dark() ? 'light' : 'dark';
-  try { localStorage.setItem('theme', theme); } catch (e) {}
-  head();
-};
-$('#pp').onclick = () => {
-  const maxM = S.c === 'c' ? 24 : (S.c === 'h' && hebrewLeap(PV.y) ? 13 : 12);
-  if (PV.m === 1) { if (PV.y > 1) { PV = { y: PV.y - 1, m: maxM }; } }
-  else PV.m--;
-  picker();
-};
-$('#pn').onclick = () => {
-  const maxM = S.c === 'c' ? 24 : (S.c === 'h' && hebrewLeap(PV.y) ? 13 : 12);
-  if (PV.m === maxM) { if (PV.y < 9999) { PV = { y: PV.y + 1, m: 1 }; } }
-  else PV.m++;
-  picker();
-};
-$('#ip').onclick = () => {
-  if (IV.m === 1) { if (IV.y > 1) { IV = { y: IV.y - 1, m: 13 }; } }
-  else IV.m--;
-  grid();
-};
-$('#in').onclick = () => {
-  if (IV.m === 13) { if (IV.y < 9999) { IV = { y: IV.y + 1, m: 1 }; } }
-  else IV.m++;
-  grid();
-};
-$('#pc').onclick = e => {
-  const d = e.target.dataset.d;
-  if (!d) return;
-  S = { ...S, y: PV.y, m: PV.m, d: +d };
-  head(); picker(); convert();
-};
-$('#ic').onclick = e => { const j = e.target.dataset.j; if (j) show(+j); };
-$('#hl').onclick = e => { const li = e.target.closest('li'); if (li) show(+li.dataset.j); };
-$('#hl').onkeydown = e => {
-  if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('li')) {
-    e.preventDefault(); show(+e.target.dataset.j);
-  }
-};
-
-$('#bcopy').onclick = async () => {
-  const txt = $('#rb').textContent + ' | ' + $('#rs').textContent.replace(/<br>/g, ' · ').replace(/<[^>]+>/g, '');
-  const ok = await copyText(txt);
-  toast(ok ? T().copied : T().copyFail);
-};
-$('#bshare').onclick = async () => {
-  writeState(S.c, S.y, S.m, S.d);
-  if (navigator.share) {
-    try { await navigator.share({ title: document.title, url: location.href }); return; } catch (e) {}
-  }
-  const ok = await copyText(location.href);
-  toast(ok ? T().linkCopied : T().copyFail);
-};
-$('#bics').onclick = () => { downloadICS(ifcFromJDN(R).y); toast(T().icsDone); };
-
-$('#d1').value = new Date().toISOString().slice(0, 10);
-$('#d2').value = new Date(Date.now() + 7 * 86400000).toISOString().slice(0, 10);
-$('#d1').onchange = refreshDiff;
-$('#d2').onchange = refreshDiff;
-
-window.addEventListener('hashchange', () => { initFromURL(); all(); });
+// Экспорт в консоль
+window.runTests = () => { const r = runTests(); console.table(r.map(x => ({ test: x.name, ok: x.ok }))); const bad = r.filter(x => !x.ok); if (bad.length) console.error('Failures:', bad); else console.log('All tests passed:', r.length); return r; };
 
 /* ============ СТАРТ ============ */
 initFromURL();

@@ -1,7 +1,7 @@
 {
   "name": "Международный фиксированный календарь",
   "short_name": "МФК",
-  "description": "Конвертер дат: 8 календарей. 17 языков. v1.7",
+  "description": "Конвертер дат: 8 календарей. 18 языков. v1.8",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#f6f4ef",
